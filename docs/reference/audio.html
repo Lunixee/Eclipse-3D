@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audio · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="audio">Audio</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#assets-and-source-playback">Assets and source playback</a></li>
+</ul>
+<h2 id="assets-and-source-playback">Assets and source playback</h2>
+<p>Load a complete browser-decodable URL/data-URI audio buffer or a sound from the current Scratch target. Embedded Scratch sounds reuse Scratch’s decoded sound-bank buffer where available. Create a named positional or global source from a ready asset. Sources retain assets; delete sources before assets.</p>
+<p>Play/restart, pause, resume and stop are explicit actions. Loop and volume/rate are per-source settings; playback rate changes pitch and duration together. Positional sources use distance/cone attenuation and follow the active camera listener. Source position/direction and object attachments are separate from visual geometry. Setting explicit source position detaches it from an object.</p>
+<p>Browser autoplay policy may leave audio <code>blocked</code>; run <code>unlockAudio</code> from an accepted user gesture and retry playback. Green Flag starts shared simulation but does not silently restart old voices. Stop All holds offsets; runtime Pause resumes only the voices it interrupted when unpaused. Playing from a stopped palette stack does not wake simulation.</p>
+<p>Asset reports expose loading/ready/error state, duration, channels, sample rate, users and error text. Source reports expose playback state, numeric controls/offset, mode, asset and attachment. Listener reporters read the named camera basis without creating audio work. One lazy engine audio context/cache is shared. No occlusion, reverb, routing buses, streaming, doppler or completion hats are supplied. See <a href="../../examples/physics-audio/README.html">Physics &amp; Audio example</a>.</p>
+<h3 id="loadaudiourl">loadAudioURL</h3>
+<p><img src="../assets/blocks/loadAudioURL.svg" alt="load audio asset [ASSET] from URL or data URI [URL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>URL</code></td>
+<td>string; <code>data:audio/wav;base64,</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="loadaudiosound">loadAudioSound</h3>
+<p><img src="../assets/blocks/loadAudioSound.svg" alt="load audio asset [ASSET] from this sprite sound [SOUND]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SOUND</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="unlockaudio">unlockAudio</h3>
+<p><img src="../assets/blocks/unlockAudio.svg" alt="unlock 3D audio"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<h3 id="createaudiosource">createAudioSource</h3>
+<p><img src="../assets/blocks/createAudioSource.svg" alt="create [MODE] audio source [NAME] asset [ASSET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>positional</code></td>
+<td><code>positional</code>, <code>global</code></td>
+</tr>
+</tbody></table>
+<h3 id="setaudionumber">setAudioNumber</h3>
+<p><img src="../assets/blocks/setAudioNumber.svg" alt="set audio source [NAME] [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>volume</code></td>
+<td><code>volume</code>, <code>rate</code>, <code>refDistance</code>, <code>maxDistance</code>, <code>rolloff</code>, <code>coneInner</code>, <code>coneOuter</code>, <code>coneGain</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setaudioloop">setAudioLoop</h3>
+<p><img src="../assets/blocks/setAudioLoop.svg" alt="set audio source [NAME] loop [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setaudiovector">setAudioVector</h3>
+<p><img src="../assets/blocks/setAudioVector.svg" alt="set audio source [NAME] [PROPERTY] x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position</code></td>
+<td><code>position</code>, <code>direction</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="attachaudiosource">attachAudioSource</h3>
+<p><img src="../assets/blocks/attachAudioSource.svg" alt="attach audio source [NAME] to object [OBJECT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OBJECT</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="controlaudiosource">controlAudioSource</h3>
+<p><img src="../assets/blocks/controlAudioSource.svg" alt="[ACTION] audio source [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ACTION</code></td>
+<td>string; <code>play</code></td>
+<td><code>play</code>, <code>pause</code>, <code>resume</code>, <code>stop</code></td>
+</tr>
+</tbody></table>
+<h3 id="audioassetexists">audioAssetExists</h3>
+<p><img src="../assets/blocks/audioAssetExists.svg" alt="audio asset [ASSET] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="audioassetstate">audioAssetState</h3>
+<p><img src="../assets/blocks/audioAssetState.svg" alt="audio asset [ASSET] state"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="audioassetnumber">audioAssetNumber</h3>
+<p><img src="../assets/blocks/audioAssetNumber.svg" alt="audio asset [ASSET] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>duration seconds</code></td>
+<td><code>duration seconds</code>, <code>channels</code>, <code>sample rate hz</code>, <code>users</code></td>
+</tr>
+</tbody></table>
+<h3 id="audioassettext">audioAssetText</h3>
+<p><img src="../assets/blocks/audioAssetText.svg" alt="audio asset [ASSET] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>state</code></td>
+<td><code>state</code>, <code>error</code></td>
+</tr>
+</tbody></table>
+<h3 id="audiosourceexists">audioSourceExists</h3>
+<p><img src="../assets/blocks/audioSourceExists.svg" alt="audio source [SOURCE] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="audiosourcestate">audioSourceState</h3>
+<p><img src="../assets/blocks/audioSourceState.svg" alt="audio source [NAME] state"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="audiosourcenumber">audioSourceNumber</h3>
+<p><img src="../assets/blocks/audioSourceNumber.svg" alt="audio source [NAME] [PROPERTY]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>time</code></td>
+<td><code>time</code>, <code>duration</code>, <code>volume</code>, <code>rate</code>, <code>refDistance</code>, <code>maxDistance</code>, <code>rolloff</code>, <code>coneInner</code>, <code>coneOuter</code>, <code>coneGain</code></td>
+</tr>
+</tbody></table>
+<h3 id="audiosourcetext">audioSourceText</h3>
+<p><img src="../assets/blocks/audioSourceText.svg" alt="audio source [SOURCE] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>mode</code></td>
+<td><code>mode</code>, <code>object</code>, <code>asset</code>, <code>error</code></td>
+</tr>
+</tbody></table>
+<h3 id="audiosourceboolean">audioSourceBoolean</h3>
+<p><img src="../assets/blocks/audioSourceBoolean.svg" alt="audio source [SOURCE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>looping</code></td>
+<td><code>looping</code>, <code>attached</code></td>
+</tr>
+</tbody></table>
+<h3 id="audiospatialnumber">audioSpatialNumber</h3>
+<p><img src="../assets/blocks/audioSpatialNumber.svg" alt="audio source [SOURCE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position x</code></td>
+<td><code>position x</code>, <code>position y</code>, <code>position z</code>, <code>direction x</code>, <code>direction y</code>, <code>direction z</code></td>
+</tr>
+</tbody></table>
+<h3 id="audiolistenernumber">audioListenerNumber</h3>
+<p><img src="../assets/blocks/audioListenerNumber.svg" alt="camera [CAMERA] listener [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position x</code></td>
+<td><code>position x</code>, <code>position y</code>, <code>position z</code>, <code>forward x</code>, <code>forward y</code>, <code>forward z</code>, <code>up x</code>, <code>up y</code>, <code>up z</code></td>
+</tr>
+</tbody></table>
+<h3 id="deleteaudiosource">deleteAudioSource</h3>
+<p><img src="../assets/blocks/deleteAudioSource.svg" alt="delete audio source [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>source</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="deleteaudioasset">deleteAudioAsset</h3>
+<p><img src="../assets/blocks/deleteAudioAsset.svg" alt="delete audio asset [ASSET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASSET</code></td>
+<td>string; <code>sound</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

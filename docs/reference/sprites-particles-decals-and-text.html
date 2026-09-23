@@ -1,0 +1,1812 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sprites, Particles, Decals &amp; Text · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="sprites-particles-decals-andamp-text">Sprites, Particles, Decals &amp; Text</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#sprites-and-shared-effect-controls">Sprites and shared effect controls</a></li>
+<li><a href="#particles">Particles</a></li>
+<li><a href="#decals">Decals</a></li>
+<li><a href="#text">Text</a></li>
+</ul>
+<h2 id="sprites-and-shared-effect-controls">Sprites and shared effect controls</h2>
+<p>Sprites are world-space textured quads. Create the texture first, then the sprite. Size uses world units; custom pivots use normalized quad coordinates. Full, Y-axis, fixed and screen-aligned billboard modes choose how the quad faces the camera. Camera motion is handled by shared shader inputs rather than rebuilding per-sprite geometry.</p>
+<p>The shared effect controls also apply to particles and decals where supported: visible, dimensions, tint, opacity, alpha mode, lighting and depth. The effect alpha-mode cutoff is a 0–1 threshold; material alpha-cutoff blocks use percent. <code>setEffectTint</code> brightness uses percent, while <code>setEffectNumber</code> brightness is the raw factor. Unlit effects are the default; lit effects use the existing lightweight light selection.</p>
+<p>Atlas columns/rows define cells. Frame, first/last frame and directional-view indices are one-based. Play/pause/resume/stop controls update frame state in simulation, while directional mapping chooses among configured views. Frame queries distinguish requested/current rendered frame and selected directional frame. Cutout effects normally write depth; blended/additive effects normally do not. Transparent quads are not general order-independent transparency.</p>
+<p>Effect kind/text/number/Boolean families expose retained resource state, not an image readback. Delete effects through the shared resource deletion block. The generic quad and named texture are shared, so transform or camera edits should not create a new texture.</p>
+<h3 id="createsprite">createSprite</h3>
+<p><img src="../assets/blocks/createSprite.svg" alt="create sprite [NAME] using texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="seteffectvisible">setEffectVisible</h3>
+<p><img src="../assets/blocks/setEffectVisible.svg" alt="set effect [NAME] visible [VISIBLE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VISIBLE</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="seteffectsize">setEffectSize</h3>
+<p><img src="../assets/blocks/setEffectSize.svg" alt="set effect [NAME] width [WIDTH] height [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="seteffecttint">setEffectTint</h3>
+<p><img src="../assets/blocks/setEffectTint.svg" alt="set effect [NAME] tint [COLOR] opacity [OPACITY] brightness [BRIGHTNESS]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BRIGHTNESS</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="seteffectalphamode">setEffectAlphaMode</h3>
+<p><img src="../assets/blocks/setEffectAlphaMode.svg" alt="set effect [NAME] alpha [MODE] cutoff [CUTOFF]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>blend</code></td>
+<td><code>opaque</code>, <code>cutout</code>, <code>blend</code>, <code>additive</code></td>
+</tr>
+<tr>
+<td><code>CUTOFF</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="seteffectlighting">setEffectLighting</h3>
+<p><img src="../assets/blocks/setEffectLighting.svg" alt="set effect [NAME] lighting [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>unlit</code></td>
+<td><code>unlit</code>, <code>lit</code></td>
+</tr>
+</tbody></table>
+<h3 id="seteffectdepth">setEffectDepth</h3>
+<p><img src="../assets/blocks/setEffectDepth.svg" alt="set effect [NAME] depth test [TEST] write [WRITE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEST</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+<tr>
+<td><code>WRITE</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="seteffectnumber">setEffectNumber</h3>
+<p><img src="../assets/blocks/setEffectNumber.svg" alt="set effect [RESOURCE] [PROPERTY] to [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>opacity %</code></td>
+<td><code>opacity %</code>, <code>brightness</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="effectkind">effectKind</h3>
+<p><img src="../assets/blocks/effectKind.svg" alt="effect kind of [NAME]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="effectexists">effectExists</h3>
+<p><img src="../assets/blocks/effectExists.svg" alt="effect [NAME] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="effectvisible">effectVisible</h3>
+<p><img src="../assets/blocks/effectVisible.svg" alt="effect [NAME] visible?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="effectnumber">effectNumber</h3>
+<p><img src="../assets/blocks/effectNumber.svg" alt="effect [RESOURCE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>width</code></td>
+<td><code>width</code>, <code>height</code>, <code>pivot x</code>, <code>pivot y</code>, <code>opacity %</code>, <code>brightness</code>, <code>alpha cutoff %</code>, <code>sheet columns</code>, <code>sheet rows</code>, <code>frame</code>, <code>rendered frame</code>, <code>animation first frame</code>, <code>animation last frame</code>, <code>animation fps</code>, <code>animation time</code>, <code>directional views</code>, <code>facing degrees</code>, <code>roll degrees</code></td>
+</tr>
+</tbody></table>
+<h3 id="effecttext">effectText</h3>
+<p><img src="../assets/blocks/effectText.svg" alt="effect [RESOURCE] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>alpha mode</code></td>
+<td><code>alpha mode</code>, <code>lighting</code>, <code>texture</code>, <code>billboard mode</code></td>
+</tr>
+</tbody></table>
+<h3 id="effectboolean">effectBoolean</h3>
+<p><img src="../assets/blocks/effectBoolean.svg" alt="effect [RESOURCE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>depth test</code></td>
+<td><code>depth test</code>, <code>depth write</code>, <code>frame animation playing</code>, <code>frame animation paused</code>, <code>frame animation looping</code>, <code>frustum culling</code></td>
+</tr>
+</tbody></table>
+<h3 id="setspritebillboardmode">setSpriteBillboardMode</h3>
+<p><img src="../assets/blocks/setSpriteBillboardMode.svg" alt="set sprite [NAME] facing [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>full</code></td>
+<td><code>full</code>, <code>y-axis</code>, <code>fixed</code>, <code>screen-aligned</code></td>
+</tr>
+</tbody></table>
+<h3 id="spritebillboardmode">spriteBillboardMode</h3>
+<p><img src="../assets/blocks/spriteBillboardMode.svg" alt="billboard mode of sprite [NAME]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspritepivot">setSpritePivot</h3>
+<p><img src="../assets/blocks/setSpritePivot.svg" alt="set sprite [NAME] pivot [PIVOT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PIVOT</code></td>
+<td>string; <code>center</code></td>
+<td><code>center</code>, <code>bottom-center</code>, <code>top-center</code></td>
+</tr>
+</tbody></table>
+<h3 id="setspritecustompivot">setSpriteCustomPivot</h3>
+<p><img src="../assets/blocks/setSpriteCustomPivot.svg" alt="set sprite [NAME] custom pivot x [X] y [Y]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspritesheet">setSpriteSheet</h3>
+<p><img src="../assets/blocks/setSpriteSheet.svg" alt="set sprite [NAME] sheet columns [COLUMNS] rows [ROWS]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLUMNS</code></td>
+<td>number; <code>4</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ROWS</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspriteframe">setSpriteFrame</h3>
+<p><img src="../assets/blocks/setSpriteFrame.svg" alt="set sprite [NAME] frame [FRAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FRAME</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="playspriteframes">playSpriteFrames</h3>
+<p><img src="../assets/blocks/playSpriteFrames.svg" alt="play sprite [NAME] frames [FIRST] to [LAST] at [FPS] FPS looping [LOOPING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FIRST</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LAST</code></td>
+<td>number; <code>8</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FPS</code></td>
+<td>number; <code>8</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LOOPING</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="pausespriteframes">pauseSpriteFrames</h3>
+<p><img src="../assets/blocks/pauseSpriteFrames.svg" alt="pause sprite animation [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resumespriteframes">resumeSpriteFrames</h3>
+<p><img src="../assets/blocks/resumeSpriteFrames.svg" alt="resume sprite animation [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="stopspriteframes">stopSpriteFrames</h3>
+<p><img src="../assets/blocks/stopSpriteFrames.svg" alt="stop sprite animation [NAME] reset [RESET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>RESET</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setspritedirectionalviews">setSpriteDirectionalViews</h3>
+<p><img src="../assets/blocks/setSpriteDirectionalViews.svg" alt="set sprite [NAME] directional views [COUNT] facing [ANGLE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COUNT</code></td>
+<td>number; <code>8</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ANGLE</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspritedirectionalframe">setSpriteDirectionalFrame</h3>
+<p><img src="../assets/blocks/setSpriteDirectionalFrame.svg" alt="map sprite [NAME] direction [DIRECTION] to frame [FRAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DIRECTION</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FRAME</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="spritecurrentframe">spriteCurrentFrame</h3>
+<p><img src="../assets/blocks/spriteCurrentFrame.svg" alt="current frame of sprite [NAME]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="spritedirectionalframe">spriteDirectionalFrame</h3>
+<p><img src="../assets/blocks/spriteDirectionalFrame.svg" alt="sprite [RESOURCE] direction [DIRECTION] frame"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>sprite</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DIRECTION</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="particles">Particles</h2>
+<p>Create an emitter with an existing texture and an explicit particle capacity. Configure emission rate in particles/second, point/box/sphere spawn extents, velocity in world units/second, acceleration in units/second² and lifetime in seconds. Velocity spread can be set uniformly or per axis. Set a seed before emission for repeatable random sequences.</p>
+<p>Size, color and alpha interpolate from start to end over each particle lifetime. Rotation uses degrees and angular speed degrees/second; sprite-sheet FPS controls particle frame animation. <code>burstParticles</code> spawns an immediate bounded count; continuous emission must be started explicitly. Increasing capacity reserves storage and is not a substitute for controlling lifetime/rate.</p>
+<p>Stopping emission lets existing particles age out; pausing freezes the emitter; clearing removes active particles. Global Pause/Stop freezes shared simulation regardless of emitter flags. Numeric/text/Boolean reporters inspect configuration and active/emitting/paused state. Offscreen particles continue simulation, while instance packing/draws can be culled.</p>
+<p>Particles are CPU simulated in dense typed storage and GPU instanced. There is no GPU simulation, collision, physics coupling or per-particle named object API. Reuse an emitter rather than recreate it every frame. Large capacities and blended screen coverage have separate CPU and GPU costs. See <a href="../../examples/particles/README.html">Particles example</a>.</p>
+<h3 id="createparticleemitter">createParticleEmitter</h3>
+<p><img src="../assets/blocks/createParticleEmitter.svg" alt="create particle emitter [NAME] texture [TEXTURE] maximum [MAXIMUM]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticleemissionrate">setParticleEmissionRate</h3>
+<p><img src="../assets/blocks/setParticleEmissionRate.svg" alt="set emitter [NAME] rate [RATE] per second"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>RATE</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlemaximum">setParticleMaximum</h3>
+<p><img src="../assets/blocks/setParticleMaximum.svg" alt="set emitter [NAME] maximum particles [MAXIMUM]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlespawnshape">setParticleSpawnShape</h3>
+<p><img src="../assets/blocks/setParticleSpawnShape.svg" alt="set emitter [NAME] shape [SHAPE] extents x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SHAPE</code></td>
+<td>string; <code>point</code></td>
+<td><code>point</code>, <code>box</code>, <code>sphere</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlevelocity">setParticleVelocity</h3>
+<p><img src="../assets/blocks/setParticleVelocity.svg" alt="set emitter [NAME] velocity x [X] y [Y] z [Z] spread [SPREAD]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>3</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SPREAD</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticleacceleration">setParticleAcceleration</h3>
+<p><img src="../assets/blocks/setParticleAcceleration.svg" alt="set emitter [NAME] acceleration x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>-4</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlelifetime">setParticleLifetime</h3>
+<p><img src="../assets/blocks/setParticleLifetime.svg" alt="set emitter [NAME] lifetime [MINIMUM] to [MAXIMUM] seconds"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MINIMUM</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlesizeoverlife">setParticleSizeOverLife</h3>
+<p><img src="../assets/blocks/setParticleSizeOverLife.svg" alt="set emitter [NAME] size [START] to [END]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>START</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlealphaoverlife">setParticleAlphaOverLife</h3>
+<p><img src="../assets/blocks/setParticleAlphaOverLife.svg" alt="set emitter [NAME] alpha [START] to [END] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>START</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlecoloroverlife">setParticleColorOverLife</h3>
+<p><img src="../assets/blocks/setParticleColorOverLife.svg" alt="set emitter [NAME] color [START] to [END]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>START</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>color; <code>#ff8000</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlerotation">setParticleRotation</h3>
+<p><img src="../assets/blocks/setParticleRotation.svg" alt="set emitter [NAME] rotation [MINIMUM] to [MAXIMUM] angular speed [ANGULARMINIMUM] to [ANGULARMAXIMUM]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MINIMUM</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>angle; <code>360</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ANGULARMINIMUM</code></td>
+<td>number; <code>-90</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ANGULARMAXIMUM</code></td>
+<td>number; <code>90</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticleframerate">setParticleFrameRate</h3>
+<p><img src="../assets/blocks/setParticleFrameRate.svg" alt="set emitter [NAME] sprite-sheet FPS [FPS]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FPS</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticleseed">setParticleSeed</h3>
+<p><img src="../assets/blocks/setParticleSeed.svg" alt="set emitter [NAME] random seed [SEED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SEED</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setparticlespread">setParticleSpread</h3>
+<p><img src="../assets/blocks/setParticleSpread.svg" alt="set emitter [RESOURCE] spread x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="startparticleemitter">startParticleEmitter</h3>
+<p><img src="../assets/blocks/startParticleEmitter.svg" alt="start emitter [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="stopparticleemitter">stopParticleEmitter</h3>
+<p><img src="../assets/blocks/stopParticleEmitter.svg" alt="stop emitter [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="pauseparticleemitter">pauseParticleEmitter</h3>
+<p><img src="../assets/blocks/pauseParticleEmitter.svg" alt="pause emitter [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resumeparticleemitter">resumeParticleEmitter</h3>
+<p><img src="../assets/blocks/resumeParticleEmitter.svg" alt="resume emitter [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="clearparticleemitter">clearParticleEmitter</h3>
+<p><img src="../assets/blocks/clearParticleEmitter.svg" alt="clear emitter [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="burstparticles">burstParticles</h3>
+<p><img src="../assets/blocks/burstParticles.svg" alt="burst [COUNT] particles from [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>COUNT</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="activeparticlecount">activeParticleCount</h3>
+<p><img src="../assets/blocks/activeParticleCount.svg" alt="active particles in [NAME]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="particleemitteremitting">particleEmitterEmitting</h3>
+<p><img src="../assets/blocks/particleEmitterEmitting.svg" alt="emitter [NAME] emitting?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="particleemitterpaused">particleEmitterPaused</h3>
+<p><img src="../assets/blocks/particleEmitterPaused.svg" alt="emitter [NAME] paused?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="particlenumber">particleNumber</h3>
+<p><img src="../assets/blocks/particleNumber.svg" alt="emitter [RESOURCE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>capacity</code></td>
+<td><code>capacity</code>, <code>emission rate</code>, <code>minimum lifetime</code>, <code>maximum lifetime</code>, <code>spread x</code>, <code>spread y</code>, <code>spread z</code>, <code>spawn extent x</code>, <code>spawn extent y</code>, <code>spawn extent z</code>, <code>velocity x</code>, <code>velocity y</code>, <code>velocity z</code>, <code>acceleration x</code>, <code>acceleration y</code>, <code>acceleration z</code>, <code>start size</code>, <code>end size</code>, <code>start alpha %</code>, <code>end alpha %</code>, <code>minimum rotation degrees</code>, <code>maximum rotation degrees</code>, <code>minimum angular speed degrees</code>, <code>maximum angular speed degrees</code>, <code>particle frame rate</code>, <code>active particles</code></td>
+</tr>
+</tbody></table>
+<h3 id="particletext">particleText</h3>
+<p><img src="../assets/blocks/particleText.svg" alt="emitter [RESOURCE] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>spawn shape</code></td>
+<td><code>spawn shape</code>, <code>start color</code>, <code>end color</code></td>
+</tr>
+</tbody></table>
+<h3 id="particleboolean">particleBoolean</h3>
+<p><img src="../assets/blocks/particleBoolean.svg" alt="emitter [RESOURCE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>particles</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>emitting</code></td>
+<td><code>emitting</code>, <code>paused</code></td>
+</tr>
+</tbody></table>
+<h2 id="decals">Decals</h2>
+<p>A decal is a textured surface-oriented quad, not a projector that clips onto arbitrary meshes. Position it, choose a normal and apply a small surface offset to avoid z-fighting. Width/height, tint, depth and alpha use the shared effect controls. Keep the supplied normal nonzero.</p>
+<p>Lifetime and age use seconds. Expiry is retained state; the Boolean reporter indicates an expired decal. A decal follows simulation timing and does not keep aging while paused/stopped. It does not automatically follow a moving mesh unless the project updates its transform. Delete it through the resource deletion block.</p>
+<h3 id="createdecal">createDecal</h3>
+<p><img src="../assets/blocks/createDecal.svg" alt="create surface decal [NAME] using texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setdecalnormal">setDecalNormal</h3>
+<p><img src="../assets/blocks/setDecalNormal.svg" alt="set decal [NAME] normal x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setdecaloffset">setDecalOffset</h3>
+<p><img src="../assets/blocks/setDecalOffset.svg" alt="set decal [NAME] surface offset [OFFSET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OFFSET</code></td>
+<td>number; <code>0.01</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setdecallifetime">setDecalLifetime</h3>
+<p><img src="../assets/blocks/setDecalLifetime.svg" alt="set decal [NAME] lifetime [SECONDS] seconds (0 persistent)"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="decalnumber">decalNumber</h3>
+<p><img src="../assets/blocks/decalNumber.svg" alt="decal [RESOURCE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>surface offset</code></td>
+<td><code>surface offset</code>, <code>lifetime</code>, <code>age</code>, <code>normal x</code>, <code>normal y</code>, <code>normal z</code></td>
+</tr>
+</tbody></table>
+<h3 id="decalboolean">decalBoolean</h3>
+<p><img src="../assets/blocks/decalBoolean.svg" alt="decal [RESOURCE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>decal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>expired</code></td>
+<td><code>expired</code></td>
+</tr>
+</tbody></table>
+<h2 id="text">Text</h2>
+<p>Create a named text label with content, a supported safe font, raster font size in pixels, resolution multiplier, world height and billboard mode. Text is rasterized signage on a quad, not extruded geometry. Set world position, size/pivot, color, alignment and optional background with text-specific controls.</p>
+<p>Identical content/style definitions share a retained texture. Editing content/font/color/background/resolution can rerasterize; camera movement and label transforms do not. Automatic width preserves the raster aspect ratio. <code>textNumber</code> reports pixel font size/resolution or world dimensions, <code>textContent</code> returns text/font/alignment, and the Boolean family reports automatic width.</p>
+<p>Unicode availability depends on the browser/system font fallback. Do not assume every platform has identical emoji/CJK appearance. Very high raster resolution consumes texture memory without adding geometry detail. Delete the text label with <code>delete3DText</code> to release its shared raster reference.</p>
+<h3 id="create3dtext">create3DText</h3>
+<p><img src="../assets/blocks/create3DText.svg" alt="create 3D text [NAME] text [TEXT] font [FONT] size [FONT_SIZE] resolution [RESOLUTION] height [HEIGHT] facing [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXT</code></td>
+<td>string; <code>Hello 3D</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FONT</code></td>
+<td>string; <code>sans-serif</code></td>
+<td><code>sans-serif</code>, <code>serif</code>, <code>monospace</code>, <code>system-ui</code>, <code>Arial</code>, <code>Verdana</code>, <code>Georgia</code>, <code>Times New Roman</code>, <code>Courier New</code></td>
+</tr>
+<tr>
+<td><code>FONT_SIZE</code></td>
+<td>number; <code>64</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>RESOLUTION</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>full</code></td>
+<td><code>full</code>, <code>y-axis</code>, <code>fixed</code>, <code>screen-aligned</code></td>
+</tr>
+</tbody></table>
+<h3 id="set3dtext">set3DText</h3>
+<p><img src="../assets/blocks/set3DText.svg" alt="set 3D text [NAME] to [TEXT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXT</code></td>
+<td>string; <code>Updated</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextposition">set3DTextPosition</h3>
+<p><img src="../assets/blocks/set3DTextPosition.svg" alt="set 3D text [NAME] position [X] [Y] [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>-5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextsize">set3DTextSize</h3>
+<p><img src="../assets/blocks/set3DTextSize.svg" alt="set 3D text [NAME] width [WIDTH] height [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>3</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextbillboard">set3DTextBillboard</h3>
+<p><img src="../assets/blocks/set3DTextBillboard.svg" alt="set 3D text [NAME] facing [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>full</code></td>
+<td><code>full</code>, <code>y-axis</code>, <code>fixed</code>, <code>screen-aligned</code></td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextpivot">set3DTextPivot</h3>
+<p><img src="../assets/blocks/set3DTextPivot.svg" alt="set 3D text [NAME] pivot [PIVOT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PIVOT</code></td>
+<td>string; <code>center</code></td>
+<td><code>center</code>, <code>bottom-center</code>, <code>top-center</code></td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextcolor">set3DTextColor</h3>
+<p><img src="../assets/blocks/set3DTextColor.svg" alt="set 3D text [NAME] color [COLOR]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextfont">set3DTextFont</h3>
+<p><img src="../assets/blocks/set3DTextFont.svg" alt="set 3D text [NAME] font [FONT] size [SIZE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FONT</code></td>
+<td>string; <code>sans-serif</code></td>
+<td><code>sans-serif</code>, <code>serif</code>, <code>monospace</code>, <code>system-ui</code>, <code>Arial</code>, <code>Verdana</code>, <code>Georgia</code>, <code>Times New Roman</code>, <code>Courier New</code></td>
+</tr>
+<tr>
+<td><code>SIZE</code></td>
+<td>number; <code>64</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextalignment">set3DTextAlignment</h3>
+<p><img src="../assets/blocks/set3DTextAlignment.svg" alt="set 3D text [NAME] alignment [ALIGNMENT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ALIGNMENT</code></td>
+<td>string; <code>center</code></td>
+<td><code>left</code>, <code>center</code>, <code>right</code></td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextbackground">set3DTextBackground</h3>
+<p><img src="../assets/blocks/set3DTextBackground.svg" alt="set 3D text [NAME] background [COLOR] opacity [OPACITY] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#000000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="set3dtextresolution">set3DTextResolution</h3>
+<p><img src="../assets/blocks/set3DTextResolution.svg" alt="set 3D text [NAME] resolution [RESOLUTION]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>RESOLUTION</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="textcontent">textContent</h3>
+<p><img src="../assets/blocks/textContent.svg" alt="3D text [TEXT] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXT</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>text</code></td>
+<td><code>text</code>, <code>font</code>, <code>alignment</code></td>
+</tr>
+</tbody></table>
+<h3 id="textnumber">textNumber</h3>
+<p><img src="../assets/blocks/textNumber.svg" alt="3D text [TEXT] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXT</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>font size pixels</code></td>
+<td><code>font size pixels</code>, <code>resolution</code>, <code>world width</code>, <code>world height</code></td>
+</tr>
+</tbody></table>
+<h3 id="textboolean">textBoolean</h3>
+<p><img src="../assets/blocks/textBoolean.svg" alt="3D text [TEXT] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXT</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>automatic width</code></td>
+<td><code>automatic width</code></td>
+</tr>
+</tbody></table>
+<h3 id="delete3dtext">delete3DText</h3>
+<p><img src="../assets/blocks/delete3DText.svg" alt="delete 3D text [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>label</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

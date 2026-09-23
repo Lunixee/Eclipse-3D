@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lighting &amp; Environment · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="lighting-andamp-environment">Lighting &amp; Environment</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#directional-and-ambient-lights">Directional and ambient lights</a></li>
+<li><a href="#point-and-spot-lights">Point and spot lights</a></li>
+<li><a href="#directional-shadows">Directional shadows</a></li>
+<li><a href="#environment-resources">Environment resources</a></li>
+</ul>
+<h2 id="directional-and-ambient-lights">Directional and ambient lights</h2>
+<p>Directional lights contribute one direction across the scene. Create a named light, set its color/intensity and orient it with shared rotation controls. Ambient light is scene-wide diffuse fill, not a resource or a substitute for PBR environment lighting. Unlit materials ignore these lighting inputs.</p>
+<p>Directional number/text/Boolean queries expose intensity, color and shadow configuration without rendering a shadow map. Color inputs are sRGB colors converted for lighting. Intensity is a factor, not a percent. Configure directional shadow casting in the following subgroup only when needed.</p>
+<h3 id="createdirectionallight">createDirectionalLight</h3>
+<p><img src="../assets/blocks/createDirectionalLight.svg" alt="create directional light [NAME] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setdirectionallight">setDirectionalLight</h3>
+<p><img src="../assets/blocks/setDirectionalLight.svg" alt="set directional light [LIGHT] color [COLOR] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setambientlight">setAmbientLight</h3>
+<p><img src="../assets/blocks/setAmbientLight.svg" alt="set ambient light color [COLOR] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>0.03</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="directionallightnumber">directionalLightNumber</h3>
+<p><img src="../assets/blocks/directionalLightNumber.svg" alt="directional light [LIGHT] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>intensity</code></td>
+<td><code>intensity</code>, <code>shadow map size</code>, <code>shadow bias</code>, <code>shadow normal bias</code>, <code>shadow distance</code>, <code>shadow near</code>, <code>shadow far</code>, <code>shadow bounds</code></td>
+</tr>
+</tbody></table>
+<h3 id="directionallighttext">directionalLightText</h3>
+<p><img src="../assets/blocks/directionalLightText.svg" alt="directional light [LIGHT] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>color</code></td>
+<td><code>color</code>, <code>shadow filter</code></td>
+</tr>
+</tbody></table>
+<h3 id="directionallightboolean">directionalLightBoolean</h3>
+<p><img src="../assets/blocks/directionalLightBoolean.svg" alt="directional light [LIGHT] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>casts shadows</code></td>
+<td><code>casts shadows</code></td>
+</tr>
+</tbody></table>
+<h2 id="point-and-spot-lights">Point and spot lights</h2>
+<p>Point lights emit from a world position with finite range. Spot lights add a normalized direction and inner/outer cone angles in degrees. Aim a spot explicitly or toward a world point. Keep inner angle within outer angle, and select a useful finite range. Color, intensity, range and enabled state have separate controls and typed reporters.</p>
+<p>The renderer selects a bounded local-light list; the global maximum-light setting can limit how many configured lights contribute. Created, active and selected counts therefore need not match. Changes dirty the retained selection/upload path; a static list is reused. Point/spot shadows are unsupported. Delete local lights with their own deletion block, not by treating them as mesh instances.</p>
+<h3 id="createpointlight">createPointLight</h3>
+<p><img src="../assets/blocks/createPointLight.svg" alt="create point light [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createspotlight">createSpotLight</h3>
+<p><img src="../assets/blocks/createSpotLight.svg" alt="create spot light [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setlocallightposition">setLocalLightPosition</h3>
+<p><img src="../assets/blocks/setLocalLightPosition.svg" alt="set light [LIGHT] position x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>3</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setlocallightcolor">setLocalLightColor</h3>
+<p><img src="../assets/blocks/setLocalLightColor.svg" alt="set light [LIGHT] color [COLOR]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ff8844</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setlocallightintensity">setLocalLightIntensity</h3>
+<p><img src="../assets/blocks/setLocalLightIntensity.svg" alt="set light [LIGHT] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>20</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setlocallightrange">setLocalLightRange</h3>
+<p><img src="../assets/blocks/setLocalLightRange.svg" alt="set light [LIGHT] range [RANGE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>RANGE</code></td>
+<td>number; <code>10</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setlocallightenabled">setLocalLightEnabled</h3>
+<p><img src="../assets/blocks/setLocalLightEnabled.svg" alt="set light [LIGHT] enabled [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setspotlightdirection">setSpotLightDirection</h3>
+<p><img src="../assets/blocks/setSpotLightDirection.svg" alt="set spot light [LIGHT] direction x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>-1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="pointspotlighttoward">pointSpotLightToward</h3>
+<p><img src="../assets/blocks/pointSpotLightToward.svg" alt="point spot light [LIGHT] toward x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspotlightinnerangle">setSpotLightInnerAngle</h3>
+<p><img src="../assets/blocks/setSpotLightInnerAngle.svg" alt="set spot light [LIGHT] inner angle [DEGREES]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DEGREES</code></td>
+<td>angle; <code>20</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setspotlightouterangle">setSpotLightOuterAngle</h3>
+<p><img src="../assets/blocks/setSpotLightOuterAngle.svg" alt="set spot light [LIGHT] outer angle [DEGREES]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DEGREES</code></td>
+<td>angle; <code>30</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallightexists">localLightExists</h3>
+<p><img src="../assets/blocks/localLightExists.svg" alt="local light [LIGHT] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallighttype">localLightType</h3>
+<p><img src="../assets/blocks/localLightType.svg" alt="type of local light [LIGHT]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallightposition">localLightPosition</h3>
+<p><img src="../assets/blocks/localLightPosition.svg" alt="[AXIS] position of local light [LIGHT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+<tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallightintensity">localLightIntensity</h3>
+<p><img src="../assets/blocks/localLightIntensity.svg" alt="intensity of local light [LIGHT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallightrange">localLightRange</h3>
+<p><img src="../assets/blocks/localLightRange.svg" alt="range of local light [LIGHT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallightenabled">localLightEnabled</h3>
+<p><img src="../assets/blocks/localLightEnabled.svg" alt="local light [LIGHT] enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="locallighttext">localLightText</h3>
+<p><img src="../assets/blocks/localLightText.svg" alt="local light [LIGHT] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>color</code></td>
+<td><code>color</code></td>
+</tr>
+</tbody></table>
+<h3 id="spotlightnumber">spotLightNumber</h3>
+<p><img src="../assets/blocks/spotLightNumber.svg" alt="spot light [LIGHT] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>spot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>inner angle degrees</code></td>
+<td><code>inner angle degrees</code>, <code>outer angle degrees</code>, <code>direction x</code>, <code>direction y</code>, <code>direction z</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletelocallight">deleteLocalLight</h3>
+<p><img src="../assets/blocks/deleteLocalLight.svg" alt="delete local light [LIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>lamp</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="directional-shadows">Directional shadows</h2>
+<p>Shadows require global enablement, a shadow-casting directional light, casters and receiving materials/resources. The quality preset establishes a starting configuration; per-light map size, bias, normal bias, filtering, distance, near/far and bounds permit explicit control. Map dimensions are pixels; other distances/biases follow the light-space/world conventions of the setting.</p>
+<p>Use the smallest bounds and distance that cover the intended scene. Too little bias causes acne; too much detaches shadows. Larger maps and PCF filtering increase GPU cost and memory. The global shadow quality/map-size reporters describe policy; directional-light property reporters inspect individual overrides.</p>
+<p>Dirty shadow state triggers necessary redraws; static maps can remain cached. Custom contract-v1 materials and blended meshes do not become ordinary directional casters. Neither point/spot shadows nor recursive shadow passes are implied. The debug counters distinguish submitted casters, triangles, maps updated and measured shadow render time.</p>
+<h3 id="setshadowsenabled">setShadowsEnabled</h3>
+<p><img src="../assets/blocks/setShadowsEnabled.svg" alt="set shadows [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setshadowquality">setShadowQuality</h3>
+<p><img src="../assets/blocks/setShadowQuality.svg" alt="set shadow quality [QUALITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QUALITY</code></td>
+<td>string; <code>medium</code></td>
+<td><code>off</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>ultra</code>, <code>custom</code></td>
+</tr>
+</tbody></table>
+<h3 id="setlightcastsshadows">setLightCastsShadows</h3>
+<p><img src="../assets/blocks/setLightCastsShadows.svg" alt="set light [LIGHT] cast shadows [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setresourcecastsshadows">setResourceCastsShadows</h3>
+<p><img src="../assets/blocks/setResourceCastsShadows.svg" alt="set [RESOURCE] cast shadows [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setresourcereceivesshadows">setResourceReceivesShadows</h3>
+<p><img src="../assets/blocks/setResourceReceivesShadows.svg" alt="set [RESOURCE] receive shadows [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setshadowmapsize">setShadowMapSize</h3>
+<p><img src="../assets/blocks/setShadowMapSize.svg" alt="set light [LIGHT] shadow map size [SIZE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SIZE</code></td>
+<td>number; <code>1024</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadowbias">setShadowBias</h3>
+<p><img src="../assets/blocks/setShadowBias.svg" alt="set light [LIGHT] shadow bias [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0.0015</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadownormalbias">setShadowNormalBias</h3>
+<p><img src="../assets/blocks/setShadowNormalBias.svg" alt="set light [LIGHT] shadow normal bias [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0.02</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadowfilter">setShadowFilter</h3>
+<p><img src="../assets/blocks/setShadowFilter.svg" alt="set light [LIGHT] shadow filtering [FILTER]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FILTER</code></td>
+<td>string; <code>pcf-4</code></td>
+<td><code>hard</code>, <code>pcf-4</code>, <code>pcf-9</code></td>
+</tr>
+</tbody></table>
+<h3 id="setshadowdistance">setShadowDistance</h3>
+<p><img src="../assets/blocks/setShadowDistance.svg" alt="set light [LIGHT] shadow distance [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>40</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadowcameranear">setShadowCameraNear</h3>
+<p><img src="../assets/blocks/setShadowCameraNear.svg" alt="set light [LIGHT] shadow camera near [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadowcamerafar">setShadowCameraFar</h3>
+<p><img src="../assets/blocks/setShadowCameraFar.svg" alt="set light [LIGHT] shadow camera far [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setshadowbounds">setShadowBounds</h3>
+<p><img src="../assets/blocks/setShadowBounds.svg" alt="set light [LIGHT] shadow bounds [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>25</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="shadowsenabled">shadowsEnabled</h3>
+<p><img src="../assets/blocks/shadowsEnabled.svg" alt="shadows enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="shadowquality">shadowQuality</h3>
+<p><img src="../assets/blocks/shadowQuality.svg" alt="shadow quality"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="shadowmapsize">shadowMapSize</h3>
+<p><img src="../assets/blocks/shadowMapSize.svg" alt="shadow map size of [LIGHT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LIGHT</code></td>
+<td>string; <code>sun</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="environment-resources">Environment resources</h2>
+<p>Create a solid-color environment or one sourced from an existing equirectangular texture, then assign it to the scene. A texture-backed environment must reach ready state before useful lighting can be expected. Replacing its source retains/releases the corresponding texture. Clear the scene environment to detach it without destroying the shared asset.</p>
+<p>Intensity is a lighting factor, rotation is yaw in degrees and background enablement controls whether the environment is drawn behind objects. PBR materials receive environment lighting; basic-lit/unlit do not automatically become reflective. State/text reporters expose source texture and errors; users indicates retained consumers.</p>
+<p>Source/quality changes may preprocess reusable environment resources. Yaw and intensity are uniform changes and do not reprocess the image. This is standard-range environment lighting, not HDR rendering or dynamic reflection probes. Delete scene references before deleting environments or their textures.</p>
+<h3 id="createsolidenvironment">createSolidEnvironment</h3>
+<p><img src="../assets/blocks/createSolidEnvironment.svg" alt="create environment [ENVIRONMENT] with solid color [COLOR]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>studio</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#7aa5d8</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createenvironmentfromtexture">createEnvironmentFromTexture</h3>
+<p><img src="../assets/blocks/createEnvironmentFromTexture.svg" alt="create environment [ENVIRONMENT] from equirectangular texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>environmentMap</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setenvironmenttexture">setEnvironmentTexture</h3>
+<p><img src="../assets/blocks/setEnvironmentTexture.svg" alt="set environment [ENVIRONMENT] source texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>environmentMap</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setsceneenvironment">setSceneEnvironment</h3>
+<p><img src="../assets/blocks/setSceneEnvironment.svg" alt="set scene environment [ENVIRONMENT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="clearsceneenvironment">clearSceneEnvironment</h3>
+<p><img src="../assets/blocks/clearSceneEnvironment.svg" alt="clear scene environment"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<h3 id="setenvironmentintensity">setEnvironmentIntensity</h3>
+<p><img src="../assets/blocks/setEnvironmentIntensity.svg" alt="set environment [ENVIRONMENT] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setenvironmentrotation">setEnvironmentRotation</h3>
+<p><img src="../assets/blocks/setEnvironmentRotation.svg" alt="set environment [ENVIRONMENT] rotation [ROTATION]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ROTATION</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setenvironmentbackground">setEnvironmentBackground</h3>
+<p><img src="../assets/blocks/setEnvironmentBackground.svg" alt="set environment [ENVIRONMENT] background [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="environmentexists">environmentExists</h3>
+<p><img src="../assets/blocks/environmentExists.svg" alt="environment [ENVIRONMENT] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="environmentstate">environmentState</h3>
+<p><img src="../assets/blocks/environmentState.svg" alt="environment [ENVIRONMENT] state"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="activeenvironment">activeEnvironment</h3>
+<p><img src="../assets/blocks/activeEnvironment.svg" alt="active scene environment"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="environmentusers">environmentUsers</h3>
+<p><img src="../assets/blocks/environmentUsers.svg" alt="environment [ENVIRONMENT] users"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="environmentintensity">environmentIntensity</h3>
+<p><img src="../assets/blocks/environmentIntensity.svg" alt="environment [ENVIRONMENT] intensity"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="environmentrotation">environmentRotation</h3>
+<p><img src="../assets/blocks/environmentRotation.svg" alt="environment [ENVIRONMENT] rotation"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="environmentbackgroundenabled">environmentBackgroundEnabled</h3>
+<p><img src="../assets/blocks/environmentBackgroundEnabled.svg" alt="environment [ENVIRONMENT] background enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="environmenttext">environmentText</h3>
+<p><img src="../assets/blocks/environmentText.svg" alt="environment [ENVIRONMENT] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>environment</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>source texture</code></td>
+<td><code>source texture</code>, <code>error</code></td>
+</tr>
+</tbody></table>
+<h3 id="deleteenvironment">deleteEnvironment</h3>
+<p><img src="../assets/blocks/deleteEnvironment.svg" alt="delete environment [ENVIRONMENT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td>string; <code>outdoors</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

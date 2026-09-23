@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Eclipse 3D">
+  <rect width="64" height="64" rx="14" fill="#485B8C"/>
+  <g transform="translate(4 4) scale(.875)">
+    <path d="M30 6A26 26 0 1 0 30 58A30 30 0 0 1 30 6Z" fill="#A8DADC"/>
+    <path d="m45 18 15 9-15 9-15-9Z" fill="#FFFFFF"/>
+    <path d="m30 31 13 8v15l-13-8Z" fill="#A8DADC"/>
+    <path d="m47 39 13-8v15l-13 8Z" fill="#FFFFFF"/>
+  </g>
+</svg>

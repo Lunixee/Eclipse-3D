@@ -1,0 +1,1389 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Models &amp; Objects · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="models-andamp-objects">Models &amp; Objects</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#primitive-and-instance-creation">Primitive and instance creation</a></li>
+<li><a href="#shared-resource-and-instance-transforms">Shared resource and instance transforms</a></li>
+<li><a href="#model-assets-and-instances">Model assets and instances</a></li>
+<li><a href="#visibility-and-lod">Visibility and LOD</a></li>
+</ul>
+<h2 id="primitive-and-instance-creation">Primitive and instance creation</h2>
+<p>Create one retained unit cube for individually named objects, or a cube instance group for many copies that share geometry and material. The bulk block lays out the requested count using its spacing; edit members with one-based instance indices. COUNT is capacity/work, not a per-frame emission rate.</p>
+<p>Instances reduce draw submission when geometry/material/state are compatible. Creating thousands of separately named resources does not provide the same editing or batching contract as an instance group. Set up once; animate transforms instead of recreating geometry each frame. Delete a cube or an entire group with <code>deleteResource</code>.</p>
+<h3 id="createcube">createCube</h3>
+<p><img src="../assets/blocks/createCube.svg" alt="create cube [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createcubeinstances">createCubeInstances</h3>
+<p><img src="../assets/blocks/createCubeInstances.svg" alt="create instance group [GROUP] with [COUNT] cubes spacing [SPACING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COUNT</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SPACING</code></td>
+<td>number; <code>1.5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="shared-resource-and-instance-transforms">Shared resource and instance transforms</h2>
+<p>Shared transforms address a named resource in the active scene. Positions use world units, rotations use Euler degrees and scales are multiplicative components. Cameras and ordinary objects share these controls; model root transforms are separate from imported child-node transforms. <code>rotateResourceBy</code> adds angles; <code>copyResourceTransform</code> copies the selected transform or all TRS components. <code>lookObjectAt</code> aims the resource forward axis.</p>
+<p>For packed cube groups, INDEX starts at 1. <code>setInstanceTransform</code> changes a member position, rotation or scale, and the matching reporter returns one component. <code>setInstancePosition</code> is the direct position form. Visibility affects rendering; it does not delete data or stop an attached physics body. Tint multiplies the material: RGB reporters use 0–255, alpha uses percent. Resource and member tint have distinct storage.</p>
+<p>Existence is a quiet Boolean probe; kind is a namespace description; transform/tint reporters are numeric. Queries do not allocate geometry or issue GPU uploads. Valid edits mark only affected retained state dirty. Invalid or non-float32-representable final transforms are rejected before partial mutation. Deleting a root removes its attached physics body; attached audio stops/detaches. Delete instances before their shared model assets.</p>
+<h3 id="setposition">setPosition</h3>
+<p><img src="../assets/blocks/setPosition.svg" alt="set [NAME] position x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setrotation">setRotation</h3>
+<p><img src="../assets/blocks/setRotation.svg" alt="set [NAME] rotation x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setscale">setScale</h3>
+<p><img src="../assets/blocks/setScale.svg" alt="set [NAME] scale x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rotateresourceby">rotateResourceBy</h3>
+<p><img src="../assets/blocks/rotateResourceBy.svg" alt="rotate 3D resource [RESOURCE] by x [X] y [Y] z [Z] degrees"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setinstanceposition">setInstancePosition</h3>
+<p><img src="../assets/blocks/setInstancePosition.svg" alt="set instance [INDEX] of [GROUP] position x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setinstancetransform">setInstanceTransform</h3>
+<p><img src="../assets/blocks/setInstanceTransform.svg" alt="set instance [INDEX] of [GROUP] [PROPERTY] x [X] y [Y] z [Z] (rotation in degrees)"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position</code></td>
+<td><code>position</code>, <code>rotation</code>, <code>scale</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lookobjectat">lookObjectAt</h3>
+<p><img src="../assets/blocks/lookObjectAt.svg" alt="point 3D resource [RESOURCE] toward x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="copyresourcetransform">copyResourceTransform</h3>
+<p><img src="../assets/blocks/copyResourceTransform.svg" alt="copy [PROPERTY] from [FROM] to [TO]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>all</code></td>
+<td><code>position</code>, <code>rotation</code>, <code>scale</code>, <code>all</code></td>
+</tr>
+<tr>
+<td><code>FROM</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TO</code></td>
+<td>string; <code>model1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setresourcevisible">setResourceVisible</h3>
+<p><img src="../assets/blocks/setResourceVisible.svg" alt="set 3D resource [RESOURCE] visible [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setresourcetint">setResourceTint</h3>
+<p><img src="../assets/blocks/setResourceTint.svg" alt="set 3D resource [RESOURCE] tint [COLOR] opacity [OPACITY] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setinstancetint">setInstanceTint</h3>
+<p><img src="../assets/blocks/setInstanceTint.svg" alt="set instance [INDEX] of [GROUP] tint [COLOR] opacity [OPACITY] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resourceexists">resourceExists</h3>
+<p><img src="../assets/blocks/resourceExists.svg" alt="3D resource [RESOURCE] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resourcekind">resourceKind</h3>
+<p><img src="../assets/blocks/resourceKind.svg" alt="3D resource [RESOURCE] kind"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resourcevisible">resourceVisible</h3>
+<p><img src="../assets/blocks/resourceVisible.svg" alt="3D resource [RESOURCE] visible?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resourcetransform">resourceTransform</h3>
+<p><img src="../assets/blocks/resourceTransform.svg" alt="3D resource [RESOURCE] [PROPERTY] [AXIS] (rotation in degrees)"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position</code></td>
+<td><code>position</code>, <code>rotation</code>, <code>scale</code></td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="instancetransform">instanceTransform</h3>
+<p><img src="../assets/blocks/instanceTransform.svg" alt="instance [INDEX] of [GROUP] [PROPERTY] [AXIS] (rotation in degrees)"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position</code></td>
+<td><code>position</code>, <code>rotation</code>, <code>scale</code></td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="resourcetint">resourceTint</h3>
+<p><img src="../assets/blocks/resourceTint.svg" alt="3D resource [RESOURCE] tint [COMPONENT] (RGB 0-255, alpha %)"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COMPONENT</code></td>
+<td>string; <code>red</code></td>
+<td><code>red</code>, <code>green</code>, <code>blue</code>, <code>alpha</code></td>
+</tr>
+</tbody></table>
+<h3 id="instancetint">instanceTint</h3>
+<p><img src="../assets/blocks/instanceTint.svg" alt="instance [INDEX] of [GROUP] tint [COMPONENT] (RGB 0-255, alpha %)"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COMPONENT</code></td>
+<td>string; <code>red</code></td>
+<td><code>red</code>, <code>green</code>, <code>blue</code>, <code>alpha</code></td>
+</tr>
+</tbody></table>
+<h3 id="instancegroupnumber">instanceGroupNumber</h3>
+<p><img src="../assets/blocks/instanceGroupNumber.svg" alt="instance group [GROUP] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>cubes</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>members</code></td>
+<td><code>members</code></td>
+</tr>
+</tbody></table>
+<h3 id="deleteresource">deleteResource</h3>
+<p><img src="../assets/blocks/deleteResource.svg" alt="delete 3D resource [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="model-assets-and-instances">Model assets and instances</h2>
+<p>Use importModelFile to select or drop a local GLB or self-contained glTF. Cancel and failed imports leave the name reusable; inspect lastError and modelState before retrying. Local selection does not embed the file in the SB3. The URL/data-URI loader and older local-file block remain supported. See <a href="../model-import.html">local importing</a>. Source loads yield until the asset settles. Check <code>modelState</code> (<code>loading</code>, <code>ready</code>, <code>error</code>, or <code>missing</code>) and <code>modelError</code> before creating instances. A local glTF file cannot automatically read neighboring files; embed dependencies or use a permitted URL. Network loads obey the host permission/CORS policy.</p>
+<p>A model asset is shared immutable source data; a model instance owns root transform, node pose and animation playback. Bulk creation produces named instances using PREFIX plus one-based suffixes. <code>setModelNodePosition</code> edits an instance node, not the shared asset. Imported animation may subsequently drive that node. Asset node/skin/animation reporters describe imported metadata; they do not sample or render a pose.</p>
+<p>Metadata node, skin, joint, animation and LOD indices are one-based; absent references report 0 or empty text. The legacy set-node-position command retains its zero-based NODE argument (default 0), so subtract 1 when converting a metadata index. It rejects matrix-authored nodes and instances with an assigned LOD group. Node children text is a comma-separated list of one-based indices. Morph target counts are metadata only: morph deformation is not rendered. Primitive/triangle/CPU-byte counts describe the asset, not current visible draws. Instance reporters distinguish base asset from active LOD asset and playback state.</p>
+<p>Delete scene instances before deleting their asset; release LOD references too. Loading, deletion, reset and name reuse are fenced against stale asynchronous completion. No Draco/Meshopt decoder, arbitrary material extensions, imported cameras/lights or rendered morph targets are supplied. See <a href="../limitations.html">format limitations</a>.</p>
+<h3 id="loadmodelfromsource">loadModelFromSource</h3>
+<p><img src="../assets/blocks/loadModelFromSource.svg" alt="load glTF model [MODEL] from [SOURCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SOURCE</code></td>
+<td>string; <code><a href="https://example.com/model.glb">https://example.com/model.glb</a></code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="importmodelfile">importModelFile</h3>
+<p><img src="../assets/blocks/importModelFile.svg" alt="import 3D model file as [MODEL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="loadmodelfromfile">loadModelFromFile</h3>
+<p><img src="../assets/blocks/loadModelFromFile.svg" alt="load glTF model [MODEL] from local file"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createmodelinstance">createModelInstance</h3>
+<p><img src="../assets/blocks/createModelInstance.svg" alt="create model instance [NAME] from [MODEL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createmodelinstances">createModelInstances</h3>
+<p><img src="../assets/blocks/createModelInstances.svg" alt="create [COUNT] instances of model [MODEL] named [PREFIX]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>COUNT</code></td>
+<td>number; <code>10</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PREFIX</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmodelnodeposition">setModelNodePosition</h3>
+<p><img src="../assets/blocks/setModelNodePosition.svg" alt="set node [NODE] of model instance [NAME] position x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NODE</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>NAME</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelexists">modelExists</h3>
+<p><img src="../assets/blocks/modelExists.svg" alt="model [MODEL] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelstate">modelState</h3>
+<p><img src="../assets/blocks/modelState.svg" alt="state of model [MODEL]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelerror">modelError</h3>
+<p><img src="../assets/blocks/modelError.svg" alt="error of model [MODEL]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelnodecount">modelNodeCount</h3>
+<p><img src="../assets/blocks/modelNodeCount.svg" alt="node count of model [MODEL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelprimitivecount">modelPrimitiveCount</h3>
+<p><img src="../assets/blocks/modelPrimitiveCount.svg" alt="primitive count of model [MODEL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modeltrianglecount">modelTriangleCount</h3>
+<p><img src="../assets/blocks/modelTriangleCount.svg" alt="triangle count of model [MODEL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelnodetext">modelNodeText</h3>
+<p><img src="../assets/blocks/modelNodeText.svg" alt="model [MODEL] node [INDEX] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>name</code></td>
+<td><code>name</code>, <code>parent</code>, <code>children</code></td>
+</tr>
+</tbody></table>
+<h3 id="modelnodenumber">modelNodeNumber</h3>
+<p><img src="../assets/blocks/modelNodeNumber.svg" alt="model [MODEL] node [INDEX] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>parent index</code></td>
+<td><code>parent index</code>, <code>child count</code>, <code>mesh index</code>, <code>skin index</code>, <code>translation x</code>, <code>translation y</code>, <code>translation z</code></td>
+</tr>
+</tbody></table>
+<h3 id="modelskintext">modelSkinText</h3>
+<p><img src="../assets/blocks/modelSkinText.svg" alt="model [MODEL] skin [INDEX] name"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelskinnumber">modelSkinNumber</h3>
+<p><img src="../assets/blocks/modelSkinNumber.svg" alt="model [MODEL] skin [INDEX] [PROPERTY] joint [JOINT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>joints</code></td>
+<td><code>joints</code>, <code>skeleton node</code>, <code>joint node</code></td>
+</tr>
+<tr>
+<td><code>JOINT</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelinfonumber">modelInfoNumber</h3>
+<p><img src="../assets/blocks/modelInfoNumber.svg" alt="model asset [MODEL] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>skins</code></td>
+<td><code>skins</code>, <code>morph targets (metadata only)</code>, <code>nodes</code>, <code>animations</code>, <code>primitives</code>, <code>scenes</code>, <code>users</code>, <code>cpu bytes</code></td>
+</tr>
+</tbody></table>
+<h3 id="modelinstancetext">modelInstanceText</h3>
+<p><img src="../assets/blocks/modelInstanceText.svg" alt="model instance [INSTANCE] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>model1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>base asset</code></td>
+<td><code>base asset</code>, <code>active lod asset</code>, <code>current animation</code>, <code>lod group</code></td>
+</tr>
+</tbody></table>
+<h3 id="modelinstancenumber">modelInstanceNumber</h3>
+<p><img src="../assets/blocks/modelInstanceNumber.svg" alt="model instance [INSTANCE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>model1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>selected animation</code></td>
+<td><code>selected animation</code>, <code>animation progress %</code>, <code>transition progress %</code>, <code>lod hysteresis</code>, <code>forced lod level</code>, <code>active lod level</code></td>
+</tr>
+</tbody></table>
+<h3 id="modelinstanceboolean">modelInstanceBoolean</h3>
+<p><img src="../assets/blocks/modelInstanceBoolean.svg" alt="model instance [INSTANCE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>model1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>animation looping</code></td>
+<td><code>animation looping</code>, <code>lod enabled</code>, <code>lod assigned</code>, <code>transition active</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletemodelasset">deleteModelAsset</h3>
+<p><img src="../assets/blocks/deleteModelAsset.svg" alt="delete model asset [MODEL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="visibility-and-lod">Visibility and LOD</h2>
+<p>Frustum culling is per-resource plus global policy. Disabling it keeps that resource out of ordinary frustum rejection, but does not disable every other visibility rule. Use visibility counters to distinguish candidates, tested bounds and accepted instances.</p>
+<p>Build an LOD group from ready static assets, beginning at distance zero and adding strictly increasing thresholds. Assign it to a matching model instance, then choose automatic selection, a forced one-based level or an instance hysteresis distance. Hysteresis is measured in world units and reduces oscillation at thresholds. Level reporters return the asset name and threshold; current-level reporters describe selected retained state.</p>
+<p>LOD swaps render assets while preserving the instance root. Arbitrary skinned asset swaps are unsupported. Clear assignments before deleting a referenced group or asset. LOD and visibility reuse retained bounds/spatial state; they do not justify changing image quality during a benchmark comparison without reporting that difference.</p>
+<h3 id="setresourcefrustumculling">setResourceFrustumCulling</h3>
+<p><img src="../assets/blocks/setResourceFrustumCulling.svg" alt="set frustum culling of [RESOURCE] [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="resourcefrustumcullingenabled">resourceFrustumCullingEnabled</h3>
+<p><img src="../assets/blocks/resourceFrustumCullingEnabled.svg" alt="frustum culling of [RESOURCE] enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createlodgroup">createLodGroup</h3>
+<p><img src="../assets/blocks/createLodGroup.svg" alt="create LOD group [GROUP]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="addlodlevel">addLodLevel</h3>
+<p><img src="../assets/blocks/addLodLevel.svg" alt="add model [MODEL] to LOD group [GROUP] at distance [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot low</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>30</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="assignmodellodgroup">assignModelLodGroup</h3>
+<p><img src="../assets/blocks/assignModelLodGroup.svg" alt="set LOD group of model instance [INSTANCE] to [GROUP]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="clearmodellodgroup">clearModelLodGroup</h3>
+<p><img src="../assets/blocks/clearModelLodGroup.svg" alt="clear LOD group of model instance [INSTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmodellodenabled">setModelLodEnabled</h3>
+<p><img src="../assets/blocks/setModelLodEnabled.svg" alt="set LOD of model instance [INSTANCE] [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmodellodhysteresis">setModelLodHysteresis</h3>
+<p><img src="../assets/blocks/setModelLodHysteresis.svg" alt="set LOD hysteresis of [INSTANCE] to [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="forcemodellodlevel">forceModelLodLevel</h3>
+<p><img src="../assets/blocks/forceModelLodLevel.svg" alt="force LOD level of [INSTANCE] to [LEVEL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LEVEL</code></td>
+<td>string; <code>auto</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modellodgroup">modelLodGroup</h3>
+<p><img src="../assets/blocks/modelLodGroup.svg" alt="LOD group of [INSTANCE]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="currentmodellodlevel">currentModelLodLevel</h3>
+<p><img src="../assets/blocks/currentModelLodLevel.svg" alt="current LOD level of [INSTANCE]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lodleveltext">lodLevelText</h3>
+<p><img src="../assets/blocks/lodLevelText.svg" alt="LOD group [GROUP] level [LEVEL] model"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>lod</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LEVEL</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lodlevelnumber">lodLevelNumber</h3>
+<p><img src="../assets/blocks/lodLevelNumber.svg" alt="LOD group [GROUP] level [LEVEL] threshold"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>lod</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LEVEL</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lodgrouplevelcount">lodGroupLevelCount</h3>
+<p><img src="../assets/blocks/lodGroupLevelCount.svg" alt="level count of LOD group [GROUP]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lodgroupexists">lodGroupExists</h3>
+<p><img src="../assets/blocks/lodGroupExists.svg" alt="LOD group [GROUP] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="deletelodgroup">deleteLodGroup</h3>
+<p><img src="../assets/blocks/deleteLodGroup.svg" alt="delete LOD group [GROUP]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GROUP</code></td>
+<td>string; <code>robot lod</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eclipse 3D examples · Eclipse 3D</title><link rel="icon" href="../docs/../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../docs/site.css"></head><body><header><img src="../docs/../assets/branding/eclipse-icon.svg" alt=""><a href="../docs/index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../docs/index.html">Overview</a><a href="../docs/getting-started.html">Quick start</a><a href="../docs/reference/index.html">Block reference</a><a href="../docs/workflows.html">Workflows</a><a href="../docs/../examples/index.html">Examples</a><a href="../docs/compatibility.html">Compatibility</a></nav><h1 id="eclipse-3d-examples">Eclipse 3D examples</h1>
+<p>Seven small teaching projects and a complete first-person knife demo. Each embeds Eclipse 3D. The knife demo is playable without a rig; owners can optionally load their separately purchased rig at runtime.</p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>What it demonstrates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="first-person-knife/README.html">First-Person Knife Demo</a></td>
+<td>Movement, animation, combat and local model importing; purchased rig optional.</td>
+</tr>
+<tr>
+<td><a href="hello-3d/README.html">Hello 3D</a></td>
+<td>A first retained scene: one camera, one cube and two light inputs.</td>
+</tr>
+<tr>
+<td><a href="materials-lighting/README.html">Materials &amp; Lighting</a></td>
+<td>Compare rough ceramic with a metallic surface under shared studio light.</td>
+</tr>
+<tr>
+<td><a href="animated-model/README.html">Animated Model</a></td>
+<td>Load an embedded original glTF rotor and play its named Spin clip.</td>
+</tr>
+<tr>
+<td><a href="particles/README.html">Particles</a></td>
+<td>A seeded fountain with bounded capacity, gravity and color/alpha over life.</td>
+</tr>
+<tr>
+<td><a href="physics-audio/README.html">Physics &amp; Audio</a></td>
+<td>An attached dynamic box falls onto a static floor while carrying a quiet positional pulse.</td>
+</tr>
+<tr>
+<td><a href="post-processing/README.html">Post Processing &amp; Render Targets</a></td>
+<td>A second camera updates an in-world monitor while the main view uses vignette, color and FXAA.</td>
+</tr>
+<tr>
+<td><a href="custom-rendering/README.html">Custom Rendering</a></td>
+<td>Original octahedron geometry with a project-defined unlit GLSL material and typed tint uniform.</td>
+</tr>
+</tbody></table>
+<h2 id="rebuild">Rebuild</h2>
+<p>Run <code>npm run build</code>, then <code>npm run examples</code>. Use <code>npm run examples:package</code> for standalone HTML exports under <code>artifacts/examples/</code>. Screenshots are real runtime captures and are refreshed only after visual changes.</p>
+<p>Generated SB3 files embed the exact development bundle. Regenerate them after any production edit. The project definitions and original model/audio assets are maintained under <code>scripts/examples/</code>; no benchmark fixture scripts are imported.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../docs/generation.html">Sources and reproduction</a>.</footer></main></body></html>

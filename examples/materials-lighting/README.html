@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Materials &amp; Lighting · Eclipse 3D</title><link rel="icon" href="../../docs/../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../../docs/site.css"></head><body><header><img src="../../docs/../assets/branding/eclipse-icon.svg" alt=""><a href="../../docs/index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../../docs/index.html">Overview</a><a href="../../docs/getting-started.html">Quick start</a><a href="../../docs/reference/index.html">Block reference</a><a href="../../docs/workflows.html">Workflows</a><a href="../../docs/../examples/index.html">Examples</a><a href="../../docs/compatibility.html">Compatibility</a></nav><h1 id="materials-andamp-lighting">Materials &amp; Lighting</h1>
+<p>Compare rough ceramic with a metallic surface under shared studio light.</p>
+<p><img src="screenshot.png" alt="Two cubes on a dark plinth, with distinct PBR factors and a warm local rim. A solid environment provides uniform ambient IBL rather than a detailed reflection map."></p>
+<h2 id="run">Run</h2>
+<ol>
+<li>Open <a href="materials-lighting.sb3">materials-lighting.sb3</a> in TurboWarp Desktop or the TurboWarp web editor.</li>
+<li>Approve the embedded custom extension when prompted. It is the self-contained Eclipse 3D build; the compatibility ID is <code>turbo3d</code>.</li>
+<li>Click Green Flag. Stop All preserves the image and freezes simulation. Click Green Flag again to reset the example.</li>
+</ol>
+<p>The project embeds its extension and assets. No development server or benchmark harness is required. A host may require explicit approval for unsandboxed data-URL extensions. See <a href="../../docs/getting-started.html">loading instructions</a>.</p>
+<h2 id="observe-and-change">Observe and change</h2>
+<p>Two cubes on a dark plinth, with distinct PBR factors and a warm local rim. A solid environment provides uniform ambient IBL rather than a detailed reflection map.</p>
+<p>Change metal roughness from 0.2 toward 1, then adjust the warm rim light. Material names are shared assets; the two objects use separate materials.</p>
+<h2 id="script">Script</h2>
+<p><img src="../../docs/assets/workflows/materials-lighting.svg" alt="Complete Materials &amp; Lighting script"></p>
+<p>The script visual and SB3 are generated from the same maintained example definition. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.</p>
+<p><a href="../index.html">All examples</a> · <a href="../../docs/reference/index.html">Block reference</a> · <a href="../../scripts/examples/projects.mjs">Source definitions</a></p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../../docs/generation.html">Sources and reproduction</a>.</footer></main></body></html>

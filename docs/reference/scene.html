@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scene · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="scene">Scene</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#engine-and-scene-lifecycle">Engine and scene lifecycle</a></li>
+</ul>
+<h2 id="engine-and-scene-lifecycle">Engine and scene lifecycle</h2>
+<p>Initialize once with <code>automatic</code>, create a named scene, then create a camera and choose it. Scene creation establishes logical state; initialization connects the renderer to the Scratch stage. Names identify retained resources, so initialize a repeatable Green Flag script with <code>resetEngine</code> before recreating names. A scene owns its cameras, objects, effects, terrain, physics and source instances; model assets, geometry, materials, textures and decoded audio are shared by the engine.</p>
+<p><code>setActiveScene</code> changes which scene renders and simulates. It pauses audio in the old scene. Background opacity controls compositing over the Scratch backdrop. Scene text queries return the current name, active camera, environment or colors; numeric queries return the selected retained count or value in the menu. <code>sceneExists</code> and <code>engineInitialized</code> are quiet Boolean probes.</p>
+<p><code>renderOneFrame</code> requests static presentation; it does not start simulation. Green Flag authorizes simulation, Pause freezes it, and Stop All leaves the last image while stopping time. Manually clicking a stack can edit that image without waking animation, physics, particles or audio. <code>deleteScene</code> releases its consumers; <code>resetEngine</code> clears project resources while retaining the usable renderer; <code>disposeEngine</code> also tears down the backend and owned audio context. Reinitialize after disposal. See <a href="../concepts.html#lifecycle">lifecycle</a>.</p>
+<h3 id="initializeengine">initializeEngine</h3>
+<p><img src="../assets/blocks/initializeEngine.svg" alt="initialize 3D engine using [BACKEND]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BACKEND</code></td>
+<td>string; <code>auto</code></td>
+<td>automatic (<code>auto</code>), shared WebGL 2 (prototype) (<code>shared-webgl2</code>), separate canvas (<code>separate-canvas</code>)</td>
+</tr>
+</tbody></table>
+<h3 id="createscene">createScene</h3>
+<p><img src="../assets/blocks/createScene.svg" alt="create 3D scene [SCENE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SCENE</code></td>
+<td>string; <code>world</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setactivescene">setActiveScene</h3>
+<p><img src="../assets/blocks/setActiveScene.svg" alt="set active 3D scene [SCENE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SCENE</code></td>
+<td>string; <code>world</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setscenebackground">setSceneBackground</h3>
+<p><img src="../assets/blocks/setSceneBackground.svg" alt="set scene background [COLOR] opacity [OPACITY] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#000000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="sceneexists">sceneExists</h3>
+<p><img src="../assets/blocks/sceneExists.svg" alt="3D scene [SCENE] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SCENE</code></td>
+<td>string; <code>world</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="scenetext">sceneText</h3>
+<p><img src="../assets/blocks/sceneText.svg" alt="scene [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>name</code></td>
+<td><code>name</code>, <code>active camera</code>, <code>environment</code>, <code>background color</code>, <code>ambient color</code></td>
+</tr>
+</tbody></table>
+<h3 id="scenenumber">sceneNumber</h3>
+<p><img src="../assets/blocks/sceneNumber.svg" alt="scene [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>background opacity %</code></td>
+<td><code>background opacity %</code>, <code>ambient intensity</code>, <code>render resources</code>, <code>instance groups</code>, <code>model instances</code>, <code>effects</code>, <code>local lights</code>, <code>physics bodies</code>, <code>audio sources</code></td>
+</tr>
+</tbody></table>
+<h3 id="engineinitialized">engineInitialized</h3>
+<p><img src="../assets/blocks/engineInitialized.svg" alt="3D engine initialized?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="renderoneframe">renderOneFrame</h3>
+<p><img src="../assets/blocks/renderOneFrame.svg" alt="render one 3D frame"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<h3 id="deletescene">deleteScene</h3>
+<p><img src="../assets/blocks/deleteScene.svg" alt="delete 3D scene [SCENE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SCENE</code></td>
+<td>string; <code>world</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resetengine">resetEngine</h3>
+<p><img src="../assets/blocks/resetEngine.svg" alt="reset 3D engine"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<h3 id="disposeengine">disposeEngine</h3>
+<p><img src="../assets/blocks/disposeEngine.svg" alt="dispose 3D engine"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

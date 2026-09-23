@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eclipse 3D · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="eclipse-3d">Eclipse 3D</h1>
+<p><img src="../assets/branding/eclipse-hero.svg" alt="Eclipse 3D release identity"></p>
+<p>Build retained 3D scenes inside the TurboWarp stage. Eclipse 3D combines explicit scene/resource control with a WebGL 2 renderer, so scripts can describe a world once and update only what changes.</p>
+<p><strong>Eclipse 3D was formerly Turbo3D. Existing Turbo3D projects remain compatible.</strong> The extension ID remains <code>turbo3d</code>; API v19 preserves every existing opcode and serialized argument schema.</p>
+<p><a href="getting-started.html">Start a scene</a> · <a href="reference/index.html">Visual block reference</a> · <a href="../examples/index.html">Runnable examples</a> · <a href="compatibility.html">Migration</a></p>
+<h2 id="what-you-can-build">What you can build</h2>
+<ul>
+<li>Scenes with selectable cameras, instanced objects, glTF/GLB models, clip animation and GPU skinning.</li>
+<li>Unlit, basic-lit and metallic/roughness PBR materials, textures, directional/point/spot lighting, directional shadows and environment lighting.</li>
+<li>World-space sprites, billboards, particles, decals, cached text, finite terrain, ray picking and motion tweens.</li>
+<li>Optional gameplay box/sphere physics and positional/global audio, sharing the engine lifecycle.</li>
+<li>Named camera render targets, fused post effects and advanced custom geometry/GLSL materials.</li>
+</ul>
+<p>Eclipse 3D requires unsandboxed TurboWarp custom extensions and WebGL 2. It does not run on the Scratch website or in the extension sandbox. The build is one self-contained JavaScript file; no separate engine runtime downloads are required.</p>
+<h2 id="read-in-this-order">Read in this order</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Guide</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Load the extension and make a cube</td>
+<td><a href="getting-started.html">Getting started</a></td>
+</tr>
+<tr>
+<td>Understand coordinates, ownership and Green Flag/Pause/Stop</td>
+<td><a href="concepts.html">Concepts</a></td>
+</tr>
+<tr>
+<td>Find a block or menu</td>
+<td><a href="reference/index.html">Visual reference: all 560 visible blocks</a></td>
+</tr>
+<tr>
+<td>Learn a complete script</td>
+<td><a href="workflows.html">Rendered workflows</a></td>
+</tr>
+<tr>
+<td>Open a small finished project</td>
+<td><a href="../examples/index.html">Examples</a></td>
+</tr>
+<tr>
+<td>Move an existing project to the new branding</td>
+<td><a href="compatibility.html">Compatibility and migration</a></td>
+</tr>
+<tr>
+<td>Budget and measure rendering</td>
+<td><a href="performance.html">Performance</a></td>
+</tr>
+<tr>
+<td>Diagnose a missing image, asset or sound</td>
+<td><a href="limitations.html">Limitations and troubleshooting</a></td>
+</tr>
+<tr>
+<td>Reproduce docs and examples</td>
+<td><a href="generation.html">Generation</a></td>
+</tr>
+<tr>
+<td>Import a model from disk</td>
+<td><a href="model-import.html">Local model importing</a></td>
+</tr>
+</tbody></table>
+<h2 id="an-advanced-api-with-an-organized-toolbox">An advanced API with an organized toolbox</h2>
+<p>The toolbox has 16 major sections and 39 secondary labels, following the same order as the reference. API v19 contains 582 registered executable blocks: 560 visible entries (476 independent plus 84 canonical family blocks) and 22 hidden compatibility aliases. Labels and separators are navigation metadata, not executable blocks.</p>
+<p>The API exposes technical controls deliberately. Read the <a href="../CUSTOM_RENDERING.md">custom rendering contract</a> before writing GLSL and the <a href="../PHYSICS_AUDIO.md">physics/audio contract</a> before treating gameplay bodies as a full rigid-body solver.</p>
+<h2 id="architecture">Architecture</h2>
+<p>The renderer retains shared geometry, materials, textures, bounds and GPU programs. Dirty edits update retained state; extra camera renders do not advance simulation time. See <a href="../ARCHITECTURE.md">architecture</a>.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

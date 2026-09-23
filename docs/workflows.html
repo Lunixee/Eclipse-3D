@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rendered workflows · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="rendered-workflows">Rendered workflows</h1>
+<p>These are real Scratch-style scripts generated from the same definitions as the runnable SB3 examples. They include initialization, reset and dependencies. Orange reporters hold embedded data in project variables. Inspect those variables to see the model/texture/GLSL source. The downloaded projects don&#39;t require network placeholders.</p>
+<h2 id="hello-3d">Hello 3D</h2>
+<p>Create the engine, scene and camera before the cube. A static scene needs no repeated render command. <a href="../examples/hello-3d/README.html">Open project and explanation</a>.</p>
+<p><img src="assets/workflows/hello-3d.svg" alt="Hello 3D block stack"></p>
+<h2 id="materials-and-lighting">Materials and lighting</h2>
+<p>Create two PBR materials with distinct roughness/metallic factors, assign them to separate objects, then add environment and local light. <a href="../examples/materials-lighting/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/materials-lighting.svg" alt="Materials and lighting block stack"></p>
+<h2 id="model-loading-and-animation">Model loading and animation</h2>
+<p>The model-loading block pauses the script until the load finishes. Play the named Spin clip on the instance; clip time belongs to that instance. <a href="../examples/animated-model/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/animated-model.svg" alt="Animated model block stack"></p>
+<h2 id="particles">Particles</h2>
+<p>Load the texture, reserve a bounded emitter, configure velocity/lifetime/color, then start emission. <a href="../examples/particles/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/particles.svg" alt="Particle fountain block stack"></p>
+<h2 id="physics-and-audio">Physics and audio</h2>
+<p>Use explicit collider dimensions, attach the dynamic body to the visible root, and load an embedded Scratch sound for a positional source. Playback requires running simulation and an accepted gesture. The loop resets the body every three seconds; the engine integrates physics between resets. <a href="../examples/physics-audio/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/physics-audio.svg" alt="Physics and audio block stack"></p>
+<h2 id="post-processing-and-render-targets">Post processing and render targets</h2>
+<p>A second camera writes a named texture on command. The monitor uses that texture while the main view applies restrained vignette/color/FXAA. Extra target views add render work without extra simulation. <a href="../examples/post-processing/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/post-processing.svg" alt="Post processing and target block stack"></p>
+<h2 id="raycasting">Raycasting</h2>
+<p>After creating the Hello 3D scene, cast one forward ray and inspect its stable results. The command block casts the ray; the three result reporters below read the same hit. Check the Boolean before using object/distance. Reporters do not recast.</p>
+<p><img src="assets/workflows/raycasting.svg" alt="One raycast command with Boolean, text and numeric result reporters"></p>
+<p>For mouse picking, replace the forward cast with the logical-stage ray block and pass Scratch mouse X/Y. Read position/normal fields to place a marker only after a successful hit. Skinned hits can be bounds precision; consult the precision text field before treating a hit as an exact surface.</p>
+<h2 id="custom-rendering">Custom rendering</h2>
+<p>Geometry and shader source are project data. Create the material and model, then instantiate normally. The tint uniform updates values without changing program identity. Read <a href="../CUSTOM_RENDERING.md">contract v1</a> before extending the shader. <a href="../examples/custom-rendering/README.html">Open project</a>.</p>
+<p><img src="assets/workflows/custom-rendering.svg" alt="Custom geometry and GLSL block stack"></p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

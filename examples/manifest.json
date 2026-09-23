@@ -1,0 +1,101 @@
+{
+  "apiVersion": 19,
+  "compatibilityId": "turbo3d",
+  "publicName": "Eclipse 3D",
+  "examples": [
+    {
+      "id": "hello-3d",
+      "title": "Hello 3D",
+      "project": "examples/hello-3d/hello-3d.sb3",
+      "screenshot": "examples/hello-3d/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 326964,
+      "sha256": "4d9756497775a391506da783720aecddd1f9f15438ff7212981d428881013a8a",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 14,
+      "snapshotSeconds": 0.5
+    },
+    {
+      "id": "materials-lighting",
+      "title": "Materials & Lighting",
+      "project": "examples/materials-lighting/materials-lighting.sb3",
+      "screenshot": "examples/materials-lighting/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 327787,
+      "sha256": "499d49f1c0b3eace29141684a7711b4a9e7bee6ab96d40afded48cbb95a6bede",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 48,
+      "snapshotSeconds": 0.5
+    },
+    {
+      "id": "animated-model",
+      "title": "Animated Model",
+      "project": "examples/animated-model/animated-model.sb3",
+      "screenshot": "examples/animated-model/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 328765,
+      "sha256": "7c5db566ce1411a4cf79bf9cccc8cd41150ed52aa98a61d944a963d15d765a9d",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 28,
+      "snapshotSeconds": 1.1
+    },
+    {
+      "id": "particles",
+      "title": "Particles",
+      "project": "examples/particles/particles.sb3",
+      "screenshot": "examples/particles/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 327716,
+      "sha256": "cccbe843a599ccf01230fb57772afc1082523bf7c60dbeeb191ac546041e038b",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 32,
+      "snapshotSeconds": 1.5
+    },
+    {
+      "id": "physics-audio",
+      "title": "Physics & Audio",
+      "project": "examples/physics-audio/physics-audio.sb3",
+      "screenshot": "examples/physics-audio/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 355726,
+      "sha256": "06ec54be72a91ba7cb032e4028970373d03efe4a50cbfc68e7b57adaf60c1af1",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 55,
+      "snapshotSeconds": 0.55
+    },
+    {
+      "id": "post-processing",
+      "title": "Post Processing & Render Targets",
+      "project": "examples/post-processing/post-processing.sb3",
+      "screenshot": "examples/post-processing/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 327971,
+      "sha256": "3e1cacd81c2ae25cb33dd1cba048978512f549c7e570ed571fad682358708bc4",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 52,
+      "snapshotSeconds": 1
+    },
+    {
+      "id": "custom-rendering",
+      "title": "Custom Rendering",
+      "project": "examples/custom-rendering/custom-rendering.sb3",
+      "screenshot": "examples/custom-rendering/screenshot.png",
+      "screenshotStatus": "included",
+      "bytes": 327933,
+      "sha256": "a00e80db57893bdd81f306274ff26f160976d07ae618d0479c17ff21deceac5a",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "blocks": 33,
+      "snapshotSeconds": 0.8
+    },
+    {
+      "id": "first-person-knife",
+      "title": "First-Person Knife Demo",
+      "project": "examples/first-person-knife/first-person-knife.sb3",
+      "bytes": 6560206,
+      "sha256": "1a2d4be78d95936249d444e66991a01fe7b72dc41616c70881c17d50b86d54cf",
+      "extensionSha256": "7906cda33111bc181639e7a1bb664de3e7f6331a16aec4118050e29f7d07ce5d",
+      "optionalExternalAsset": "KnifeFPS.glb (separately purchased; demo is playable without it)",
+      "screenshotStatus": "not included"
+    }
+  ]
+}
