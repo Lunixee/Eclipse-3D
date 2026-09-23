@@ -4,13 +4,13 @@ Eclipse 3D is a WebGL 2 scene engine for TurboWarp. It provides cameras, shared 
 
 ## Load the extension
 
-To add Eclipse 3D to a project in TurboWarp Desktop or the TurboWarp web editor, use **Add Extension → Custom Extension → File** to open `dist/turbo3d.js` and enable unsandboxed execution. A minified bundle is also included. Eclipse 3D requires WebGL 2 and does not run on the Scratch website.
+Download `eclipse3d.js` from a GitHub Release, or choose `eclipse3d.min.js` for the smaller, minified version. Both provide the same blocks; load only one. In TurboWarp Desktop or the TurboWarp web editor, choose **Add Extension → Custom Extension → File**, select the downloaded JS file, and enable unsandboxed execution. You do not need the source repository or a `dist/` folder. Eclipse 3D requires WebGL 2 and does not run on the Scratch website.
 
 To try an example, open a project from [examples](examples/index.md), approve its embedded extension, and click Green Flag. You do not need to load the extension separately for these projects. [First-Person Knife](examples/first-person-knife/README.md) is playable without a rig; owners can press I to load their separately purchased KnifeFPS.glb. The paid asset is not included.
 
 ## Build from source
 
-Install Node.js 22 or newer, then run:
+To build from a cloned or downloaded source repository, install Node.js 22 or newer, then run these commands from the repository root:
 
 ~~~sh
 npm ci
@@ -20,7 +20,9 @@ npm run docs
 npm run examples
 ~~~
 
-For development, `npm run dev` serves this directory at http://localhost:8000. Load http://localhost:8000/dist/turbo3d.js as a custom extension URL. This local server is optional for the included SB3 examples.
+The builds write `dist/eclipse3d.js`, its debugging source map `dist/eclipse3d.js.map`, and `dist/eclipse3d.min.js` inside the source checkout. For File loading, select either JS bundle from that checkout's `dist/` folder; the source map is not required.
+
+For development, `npm run dev` serves this directory at http://localhost:8000. Load http://localhost:8000/dist/eclipse3d.js as a custom extension URL. This local server is optional for the included SB3 examples.
 
 ## Guides
 
@@ -46,7 +48,7 @@ Rebuild the extension and regenerate examples after a source edit. See [generati
 
 The [source layout](ARCHITECTURE.md) keeps the engine, tools, docs and examples under one root. No Git checkout is required to build.
 
-Eclipse 3D was formerly Turbo3D. API v19 retains every existing opcode, argument and menu. The extension ID `turbo3d`, shader prefix `t3d_` and bundle filenames remain compatible. The local importer adds one block; see the [inventory](BLOCKS.md).
+Eclipse 3D was formerly Turbo3D. API v19 retains every existing opcode, argument and menu. The extension ID `turbo3d` and shader prefix `t3d_` remain unchanged. Public bundles use the `eclipse3d` filename. The local importer adds one block; see the [inventory](BLOCKS.md).
 
 MIT licensed. See [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY_LICENSES.md).
 

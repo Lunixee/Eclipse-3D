@@ -7,7 +7,7 @@ await mkdir('dist', {recursive: true});
 
 await build({
     entryPoints: ['src/entry.js'],
-    outfile: minify ? 'dist/turbo3d.min.js' : 'dist/turbo3d.js',
+    outfile: minify ? 'dist/eclipse3d.min.js' : 'dist/eclipse3d.js',
     bundle: true,
     format: 'iife',
     platform: 'browser',

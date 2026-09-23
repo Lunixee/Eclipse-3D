@@ -1,6 +1,6 @@
 # Third-party software
 
-`dist/turbo3d.js` currently contains only Eclipse 3D source compiled by esbuild. The
+The source build at `dist/eclipse3d.js`, distributed as `eclipse3d.js`, contains only Eclipse 3D source compiled by esbuild. The
 runtime does not bundle Three.js or load any library from a CDN. Three.js is used
 by the development benchmark and example asset tooling. It is not included in
 the engine or required by projects that use Eclipse 3D.

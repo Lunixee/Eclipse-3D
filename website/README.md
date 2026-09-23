@@ -24,20 +24,22 @@ node website/build.mjs
 
 This replaces **only** `artifacts/website/` with a self-contained static site. It copies the current extension bundles, existing HTML docs, public documents and the examples named in `examples/manifest.json`. The historical `first-person-katana` directory is excluded. Run `npm run build` and `npm run build:min` first if bundles are missing or need refreshing; the website build deliberately does not modify them.
 
+The output includes `dist/` alongside `index.html`, so hosted download links to `dist/eclipse3d.js` are valid. Visitors download a single `eclipse3d.js` file and select it in TurboWarp's custom-extension File dialog; they do not need the repository or its folder layout.
+
 The generated `artifacts/website/index.html` is the publishing entry point. It works at a domain root or a GitHub Pages project subpath. A `.nojekyll` file is included. When deployment is explicitly requested later, upload the **contents of this artifact directory** with a Pages workflow. Do not publish `website/` alone: its sibling documentation and downloads are needed. No Pages workflow or deployment configuration is added now.
 
 The existing source export script also includes this website and the changelog, so the exported source can preview and assemble the same site.
 
 ## Final public URLs
 
-Set the two values at the top of `website/site.js`:
+The repository and release-page URLs are configured at the top of `website/site.js`. Keep the existing values when rebuilding; their formats are:
 
 | Value | Final destination |
 | --- | --- |
 | `publicLinks.source` | `https://github.com/OWNER/REPOSITORY` |
 | `publicLinks.releases` | `https://github.com/OWNER/REPOSITORY/releases` |
 
-These are deliberately empty because this checkout has no configured Git remote. Until supplied, source navigation leads to the project information on this page and both destinations are visibly marked “URL coming soon.” No fake GitHub links are shipped. The deployed site origin is automatically derived; no extension URL needs hardcoding. Once a real public release exists, update the development status and release copy in `index.html`. No canonical URL or social-preview URL is guessed.
+If either value is empty, its link falls back to the project information on the page. The deployed site origin is automatically derived; no extension URL needs hardcoding. Once a public release exists, update the development status and release copy in `index.html`.
 
 With JavaScript disabled, the complete page remains available, including docs, downloads, FAQ and manual editor instructions. Source/release navigation retains its on-page fallback.
 

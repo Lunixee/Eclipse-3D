@@ -20,9 +20,9 @@ const exampleDirectories = manifest.examples.map(({id}) => {
 });
 const siteFiles = ['index.html', 'styles.css', 'site.js', 'assets'];
 const repositoryFiles = [
-    ...publicDocuments, 'docs', 'assets/branding', 'scripts/examples',
+    ...publicDocuments, 'docs', 'assets/branding', 'assets/licenses', 'scripts/examples',
     'examples/index.html', 'examples/index.md', 'examples/manifest.json',
-    ...exampleDirectories, 'dist/turbo3d.js', 'dist/turbo3d.js.map', 'dist/turbo3d.min.js'
+    ...exampleDirectories, 'dist/eclipse3d.js', 'dist/eclipse3d.js.map', 'dist/eclipse3d.min.js'
 ];
 
 // Preflight before replacing the fixed, generated output directory.

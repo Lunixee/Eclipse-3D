@@ -296,7 +296,7 @@ const project = {
             draggable: false, rotationStyle: "don't rotate"}
     ],
     monitors: [], extensions: ['turbo3d'],
-    extensionURLs: {turbo3d: `data:application/javascript;base64,${(await readFile(path.resolve(root, '../../dist/turbo3d.js'))).toString('base64')}`},
+    extensionURLs: {turbo3d: `data:application/javascript;base64,${(await readFile(path.resolve(root, '../../dist/eclipse3d.js'))).toString('base64')}`},
     meta: {semver: '3.0.0', vm: '3.13.0', agent: 'First-Person Knife Demo / Eclipse 3D API v19'}
 };
 

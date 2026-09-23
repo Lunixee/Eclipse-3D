@@ -24,7 +24,7 @@ The integration currently requires these scratch-render implementation details:
 
 Because those private fields are not a stable API, this backend is labelled as a prototype. Compatibility must be retested when scratch-render changes. The state guard covers the state Eclipse 3D currently changes; it is not a general isolation layer for future rendering features.
 
-That controlled check is necessary but not sufficient for automatic selection. It does not contain a full scratch-render scene with sprites, pen, effects, monitors, and bubbles. Shared mode also showed prohibitive guarded timings at 10,000 cubes: 18.6 ms median and 36.2 ms p95, compared with 0.1 ms and 3.8 ms for the separate-canvas prototype in the same serialized harness. Details and limitations are in [BENCHMARKS.md](BENCHMARKS.md).
+That controlled check is necessary but not sufficient for automatic selection. It does not contain a full scratch-render scene with sprites, pen, effects, monitors, and bubbles. Shared mode also showed prohibitive guarded timings at 10,000 cubes: 18.6 ms median and 36.2 ms p95, compared with 0.1 ms and 3.8 ms for the separate-canvas prototype in the same serialized harness. For project-level advice, see [performance guidance](PERFORMANCE.md).
 
 The shared render target follows the physical size of scratch-render's canvas. Stage-native dimensions are used for skin size and rotation-center metadata.
 

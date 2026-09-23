@@ -2,18 +2,28 @@
 
 ## Load Eclipse 3D
 
-Use TurboWarp Desktop or the TurboWarp web editor with unsandboxed custom-extension support and WebGL 2. For a local build, install Node.js 22 or later and run:
+Use TurboWarp Desktop or the TurboWarp web editor with unsandboxed custom-extension support and WebGL 2.
+
+### From a release download
+
+Download `eclipse3d.js` from a GitHub Release. The smaller `eclipse3d.min.js` is an alternative with the same API; choose one bundle.
+
+In **Add Extension → Custom Extension → File**, select the downloaded JS file. You do not need Node.js, the source repository, a `dist/` folder, or a source map to load it.
+
+Eclipse 3D must run unsandboxed; enable **Run extension without sandbox** where the host shows that option. If loaded sandboxed, the extension refuses to start and reports that it must run without the extension sandbox. The loaded category is **Eclipse 3D**. The internal extension ID remains `turbo3d` for compatibility with existing projects.
+
+### From a source checkout
+
+Clone or download the source repository, install Node.js 22 or later, and run these commands from the repository root:
 
 ```sh
 npm ci
 npm run build
 ```
 
-In **Add Extension → Custom Extension → File**, choose `dist/turbo3d.js`. Eclipse 3D must run unsandboxed; enable **Run extension without sandbox** where the host shows that option. If loaded sandboxed, the extension refuses to start and reports that it must run without the extension sandbox. The loaded category is **Eclipse 3D**. The filename and internal ID intentionally retain `turbo3d` for compatibility.
+The build writes `dist/eclipse3d.js` and its debugging source map, `dist/eclipse3d.js.map`, inside the source checkout. Use **Add Extension → Custom Extension → File** to select that JS file and enable unsandboxed execution as described above. `npm run build:min` writes `dist/eclipse3d.min.js`; either JS bundle provides the same API. Source modules, `node_modules` and source maps are not required by a running project.
 
-For a URL workflow, run `npm run dev` and load **http://localhost:8000/dist/turbo3d.js**. Use the exact supported localhost origin; `127.0.0.1` is not an equivalent unsandboxed-origin permission. Hosts restrict which URLs may execute unsandboxed. If the URL path is sandboxed, load the extension through **File** as described above instead of modifying browser security settings. The server landing page is the documentation.
-
-`npm run build:min` writes `dist/turbo3d.min.js` for distribution. Both bundles expose the same API. Source modules, node_modules and source maps are not required by a running project. No published download/CDN URL is assumed by these instructions.
+For a local URL workflow from that source checkout, run `npm run dev` and load **http://localhost:8000/dist/eclipse3d.js**. Use the exact supported localhost origin; `127.0.0.1` is not an equivalent unsandboxed-origin permission. Hosts restrict which URLs may execute unsandboxed. If the URL path is sandboxed, load the extension through **File** as described above instead of modifying browser security settings. The server landing page is the documentation.
 
 ## Your first scene
 

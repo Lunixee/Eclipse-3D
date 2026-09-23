@@ -24303,4 +24303,4 @@ void main() {
   extension = new Turbo3DExtension(scratchApi, bridge);
   scratchApi.extensions.register(extension);
 })();
-//# sourceMappingURL=turbo3d.js.map
+//# sourceMappingURL=eclipse3d.js.map

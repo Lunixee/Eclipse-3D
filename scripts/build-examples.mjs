@@ -84,7 +84,7 @@ export async function archiveFor(example, source) {
 }
 
 export async function buildExamples({check=false,packageHtml=false}={}) {
-    const source = await readFile('dist/turbo3d.js'), rows = [], outputs = new Map();
+    const source = await readFile('dist/eclipse3d.js'), rows = [], outputs = new Map();
     for (const example of EXAMPLES) {
         const {bytes,project} = await archiveFor(example,source);
         outputs.set(`examples/${example.id}/${example.id}.sb3`,bytes);
