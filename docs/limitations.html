@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Limitations and troubleshooting · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="limitations-and-troubleshooting">Limitations and troubleshooting</h1>
+<h2 id="deliberate-scope">Deliberate scope</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Implemented boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>Unsandboxed TurboWarp, WebGL 2; no Scratch website or WebGL 1 path</td>
+</tr>
+<tr>
+<td>Models</td>
+<td>glTF 2.0/GLB, TRS/skeletal animation and GPU skinning; morph metadata only; no Draco/Meshopt, imported cameras/lights or arbitrary extension-material families</td>
+</tr>
+<tr>
+<td>Materials</td>
+<td>Unlit/basic-lit/metallic-roughness PBR; TEXCOORD_0; no general depth-sorted transparent instances</td>
+</tr>
+<tr>
+<td>Lighting</td>
+<td>Directional/point/spot, directional shadows, standard-range environments; no point/spot shadows or dynamic probes</td>
+</tr>
+<tr>
+<td>Effects</td>
+<td>Quad sprites, CPU-simulated/GPU-instanced particles, surface quads for decals, raster text; no particle collision/GPU simulation or mesh-projected decals</td>
+</tr>
+<tr>
+<td>Terrain</td>
+<td>Finite heightfield; translation/nonzero scale/yaw; no pitch/roll, caves, streaming or infinite terrain</td>
+</tr>
+<tr>
+<td>Physics</td>
+<td>Translation-only world-axis boxes/spheres; no angular/mesh/CCD dynamics, joints or industrial stacking solver</td>
+</tr>
+<tr>
+<td>Audio</td>
+<td>Buffered positional/global playback; no streaming, reverb/occlusion, buses, doppler or completion hats</td>
+</tr>
+<tr>
+<td>Post/targets</td>
+<td>LDR RGBA8, fused color/vignette/FXAA and downsampled bloom; command-driven targets; no HDR, custom post chain, SSR/SSAO, depth of field or recursive portals</td>
+</tr>
+<tr>
+<td>Custom GLSL</td>
+<td>Contract v1: unlit, unskinned, no engine lighting/IBL/shadow hooks; conservative bounds and undeformed CPU picking</td>
+</tr>
+<tr>
+<td>Recovery</td>
+<td>Separate-canvas resources rebuild after restoration; shared host context remains lost</td>
+</tr>
+</tbody></table>
+<p>These limitations are not hidden by the Eclipse branding. Advanced controls retain their technical wording and contracts.</p>
+<h2 id="nothing-appears">Nothing appears</h2>
+<p>Confirm the extension loaded unsandboxed and WebGL 2 is available. Create/select the scene and camera. Move the camera away from the object, aim it at the object, and choose a valid near/far interval. Check visibility, resource scale, alpha/depth settings and the last error. For a first diagnostic use the <a href="../examples/hello-3d/README.html">Hello 3D example</a> at default quality.</p>
+<p>A dark basic-lit/PBR object needs appropriate light/environment. A transparent image may also be hidden by alpha/depth settings. Render-target textures retain their last commanded image; issue a target-render command after creation or renderer recreation.</p>
+<h2 id="asset-never-becomes-ready">Asset never becomes ready</h2>
+<p>Read the asset state and error text. URL loads need fetch permission, CORS and reachable dependent files. A local <code>.gltf</code> cannot read neighboring files automatically; use a self-contained GLB. Required unsupported extensions, malformed buffers or inconsistent attributes are rejected. Deletion/reset/name reuse can intentionally fence an old completion.</p>
+<h2 id="animation-particles-or-physics-are-frozen">Animation, particles or physics are frozen</h2>
+<p>Click Green Flag and confirm the runtime is not paused. A manually clicked palette stack does not authorize simulation. Only the active scene advances. Extra camera/target renders do not advance time again. Also check clip/emitter/tween-specific pause flags; stopping emission and pausing particles have different effects.</p>
+<h2 id="sound-is-silent">Sound is silent</h2>
+<p>Confirm an asset is ready, a source exists and its state is playing. <code>blocked</code> means the browser requires a gesture: use an explicit unlock and play/resume action. Green Flag does not automatically restart old voices after Stop All. Check volume, listener/source positions and distance/cone settings. Embedded Scratch sounds are preferable for portable examples. Audio output still needs an actual listening check on the target host.</p>
+<h2 id="a-resource-cannot-be-deleted">A resource cannot be deleted</h2>
+<p>It is probably retained by a consumer. Delete scene instances before shared model assets; clear LOD assignments; release materials, samplers, environments, sources and targets in ownership order. Users/reference reporters help identify shared ownership. Do not repeatedly attempt deletion from a render loop.</p>
+<h2 id="a-custom-shader-fails">A custom shader fails</h2>
+<p>Read the diagnostic stage and shader name. Supply bodies with <code>main</code>, not a second <code>#version</code> or duplicate engine declarations. Keep active uniforms inside the typed schema and supported limits. A sampler needs a retained texture. A custom material cannot be assigned to a skinned draw. See <a href="../CUSTOM_RENDERING.md">contract v1</a> for declarations, types and reserved names.</p>
+<h2 id="text-differs-across-machines">Text differs across machines</h2>
+<p>Runtime text uses browser/system safe fonts and Unicode fallback. Glyph availability can vary; a fallback difference alone is not evidence of corrupt text. Documentation block SVGs instead use pinned font outlines and do not depend on installed fonts.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

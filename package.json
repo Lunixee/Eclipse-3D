@@ -1,0 +1,44 @@
+{
+  "name": "turbo3d",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "description": "Eclipse 3D: a retained-scene WebGL 2 engine extension for TurboWarp.",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "build": "node scripts/build.mjs",
+    "build:min": "node scripts/build.mjs --minify",
+    "lint": "eslint .",
+    "typecheck": "tsc -p jsconfig.json --noEmit",
+    "assets:brand": "node scripts/build-brand-assets.mjs",
+    "assets:release": "node scripts/build-release-art.mjs",
+    "docs": "node scripts/generate-docs.mjs",
+    "docs:check": "node scripts/generate-docs.mjs --check",
+    "examples": "node scripts/build-examples.mjs",
+    "examples:check": "node scripts/build-examples.mjs --check",
+    "examples:package": "node scripts/build-examples.mjs --package",
+    "knife": "node examples/first-person-knife/source/build-project.mjs",
+    "knife:check": "node examples/first-person-knife/source/build-project.mjs --check",
+    "website": "node website/build.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "@fontsource/roboto": "5.3.0",
+    "@turbowarp/jszip": "3.12.0",
+    "@turbowarp/packager": "3.13.0",
+    "@turbowarp/scratchblocks": "3.6.7",
+    "@types/node": "^24.3.0",
+    "esbuild": "0.28.2",
+    "eslint": "^9.34.0",
+    "fontkit": "2.0.4",
+    "globals": "^16.3.0",
+    "jsdom": "26.1.0",
+    "marked": "18.0.13",
+    "three": "0.185.1",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

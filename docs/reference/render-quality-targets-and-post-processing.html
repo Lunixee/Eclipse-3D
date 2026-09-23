@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Render Quality, Targets &amp; Post Processing · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="render-quality-targets-andamp-post-processing">Render Quality, Targets &amp; Post Processing</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#quality-and-visibility-policy">Quality and visibility policy</a></li>
+<li><a href="#render-targets">Render targets</a></li>
+<li><a href="#post-processing">Post processing</a></li>
+</ul>
+<h2 id="quality-and-visibility-policy">Quality and visibility policy</h2>
+<p>Quality presets coordinate render resolution/DPR, antialiasing and feature policy. Apply a preset once, then override individual settings deliberately. Existing projects retain their previous defaults unless they execute quality blocks. Resolution scale is percent of the stage-derived output; maximum pixel ratio caps device scaling. Internal dimensions report the resulting physical pixels.</p>
+<p>Render distance and frustum culling affect visibility; distance zero disables the finite cutoff. Global texture/environment quality and maximum local lights have their own sampling/resource/selection effects. Antialiasing depends on backend capabilities; FXAA is a separate post option. A setting reporter returns policy, which can differ from the effective output under device limits.</p>
+<p>Adaptive resolution is opt-in. Set target FPS and minimum/maximum scale bounds; query its current scale through <code>qualityNumber</code>. It changes image quality to seek a budget, so disable or match its behavior for equivalent-quality comparisons. </p>
+<h3 id="setrenderquality">setRenderQuality</h3>
+<p><img src="../assets/blocks/setRenderQuality.svg" alt="set render quality [QUALITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QUALITY</code></td>
+<td>string; <code>medium</code></td>
+<td><code>potato</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>ultra</code></td>
+</tr>
+</tbody></table>
+<h3 id="renderquality">renderQuality</h3>
+<p><img src="../assets/blocks/renderQuality.svg" alt="render quality"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setrenderresolutionscale">setRenderResolutionScale</h3>
+<p><img src="../assets/blocks/setRenderResolutionScale.svg" alt="set render resolution scale to [PERCENT] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PERCENT</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="renderresolutionscale">renderResolutionScale</h3>
+<p><img src="../assets/blocks/renderResolutionScale.svg" alt="render resolution scale"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setmaxpixelratio">setMaxPixelRatio</h3>
+<p><img src="../assets/blocks/setMaxPixelRatio.svg" alt="set maximum pixel ratio [RATIO]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RATIO</code></td>
+<td>string; <code>automatic</code></td>
+<td><code>automatic</code>, <code>1</code>, <code>1.5</code>, <code>2</code></td>
+</tr>
+</tbody></table>
+<h3 id="maxpixelratio">maxPixelRatio</h3>
+<p><img src="../assets/blocks/maxPixelRatio.svg" alt="maximum pixel ratio"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setantialiasing">setAntialiasing</h3>
+<p><img src="../assets/blocks/setAntialiasing.svg" alt="set antialiasing [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODE</code></td>
+<td>string; <code>off</code></td>
+<td><code>off</code>, <code>native</code></td>
+</tr>
+</tbody></table>
+<h3 id="antialiasing">antialiasing</h3>
+<p><img src="../assets/blocks/antialiasing.svg" alt="antialiasing mode"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setrenderdistance">setRenderDistance</h3>
+<p><img src="../assets/blocks/setRenderDistance.svg" alt="set render distance [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="renderdistance">renderDistance</h3>
+<p><img src="../assets/blocks/renderDistance.svg" alt="render distance"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setfrustumculling">setFrustumCulling</h3>
+<p><img src="../assets/blocks/setFrustumCulling.svg" alt="set scene frustum culling [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="frustumcullingenabled">frustumCullingEnabled</h3>
+<p><img src="../assets/blocks/frustumCullingEnabled.svg" alt="scene frustum culling enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setglobaltexturequality">setGlobalTextureQuality</h3>
+<p><img src="../assets/blocks/setGlobalTextureQuality.svg" alt="set texture quality [QUALITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QUALITY</code></td>
+<td>string; <code>custom</code></td>
+<td><code>potato</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>ultra</code>, <code>custom</code></td>
+</tr>
+</tbody></table>
+<h3 id="globaltexturequality">globalTextureQuality</h3>
+<p><img src="../assets/blocks/globalTextureQuality.svg" alt="texture quality"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setglobalenvironmentquality">setGlobalEnvironmentQuality</h3>
+<p><img src="../assets/blocks/setGlobalEnvironmentQuality.svg" alt="set environment quality [QUALITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QUALITY</code></td>
+<td>string; <code>custom</code></td>
+<td><code>potato</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>ultra</code>, <code>custom</code></td>
+</tr>
+</tbody></table>
+<h3 id="globalenvironmentquality">globalEnvironmentQuality</h3>
+<p><img src="../assets/blocks/globalEnvironmentQuality.svg" alt="environment quality"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setmaximumlocallights">setMaximumLocalLights</h3>
+<p><img src="../assets/blocks/setMaximumLocalLights.svg" alt="set maximum local lights per draw [COUNT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>COUNT</code></td>
+<td>number; <code>8</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="maximumlocallights">maximumLocalLights</h3>
+<p><img src="../assets/blocks/maximumLocalLights.svg" alt="maximum local lights per draw"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setadaptiveresolution">setAdaptiveResolution</h3>
+<p><img src="../assets/blocks/setAdaptiveResolution.svg" alt="set adaptive resolution [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="adaptiveresolutionenabled">adaptiveResolutionEnabled</h3>
+<p><img src="../assets/blocks/adaptiveResolutionEnabled.svg" alt="adaptive resolution enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setadaptivetargetfps">setAdaptiveTargetFps</h3>
+<p><img src="../assets/blocks/setAdaptiveTargetFps.svg" alt="set adaptive resolution target to [FPS] FPS"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FPS</code></td>
+<td>number; <code>60</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="adaptivetargetfps">adaptiveTargetFps</h3>
+<p><img src="../assets/blocks/adaptiveTargetFps.svg" alt="adaptive resolution target FPS"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="setadaptivescalerange">setAdaptiveScaleRange</h3>
+<p><img src="../assets/blocks/setAdaptiveScaleRange.svg" alt="set adaptive resolution range [MINIMUM] % to [MAXIMUM] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MINIMUM</code></td>
+<td>number; <code>50</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="qualitynumber">qualityNumber</h3>
+<p><img src="../assets/blocks/qualityNumber.svg" alt="quality [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>adaptive minimum scale %</code></td>
+<td><code>adaptive minimum scale %</code>, <code>adaptive maximum scale %</code>, <code>adaptive current scale %</code></td>
+</tr>
+</tbody></table>
+<h2 id="render-targets">Render targets</h2>
+<p>Create a fixed-size named RGBA8 target in pixels, then render the active scene through its current or a named camera. The target name can be used as a texture by a material or sampler. These commands update targets on demand; a target does not create another simulation loop or automatically refresh each frame.</p>
+<p>Front/back storage makes sampling a target during its own render read the previous completed image, avoiding framebuffer feedback. This is deterministic self-reference, not recursive mirrors/portals. Target memory includes both color/depth sets. Resize reallocates; ordinary updates reuse handles.</p>
+<p>Clear explicitly when wanted. Renderer recreation preserves logical definitions but command-produced contents must be replayed. Dimension reporters return pixels; existence is Boolean. Delete only after detaching materials/samplers and other consumers. See <a href="../../examples/post-processing/README.html">Post Processing &amp; Render Targets example</a>.</p>
+<h3 id="createrendertarget">createRenderTarget</h3>
+<p><img src="../assets/blocks/createRenderTarget.svg" alt="create render target [TARGET] width [WIDTH] height [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>320</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>180</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resizerendertarget">resizeRenderTarget</h3>
+<p><img src="../assets/blocks/resizeRenderTarget.svg" alt="resize render target [TARGET] to [WIDTH] by [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>320</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>180</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="renderscenetorendertarget">renderSceneToRenderTarget</h3>
+<p><img src="../assets/blocks/renderSceneToRenderTarget.svg" alt="render current scene to render target [TARGET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rendercameratorendertarget">renderCameraToRenderTarget</h3>
+<p><img src="../assets/blocks/renderCameraToRenderTarget.svg" alt="render scene from camera [CAMERA] to render target [TARGET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>security</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="clearrendertarget">clearRenderTarget</h3>
+<p><img src="../assets/blocks/clearRenderTarget.svg" alt="clear render target [TARGET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rendertargetexists">renderTargetExists</h3>
+<p><img src="../assets/blocks/renderTargetExists.svg" alt="render target [TARGET] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rendertargetdimension">renderTargetDimension</h3>
+<p><img src="../assets/blocks/renderTargetDimension.svg" alt="render target [TARGET] [DIMENSION]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>target</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DIMENSION</code></td>
+<td>string; <code>width</code></td>
+<td><code>width</code>, <code>height</code></td>
+</tr>
+</tbody></table>
+<h3 id="deleterendertarget">deleteRenderTarget</h3>
+<p><img src="../assets/blocks/deleteRenderTarget.svg" alt="delete render target [TARGET]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TARGET</code></td>
+<td>string; <code>monitor</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="post-processing">Post processing</h2>
+<p>Enable post processing, then configure bloom, color factors, vignette and FXAA. Brightness/contrast/saturation use neutral value 1; vignette intensity 0 is neutral. Bloom has intensity, threshold and quality controls. Master enablement alone with entirely neutral controls keeps the direct rendering path.</p>
+<p>The chain is engine ordered: optional downsampled bloom followed by one fused color/vignette/bloom/optional-FXAA presentation pass. Output is LDR RGBA8; bloom operates on that limited range and is not HDR lighting. Final presentation preserves alpha. Custom post shaders, SSAO/SSR and depth-of-field are not part of this API.</p>
+<p>Boolean reporters distinguish enabled/active state; numeric reporters expose factors, and <code>resetPostProcessing</code> restores neutral settings. Buffers/programs are retained while useful; size or configuration changes can allocate/compile. Use post counters to distinguish steady frames from first-use warmup and resize cost.</p>
+<h3 id="setpostprocessing">setPostProcessing</h3>
+<p><img src="../assets/blocks/setPostProcessing.svg" alt="set post processing [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setbloom">setBloom</h3>
+<p><img src="../assets/blocks/setBloom.svg" alt="set bloom [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setbloomfactor">setBloomFactor</h3>
+<p><img src="../assets/blocks/setBloomFactor.svg" alt="set bloom [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>intensity</code></td>
+<td><code>intensity</code>, <code>threshold</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0.8</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setbloomquality">setBloomQuality</h3>
+<p><img src="../assets/blocks/setBloomQuality.svg" alt="set bloom radius / quality [QUALITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QUALITY</code></td>
+<td>string; <code>medium</code></td>
+<td><code>low</code>, <code>medium</code>, <code>high</code>, <code>ultra</code></td>
+</tr>
+</tbody></table>
+<h3 id="setpostcolorfactor">setPostColorFactor</h3>
+<p><img src="../assets/blocks/setPostColorFactor.svg" alt="set post [PROPERTY] factor [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>brightness</code></td>
+<td><code>brightness</code>, <code>contrast</code>, <code>saturation</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setvignettefactor">setVignetteFactor</h3>
+<p><img src="../assets/blocks/setVignetteFactor.svg" alt="set vignette [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>intensity</code></td>
+<td><code>intensity</code>, <code>radius</code>, <code>softness</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setfxaa">setFxaa</h3>
+<p><img src="../assets/blocks/setFxaa.svg" alt="set post FXAA [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="postprocessingenabled">postProcessingEnabled</h3>
+<p><img src="../assets/blocks/postProcessingEnabled.svg" alt="post processing enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="bloomenabled">bloomEnabled</h3>
+<p><img src="../assets/blocks/bloomEnabled.svg" alt="bloom enabled?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="bloomintensity">bloomIntensity</h3>
+<p><img src="../assets/blocks/bloomIntensity.svg" alt="bloom intensity"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="postnumber">postNumber</h3>
+<p><img src="../assets/blocks/postNumber.svg" alt="post [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>brightness</code></td>
+<td><code>brightness</code>, <code>contrast</code>, <code>saturation</code>, <code>bloom threshold</code>, <code>bloom quality level</code>, <code>vignette intensity</code>, <code>vignette radius</code>, <code>vignette softness</code></td>
+</tr>
+</tbody></table>
+<h3 id="postboolean">postBoolean</h3>
+<p><img src="../assets/blocks/postBoolean.svg" alt="post [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>active</code></td>
+<td><code>active</code>, <code>fxaa</code></td>
+</tr>
+</tbody></table>
+<h3 id="resetpostprocessing">resetPostProcessing</h3>
+<p><img src="../assets/blocks/resetPostProcessing.svg" alt="reset post-processing settings"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

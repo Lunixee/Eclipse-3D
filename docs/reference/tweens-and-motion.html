@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tweens &amp; Motion · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="tweens-andamp-motion">Tweens &amp; Motion</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#local-and-camera-relative-motion">Local and camera-relative motion</a></li>
+<li><a href="#tweens">Tweens</a></li>
+</ul>
+<h2 id="local-and-camera-relative-motion">Local and camera-relative motion</h2>
+<p>Move an object in its own right/up/forward basis, or along a chosen camera basis while preserving the object’s orientation. Object-basis reporters return normalized components. Positive forward follows the resource’s forward direction, which is -Z before rotation.</p>
+<p>Local movement edits logical root transforms and invalidates the affected retained state. It is not a velocity or a character controller: use a time-scaled distance in a running script, a tween for a duration, or physics velocity when collision response is required. Body attachments follow the established manual-teleport contract.</p>
+<h3 id="moveobjectlocal">moveObjectLocal</h3>
+<p><img src="../assets/blocks/moveObjectLocal.svg" alt="move [NAME] [BASIS] by [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BASIS</code></td>
+<td>string; <code>forward</code></td>
+<td><code>forward</code>, <code>right</code>, <code>up</code></td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="objectbasiscomponent">objectBasisComponent</h3>
+<p><img src="../assets/blocks/objectBasisComponent.svg" alt="[NAME] [BASIS] [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BASIS</code></td>
+<td>string; <code>forward</code></td>
+<td><code>forward</code>, <code>right</code>, <code>up</code></td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>z</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="moveresourcebycamera">moveResourceByCamera</h3>
+<p><img src="../assets/blocks/moveResourceByCamera.svg" alt="move [RESOURCE] by camera [CAMERA] [AXIS] [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>forward</code></td>
+<td><code>forward</code>, <code>right</code>, <code>up</code></td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="tweens">Tweens</h2>
+<p>Tween root position, Euler rotation, scale or camera FOV over seconds with the selected easing. One active tween exists per resource/property; starting another replaces it. Rotation follows the shortest Euler path. A zero duration applies the final value immediately after validation.</p>
+<p>Pause/resume retains progress; stop cancels the selected tween. Active/paused flags and progress-percent reporters describe retained tween state, not elapsed wall time while paused. Tweens run once per authorized active-scene update and freeze with shared Pause/Stop. Extra renders do not advance them. Resource deletion releases its tweens; direct edits and physics attachments should be coordinated so two systems do not fight over the same position.</p>
+<h3 id="tweenresourceposition">tweenResourcePosition</h3>
+<p><img src="../assets/blocks/tweenResourcePosition.svg" alt="tween [NAME] position to [X] [Y] [Z] over [SECONDS] seconds [EASING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>-5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>EASING</code></td>
+<td>string; <code>ease-in-out</code></td>
+<td><code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>, <code>smoothstep</code></td>
+</tr>
+</tbody></table>
+<h3 id="tweenresourcerotation">tweenResourceRotation</h3>
+<p><img src="../assets/blocks/tweenResourceRotation.svg" alt="tween [NAME] rotation to [X] [Y] [Z] degrees over [SECONDS] seconds [EASING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>angle; <code>90</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>EASING</code></td>
+<td>string; <code>ease-in-out</code></td>
+<td><code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>, <code>smoothstep</code></td>
+</tr>
+</tbody></table>
+<h3 id="tweenresourcescale">tweenResourceScale</h3>
+<p><img src="../assets/blocks/tweenResourceScale.svg" alt="tween [NAME] scale to [X] [Y] [Z] over [SECONDS] seconds [EASING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>EASING</code></td>
+<td>string; <code>ease-in-out</code></td>
+<td><code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>, <code>smoothstep</code></td>
+</tr>
+</tbody></table>
+<h3 id="tweencamerafov">tweenCameraFov</h3>
+<p><img src="../assets/blocks/tweenCameraFov.svg" alt="tween camera [CAMERA] FOV to [FOV] over [SECONDS] seconds [EASING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FOV</code></td>
+<td>number; <code>75</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>EASING</code></td>
+<td>string; <code>ease-in-out</code></td>
+<td><code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>, <code>smoothstep</code></td>
+</tr>
+</tbody></table>
+<h3 id="pausetween">pauseTween</h3>
+<p><img src="../assets/blocks/pauseTween.svg" alt="pause tweens on [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resumetween">resumeTween</h3>
+<p><img src="../assets/blocks/resumeTween.svg" alt="resume tweens on [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="stoptween">stopTween</h3>
+<p><img src="../assets/blocks/stopTween.svg" alt="stop tweens on [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="tweenactive">tweenActive</h3>
+<p><img src="../assets/blocks/tweenActive.svg" alt="[NAME] has active tween?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="tweennumber">tweenNumber</h3>
+<p><img src="../assets/blocks/tweenNumber.svg" alt="tween on [NAME] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position progress %</code></td>
+<td><code>position progress %</code>, <code>rotation progress %</code>, <code>scale progress %</code>, <code>fov progress %</code></td>
+</tr>
+</tbody></table>
+<h3 id="tweenboolean">tweenBoolean</h3>
+<p><img src="../assets/blocks/tweenBoolean.svg" alt="tween on [NAME] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>position paused</code></td>
+<td><code>position paused</code>, <code>rotation paused</code>, <code>scale paused</code>, <code>fov paused</code></td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

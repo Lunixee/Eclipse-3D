@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Terrain &amp; World Utilities · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="terrain-andamp-world-utilities">Terrain &amp; World Utilities</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#terrain-construction-edits-and-queries">Terrain construction, edits and queries</a></li>
+<li><a href="#vectors-and-coordinates">Vectors and coordinates</a></li>
+</ul>
+<h2 id="terrain-construction-edits-and-queries">Terrain construction, edits and queries</h2>
+<p>Terrain is a finite indexed heightfield with width/depth in world units and X/Z segment counts. Set one grid height, flatten it, or generate seeded hills; assign a normal named material for lighting/textures. Grid sample indices are one-based. Segment counts describe cells, so the vertex grid has one more sample along each axis.</p>
+<p>World height/normal reporters sample the same two-triangle cells used by rendering; grid-height reports a stored local sample. Numeric reports expose dimensions/segments and edit/build counts; dirty indicates pending geometry synchronization. Batch several height edits before the next render/update sync to avoid unnecessary rebuilds.</p>
+<p>Translation, nonzero scale and yaw are supported. Pitch/roll, caves, streaming and infinite terrain are not. Changed vertex data uploads once while unchanged terrain uploads nothing. Terrain is independently culled and supports visual ray queries, but it is not automatically a gameplay physics collider. Delete terrain through its own deletion block.</p>
+<h3 id="createterrain">createTerrain</h3>
+<p><img src="../assets/blocks/createTerrain.svg" alt="create terrain [NAME] width [WIDTH] depth [DEPTH] segments [X_SEGMENTS] by [Z_SEGMENTS]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>20</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DEPTH</code></td>
+<td>number; <code>20</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X_SEGMENTS</code></td>
+<td>number; <code>16</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z_SEGMENTS</code></td>
+<td>number; <code>16</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setterrainheight">setTerrainHeight</h3>
+<p><img src="../assets/blocks/setTerrainHeight.svg" alt="set terrain [NAME] grid x [X] z [Z] height [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setterrainflat">setTerrainFlat</h3>
+<p><img src="../assets/blocks/setTerrainFlat.svg" alt="set terrain [NAME] flat height [HEIGHT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="generateterrainhills">generateTerrainHills</h3>
+<p><img src="../assets/blocks/generateTerrainHills.svg" alt="generate terrain [NAME] hills amplitude [AMPLITUDE] frequency [FREQUENCY] seed [SEED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AMPLITUDE</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FREQUENCY</code></td>
+<td>number; <code>2</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SEED</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setterrainmaterial">setTerrainMaterial</h3>
+<p><img src="../assets/blocks/setTerrainMaterial.svg" alt="set terrain [NAME] material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="terrainheightat">terrainHeightAt</h3>
+<p><img src="../assets/blocks/terrainHeightAt.svg" alt="terrain [NAME] height at world x [X] z [Z]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="terrainnormalat">terrainNormalAt</h3>
+<p><img src="../assets/blocks/terrainNormalAt.svg" alt="terrain [NAME] normal [AXIS] at world x [X] z [Z]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>y</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="terrainexists">terrainExists</h3>
+<p><img src="../assets/blocks/terrainExists.svg" alt="terrain [TERRAIN] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TERRAIN</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="terraingridheight">terrainGridHeight</h3>
+<p><img src="../assets/blocks/terrainGridHeight.svg" alt="terrain [TERRAIN] grid x [X] z [Z] height"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TERRAIN</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="terrainnumber">terrainNumber</h3>
+<p><img src="../assets/blocks/terrainNumber.svg" alt="terrain [TERRAIN] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TERRAIN</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>width</code></td>
+<td><code>width</code>, <code>depth</code>, <code>x segments</code>, <code>z segments</code>, <code>logical edits</code>, <code>geometry builds</code></td>
+</tr>
+</tbody></table>
+<h3 id="terrainboolean">terrainBoolean</h3>
+<p><img src="../assets/blocks/terrainBoolean.svg" alt="terrain [TERRAIN] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TERRAIN</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>dirty</code></td>
+<td><code>dirty</code></td>
+</tr>
+</tbody></table>
+<h3 id="deleteterrain">deleteTerrain</h3>
+<p><img src="../assets/blocks/deleteTerrain.svg" alt="delete terrain [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>ground</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="vectors-and-coordinates">Vectors and coordinates</h2>
+<p>Vector helpers return scalar distance, length, dot product, angle in degrees, or a selected cross/normalized/direction component. Reconstruct a vector with X/Y/Z reporter calls where required. Linear interpolation uses an amount/factor; clamp constrains a scalar. Resource distance reads named roots, not closest surface distance.</p>
+<p>Coordinate conversion applies a resource transform or its inverse. A point includes translation; a direction does not. Choose the output component explicitly. Normalize directions when their length matters. Degenerate/invalid vectors use the handler’s finite fallback/diagnostic policy rather than producing nonfinite renderer state. These CPU math queries do not cast a ray or allocate optional subsystems.</p>
+<h3 id="distance3d">distance3D</h3>
+<p><img src="../assets/blocks/distance3D.svg" alt="3D distance from [AX] [AY] [AZ] to [BX] [BY] [BZ]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BZ</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="vectorlength3d">vectorLength3D</h3>
+<p><img src="../assets/blocks/vectorLength3D.svg" alt="length of vector [X] [Y] [Z]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="dotproduct3d">dotProduct3D</h3>
+<p><img src="../assets/blocks/dotProduct3D.svg" alt="dot [AX] [AY] [AZ] with [BX] [BY] [BZ]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="crossproduct3d">crossProduct3D</h3>
+<p><img src="../assets/blocks/crossProduct3D.svg" alt="cross [AX] [AY] [AZ] with [BX] [BY] [BZ] component [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>z</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="vectornormalizedcomponent">vectorNormalizedComponent</h3>
+<p><img src="../assets/blocks/vectorNormalizedComponent.svg" alt="normalized [X] [Y] [Z] component [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="directioncomponent3d">directionComponent3D</h3>
+<p><img src="../assets/blocks/directionComponent3D.svg" alt="direction from [AX] [AY] [AZ] to [BX] [BY] [BZ] component [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="anglebetweenvectors">angleBetweenVectors</h3>
+<p><img src="../assets/blocks/angleBetweenVectors.svg" alt="angle between [AX] [AY] [AZ] and [BX] [BY] [BZ]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BZ</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lerpnumber">lerpNumber</h3>
+<p><img src="../assets/blocks/lerpNumber.svg" alt="lerp [START] to [END] by [AMOUNT]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>START</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>number; <code>10</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AMOUNT</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="clampnumber">clampNumber</h3>
+<p><img src="../assets/blocks/clampNumber.svg" alt="clamp [VALUE] between [MINIMUM] and [MAXIMUM]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>VALUE</code></td>
+<td>number; <code>5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MINIMUM</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAXIMUM</code></td>
+<td>number; <code>10</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="distancebetweenresources">distanceBetweenResources</h3>
+<p><img src="../assets/blocks/distanceBetweenResources.svg" alt="distance from 3D resource [FROM] to [TO]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FROM</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TO</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="transformresourcecoordinate">transformResourceCoordinate</h3>
+<p><img src="../assets/blocks/transformResourceCoordinate.svg" alt="[DIRECTION] [KIND] by [RESOURCE] x [X] y [Y] z [Z] get [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DIRECTION</code></td>
+<td>string; <code>local to world</code></td>
+<td><code>local to world</code>, <code>world to local</code></td>
+</tr>
+<tr>
+<td><code>KIND</code></td>
+<td>string; <code>point</code></td>
+<td><code>point</code>, <code>direction</code></td>
+</tr>
+<tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

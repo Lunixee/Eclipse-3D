@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Animation · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="animation">Animation</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#clips-playback-blending-and-pose">Clips, playback, blending and pose</a></li>
+</ul>
+<h2 id="clips-playback-blending-and-pose">Clips, playback, blending and pose</h2>
+<p>Inspect a ready asset for clips by one-based index; names may be imported or generated. Duration/start/end are seconds and channel/sampler reports describe source metadata. Play a clip on a model instance, not on the shared asset. Different instances can play and blend independently.</p>
+<p>Seek with time in seconds, choose playback speed and looping, or crossfade into another clip over a duration. Crossfades blend two clips; they are not an arbitrary animation graph. Pause retains the current pose/time for later resume. Stop ends playback; reset-pose explicitly restores the model pose. Use the separate playing, paused and finished flags rather than inferring state from time alone.</p>
+<p><code>animationProgress</code> returns a 0–1 fraction; the model-instance number family explicitly labeled animation progress % returns 0–100. Sampling and skinning advance once per authorized engine update, including when several cameras render the same update. Green Flag/Pause/Stop lifecycle rules still apply. GPU joint palettes are uploaded for changed poses; static paused poses reuse them. Rendered morph targets and arbitrary skinned LOD swaps are outside this contract.</p>
+<h3 id="animationcount">animationCount</h3>
+<p><img src="../assets/blocks/animationCount.svg" alt="animation count of model [MODEL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationname">animationName</h3>
+<p><img src="../assets/blocks/animationName.svg" alt="animation name [INDEX] of model [MODEL]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationduration">animationDuration</h3>
+<p><img src="../assets/blocks/animationDuration.svg" alt="animation duration [CLIP] of model [MODEL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CLIP</code></td>
+<td>string; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODEL</code></td>
+<td>string; <code>robot</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelanimationtext">modelAnimationText</h3>
+<p><img src="../assets/blocks/modelAnimationText.svg" alt="model [MODEL] animation [INDEX] name"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="modelanimationnumber">modelAnimationNumber</h3>
+<p><img src="../assets/blocks/modelAnimationNumber.svg" alt="model [MODEL] animation [INDEX] [PROPERTY]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>model</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>duration seconds</code></td>
+<td><code>duration seconds</code>, <code>start seconds</code>, <code>end seconds</code>, <code>channels</code>, <code>samplers</code></td>
+</tr>
+</tbody></table>
+<h3 id="playanimation">playAnimation</h3>
+<p><img src="../assets/blocks/playAnimation.svg" alt="play animation [CLIP] on model instance [INSTANCE] looping [LOOPING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CLIP</code></td>
+<td>string; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LOOPING</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setanimationtime">setAnimationTime</h3>
+<p><img src="../assets/blocks/setAnimationTime.svg" alt="set animation time of [INSTANCE] to [SECONDS] seconds"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setanimationspeed">setAnimationSpeed</h3>
+<p><img src="../assets/blocks/setAnimationSpeed.svg" alt="set animation speed of [INSTANCE] to [SPEED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SPEED</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setanimationlooping">setAnimationLooping</h3>
+<p><img src="../assets/blocks/setAnimationLooping.svg" alt="set animation looping of [INSTANCE] to [LOOPING]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LOOPING</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="crossfadeanimation">crossfadeAnimation</h3>
+<p><img src="../assets/blocks/crossfadeAnimation.svg" alt="crossfade [INSTANCE] to animation [CLIP] over [SECONDS] seconds"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CLIP</code></td>
+<td>string; <code>2</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDS</code></td>
+<td>number; <code>0.25</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="pauseanimation">pauseAnimation</h3>
+<p><img src="../assets/blocks/pauseAnimation.svg" alt="pause animation on [INSTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resumeanimation">resumeAnimation</h3>
+<p><img src="../assets/blocks/resumeAnimation.svg" alt="resume animation on [INSTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="stopanimation">stopAnimation</h3>
+<p><img src="../assets/blocks/stopAnimation.svg" alt="stop animation on [INSTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="resetmodelpose">resetModelPose</h3>
+<p><img src="../assets/blocks/resetModelPose.svg" alt="reset pose of model instance [INSTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="currentanimation">currentAnimation</h3>
+<p><img src="../assets/blocks/currentAnimation.svg" alt="current animation of [INSTANCE]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationtime">animationTime</h3>
+<p><img src="../assets/blocks/animationTime.svg" alt="animation time of [INSTANCE]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationprogress">animationProgress</h3>
+<p><img src="../assets/blocks/animationProgress.svg" alt="animation progress of [INSTANCE]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationplaying">animationPlaying</h3>
+<p><img src="../assets/blocks/animationPlaying.svg" alt="animation playing on [INSTANCE]?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationpaused">animationPaused</h3>
+<p><img src="../assets/blocks/animationPaused.svg" alt="animation paused on [INSTANCE]?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationfinished">animationFinished</h3>
+<p><img src="../assets/blocks/animationFinished.svg" alt="animation finished on [INSTANCE]?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="animationspeed">animationSpeed</h3>
+<p><img src="../assets/blocks/animationSpeed.svg" alt="animation speed of [INSTANCE]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>INSTANCE</code></td>
+<td>string; <code>robot1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

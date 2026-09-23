@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>First-Person Knife Demo · Eclipse 3D</title><link rel="icon" href="../../docs/../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../../docs/site.css"></head><body><header><img src="../../docs/../assets/branding/eclipse-icon.svg" alt=""><a href="../../docs/index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../../docs/index.html">Overview</a><a href="../../docs/getting-started.html">Quick start</a><a href="../../docs/reference/index.html">Block reference</a><a href="../../docs/workflows.html">Workflows</a><a href="../../docs/../examples/index.html">Examples</a><a href="../../docs/compatibility.html">Compatibility</a></nav><h1 id="first-person-knife-demo">First-Person Knife Demo</h1>
+<p>Explore a bright arena, with or without an optional animated arm/knife rig. The editable Scratch scripts demonstrate camera-relative models, animation crossfades, movement FOV, short-range ray hits, physics targets, particles, lighting, shadows and audio.</p>
+<h2 id="optional-viewmodel">Optional viewmodel</h2>
+<p>The arm/knife model is <strong>not included</strong>. It is a separately purchased third-party asset from <strong>Low Poly FPS Starter Kit v1.1</strong>, by <strong>RGS_Dev</strong>: <a href="https://rgsdev.itch.io/low-poly-fps-starter-kit">asset source</a>.</p>
+<p>The demo is fully playable without the arms/knife model. If you own the asset, press <strong>I</strong> while playing to select your legally obtained <strong>KnifeFPS.glb</strong>. The paid pack is not part of Eclipse 3D. Its original files must not be redistributed with this project.</p>
+<h2 id="run">Run</h2>
+<ol>
+<li>Open <a href="first-person-knife.sb3">first-person-knife.sb3</a> in the TurboWarp web editor. See <a href="../../docs/model-import.html#portability">local model importing</a> for Desktop and packaged-host caveats.</li>
+<li>Approve the embedded Eclipse 3D custom extension.</li>
+<li>Click Green Flag to start playing. No file picker opens automatically.</li>
+<li>Click the stage to enable audio.</li>
+</ol>
+<p>The HUD shows an optional-viewmodel note until a rig is loaded. Press <strong>I</strong>, then <strong>Choose model file</strong> to import it. Cancel leaves gameplay running; press <strong>I</strong> to retry. A successful import hides the note and selects the current movement or attack animation. Stop closes the prompt. Green Flag rebuilds the scene without a rig, so select the file again if you want the arms. The model stays in runtime memory and is not embedded when the project is saved.</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WASD</td>
+<td>Walk</td>
+</tr>
+<tr>
+<td>Arrow keys</td>
+<td>Look</td>
+</tr>
+<tr>
+<td>Shift / Q</td>
+<td>Sprint</td>
+</tr>
+<tr>
+<td>C / Control</td>
+<td>Crouch; slide while sprinting</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>Jump; slide-jump</td>
+</tr>
+<tr>
+<td>F / click</td>
+<td>Attack</td>
+</tr>
+<tr>
+<td>R</td>
+<td>Reset player and targets</td>
+</tr>
+<tr>
+<td>1–4 / 0</td>
+<td>Scene views / return to play</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Load the optional KnifeFPS.glb viewmodel; retry after cancellation or failure</td>
+</tr>
+</tbody></table>
+<p>Attacks use the rig&#39;s animation clock when loaded, or project time without it, with the same contact window and one hit per swing. Movement, melee hits, physics impulses, particles and audio work in either mode. The controller includes jump buffering, coyote time, crouching, sliding and movement-dependent FOV. Physics targets use Eclipse&#39;s translation-only box/sphere physics. Look input uses arrow keys; there is no pointer lock.</p>
+<p>For a first edit, open the <strong>MOVE PLAYER</strong> custom block definition and change the walking value assigned to <code>target speed</code>. Click Green Flag and compare walking with sprinting.</p>
+<h2 id="source">Source</h2>
+<p>Run <code>npm run build</code>, then <code>npm run knife</code> from the source root. Run <code>npm run knife:check</code> to validate the project. The generator does not read or convert KnifeFPS.glb. <code>source/knife-game.mjs</code> maintains the connected scripts; <code>source/knife-viewmodel.mjs</code> defines placement, clip names and hit timing.</p>
+<p>See <a href="ASSET_CREDITS.html">asset credits</a> for the included scenery and sounds, and <a href="../../docs/model-import.html">local model importing</a> for importer behavior.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../../docs/generation.html">Sources and reproduction</a>.</footer></main></body></html>

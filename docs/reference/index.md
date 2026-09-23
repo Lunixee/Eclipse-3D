@@ -1,0 +1,589 @@
+# Visual block reference
+
+API v19 · **560 visible executable blocks** · 16 sections · 44 documented groups.
+
+Each visual is generated from the current production signature, default arguments, menu labels, block shape, icon and Eclipse palette. The explanations are curated by related family; argument tables list every menu choice. Horizontal scrolling preserves readable block size in the HTML edition. Long JSON/GLSL inputs are fully preserved in the tables and machine-readable manifest.
+
+Read [conventions and lifecycle](../concepts.md) first. Commands report failures through the last-error reporter. Numeric/text/Boolean property families return typed fallbacks on missing or invalid resources; load-state reporters use `missing` where documented. Existence reporters are quiet. Hidden legacy aliases remain loadable but are excluded from this public reference; see the [compatibility inventory](../../BLOCKS.md).
+
+| Section | Visible blocks | Subgroups |
+| --- | ---: | ---: |
+| [Scene](scene.md) | 12 | 1 |
+| [Camera](camera.md) | 11 | 2 |
+| [Models & Objects](models-and-objects.md) | 59 | 4 |
+| [Geometry](geometry.md) | 8 | 1 |
+| [Materials & Textures](materials-and-textures.md) | 53 | 3 |
+| [Lighting & Environment](lighting-and-environment.md) | 59 | 4 |
+| [Animation](animation.md) | 21 | 1 |
+| [Sprites, Particles, Decals & Text](sprites-particles-decals-and-text.md) | 75 | 4 |
+| [Physics](physics.md) | 20 | 2 |
+| [Audio](audio.md) | 22 | 1 |
+| [Render Quality, Targets & Post Processing](render-quality-targets-and-post-processing.md) | 45 | 3 |
+| [Custom Rendering](custom-rendering.md) | 10 | 1 |
+| [Raycasting & Picking](raycasting-and-picking.md) | 11 | 2 |
+| [Terrain & World Utilities](terrain-and-world-utilities.md) | 23 | 2 |
+| [Tweens & Motion](tweens-and-motion.md) | 13 | 2 |
+| [Metrics, Profiling & Debug](metrics-profiling-and-debug.md) | 118 | 11 |
+
+## Find an opcode
+
+- [initializeEngine](scene.md#initializeengine) — Engine and scene lifecycle
+- [createScene](scene.md#createscene) — Engine and scene lifecycle
+- [setActiveScene](scene.md#setactivescene) — Engine and scene lifecycle
+- [setSceneBackground](scene.md#setscenebackground) — Engine and scene lifecycle
+- [sceneExists](scene.md#sceneexists) — Engine and scene lifecycle
+- [sceneText](scene.md#scenetext) — Engine and scene lifecycle
+- [sceneNumber](scene.md#scenenumber) — Engine and scene lifecycle
+- [engineInitialized](scene.md#engineinitialized) — Engine and scene lifecycle
+- [renderOneFrame](scene.md#renderoneframe) — Engine and scene lifecycle
+- [deleteScene](scene.md#deletescene) — Engine and scene lifecycle
+- [resetEngine](scene.md#resetengine) — Engine and scene lifecycle
+- [disposeEngine](scene.md#disposeengine) — Engine and scene lifecycle
+- [createCamera](camera.md#createcamera) — Camera selection and projection
+- [setActiveCamera](camera.md#setactivecamera) — Camera selection and projection
+- [lookCameraAt](camera.md#lookcameraat) — Camera selection and projection
+- [setCameraFov](camera.md#setcamerafov) — Camera selection and projection
+- [changeCameraFov](camera.md#changecamerafov) — Camera selection and projection
+- [setCameraClip](camera.md#setcameraclip) — Camera selection and projection
+- [cameraNumber](camera.md#cameranumber) — Camera selection and projection
+- [moveCameraLocal](camera.md#movecameralocal) — Camera movement and basis
+- [rotateCamera](camera.md#rotatecamera) — Camera movement and basis
+- [cameraBasisComponent](camera.md#camerabasiscomponent) — Camera movement and basis
+- [pointAheadOfCamera](camera.md#pointaheadofcamera) — Camera movement and basis
+- [createCube](models-and-objects.md#createcube) — Primitive and instance creation
+- [createCubeInstances](models-and-objects.md#createcubeinstances) — Primitive and instance creation
+- [setPosition](models-and-objects.md#setposition) — Shared resource and instance transforms
+- [setRotation](models-and-objects.md#setrotation) — Shared resource and instance transforms
+- [setScale](models-and-objects.md#setscale) — Shared resource and instance transforms
+- [rotateResourceBy](models-and-objects.md#rotateresourceby) — Shared resource and instance transforms
+- [setInstancePosition](models-and-objects.md#setinstanceposition) — Shared resource and instance transforms
+- [setInstanceTransform](models-and-objects.md#setinstancetransform) — Shared resource and instance transforms
+- [lookObjectAt](models-and-objects.md#lookobjectat) — Shared resource and instance transforms
+- [copyResourceTransform](models-and-objects.md#copyresourcetransform) — Shared resource and instance transforms
+- [setResourceVisible](models-and-objects.md#setresourcevisible) — Shared resource and instance transforms
+- [setResourceTint](models-and-objects.md#setresourcetint) — Shared resource and instance transforms
+- [setInstanceTint](models-and-objects.md#setinstancetint) — Shared resource and instance transforms
+- [resourceExists](models-and-objects.md#resourceexists) — Shared resource and instance transforms
+- [resourceKind](models-and-objects.md#resourcekind) — Shared resource and instance transforms
+- [resourceVisible](models-and-objects.md#resourcevisible) — Shared resource and instance transforms
+- [resourceTransform](models-and-objects.md#resourcetransform) — Shared resource and instance transforms
+- [instanceTransform](models-and-objects.md#instancetransform) — Shared resource and instance transforms
+- [resourceTint](models-and-objects.md#resourcetint) — Shared resource and instance transforms
+- [instanceTint](models-and-objects.md#instancetint) — Shared resource and instance transforms
+- [instanceGroupNumber](models-and-objects.md#instancegroupnumber) — Shared resource and instance transforms
+- [deleteResource](models-and-objects.md#deleteresource) — Shared resource and instance transforms
+- [loadModelFromSource](models-and-objects.md#loadmodelfromsource) — Model assets and instances
+- [importModelFile](models-and-objects.md#importmodelfile) — Model assets and instances
+- [loadModelFromFile](models-and-objects.md#loadmodelfromfile) — Model assets and instances
+- [createModelInstance](models-and-objects.md#createmodelinstance) — Model assets and instances
+- [createModelInstances](models-and-objects.md#createmodelinstances) — Model assets and instances
+- [setModelNodePosition](models-and-objects.md#setmodelnodeposition) — Model assets and instances
+- [modelExists](models-and-objects.md#modelexists) — Model assets and instances
+- [modelState](models-and-objects.md#modelstate) — Model assets and instances
+- [modelError](models-and-objects.md#modelerror) — Model assets and instances
+- [modelNodeCount](models-and-objects.md#modelnodecount) — Model assets and instances
+- [modelPrimitiveCount](models-and-objects.md#modelprimitivecount) — Model assets and instances
+- [modelTriangleCount](models-and-objects.md#modeltrianglecount) — Model assets and instances
+- [modelNodeText](models-and-objects.md#modelnodetext) — Model assets and instances
+- [modelNodeNumber](models-and-objects.md#modelnodenumber) — Model assets and instances
+- [modelSkinText](models-and-objects.md#modelskintext) — Model assets and instances
+- [modelSkinNumber](models-and-objects.md#modelskinnumber) — Model assets and instances
+- [modelInfoNumber](models-and-objects.md#modelinfonumber) — Model assets and instances
+- [modelInstanceText](models-and-objects.md#modelinstancetext) — Model assets and instances
+- [modelInstanceNumber](models-and-objects.md#modelinstancenumber) — Model assets and instances
+- [modelInstanceBoolean](models-and-objects.md#modelinstanceboolean) — Model assets and instances
+- [deleteModelAsset](models-and-objects.md#deletemodelasset) — Model assets and instances
+- [setResourceFrustumCulling](models-and-objects.md#setresourcefrustumculling) — Visibility and LOD
+- [resourceFrustumCullingEnabled](models-and-objects.md#resourcefrustumcullingenabled) — Visibility and LOD
+- [createLodGroup](models-and-objects.md#createlodgroup) — Visibility and LOD
+- [addLodLevel](models-and-objects.md#addlodlevel) — Visibility and LOD
+- [assignModelLodGroup](models-and-objects.md#assignmodellodgroup) — Visibility and LOD
+- [clearModelLodGroup](models-and-objects.md#clearmodellodgroup) — Visibility and LOD
+- [setModelLodEnabled](models-and-objects.md#setmodellodenabled) — Visibility and LOD
+- [setModelLodHysteresis](models-and-objects.md#setmodellodhysteresis) — Visibility and LOD
+- [forceModelLodLevel](models-and-objects.md#forcemodellodlevel) — Visibility and LOD
+- [modelLodGroup](models-and-objects.md#modellodgroup) — Visibility and LOD
+- [currentModelLodLevel](models-and-objects.md#currentmodellodlevel) — Visibility and LOD
+- [lodLevelText](models-and-objects.md#lodleveltext) — Visibility and LOD
+- [lodLevelNumber](models-and-objects.md#lodlevelnumber) — Visibility and LOD
+- [lodGroupLevelCount](models-and-objects.md#lodgrouplevelcount) — Visibility and LOD
+- [lodGroupExists](models-and-objects.md#lodgroupexists) — Visibility and LOD
+- [deleteLodGroup](models-and-objects.md#deletelodgroup) — Visibility and LOD
+- [createCustomGeometry](geometry.md#createcustomgeometry) — Custom geometry and model binding
+- [updateCustomGeometry](geometry.md#updatecustomgeometry) — Custom geometry and model binding
+- [createGeometryModel](geometry.md#creategeometrymodel) — Custom geometry and model binding
+- [customGeometryExists](geometry.md#customgeometryexists) — Custom geometry and model binding
+- [customGeometryNumber](geometry.md#customgeometrynumber) — Custom geometry and model binding
+- [customGeometryBoolean](geometry.md#customgeometryboolean) — Custom geometry and model binding
+- [customGeometryText](geometry.md#customgeometrytext) — Custom geometry and model binding
+- [deleteCustomGeometry](geometry.md#deletecustomgeometry) — Custom geometry and model binding
+- [createMaterial](materials-and-textures.md#creatematerial) — Materials, assignment and surface state
+- [cloneMaterial](materials-and-textures.md#clonematerial) — Materials, assignment and surface state
+- [setResourceMaterial](materials-and-textures.md#setresourcematerial) — Materials, assignment and surface state
+- [setMaterialColor](materials-and-textures.md#setmaterialcolor) — Materials, assignment and surface state
+- [setMaterialBaseColor](materials-and-textures.md#setmaterialbasecolor) — Materials, assignment and surface state
+- [setMaterialOpacity](materials-and-textures.md#setmaterialopacity) — Materials, assignment and surface state
+- [setMaterialTexture](materials-and-textures.md#setmaterialtexture) — Materials, assignment and surface state
+- [setMaterialEmissive](materials-and-textures.md#setmaterialemissive) — Materials, assignment and surface state
+- [setMaterialEmissiveIntensity](materials-and-textures.md#setmaterialemissiveintensity) — Materials, assignment and surface state
+- [setMaterialDoubleSided](materials-and-textures.md#setmaterialdoublesided) — Materials, assignment and surface state
+- [setMaterialDepthTest](materials-and-textures.md#setmaterialdepthtest) — Materials, assignment and surface state
+- [setMaterialDepthWrite](materials-and-textures.md#setmaterialdepthwrite) — Materials, assignment and surface state
+- [setMaterialAlphaMode](materials-and-textures.md#setmaterialalphamode) — Materials, assignment and surface state
+- [setMaterialAlphaCutoff](materials-and-textures.md#setmaterialalphacutoff) — Materials, assignment and surface state
+- [setMaterialSide](materials-and-textures.md#setmaterialside) — Materials, assignment and surface state
+- [setMaterialBlendMode](materials-and-textures.md#setmaterialblendmode) — Materials, assignment and surface state
+- [setMaterialRenderNumber](materials-and-textures.md#setmaterialrendernumber) — Materials, assignment and surface state
+- [setMaterialEnvironmentFactor](materials-and-textures.md#setmaterialenvironmentfactor) — Materials, assignment and surface state
+- [materialExists](materials-and-textures.md#materialexists) — Materials, assignment and surface state
+- [materialOfResource](materials-and-textures.md#materialofresource) — Materials, assignment and surface state
+- [materialType](materials-and-textures.md#materialtype) — Materials, assignment and surface state
+- [materialUsers](materials-and-textures.md#materialusers) — Materials, assignment and surface state
+- [materialNumber](materials-and-textures.md#materialnumber) — Materials, assignment and surface state
+- [materialText](materials-and-textures.md#materialtext) — Materials, assignment and surface state
+- [materialBoolean](materials-and-textures.md#materialboolean) — Materials, assignment and surface state
+- [deleteMaterial](materials-and-textures.md#deletematerial) — Materials, assignment and surface state
+- [setPbrFactor](materials-and-textures.md#setpbrfactor) — PBR and shader preparation
+- [setPbrMapTexture](materials-and-textures.md#setpbrmaptexture) — PBR and shader preparation
+- [removePbrMapTexture](materials-and-textures.md#removepbrmaptexture) — PBR and shader preparation
+- [pbrMetallic](materials-and-textures.md#pbrmetallic) — PBR and shader preparation
+- [pbrRoughness](materials-and-textures.md#pbrroughness) — PBR and shader preparation
+- [warmMaterialShader](materials-and-textures.md#warmmaterialshader) — PBR and shader preparation
+- [createGeneratedTexture](materials-and-textures.md#creategeneratedtexture) — Textures and sampling
+- [loadTextureFromSource](materials-and-textures.md#loadtexturefromsource) — Textures and sampling
+- [loadTextureFromCostume](materials-and-textures.md#loadtexturefromcostume) — Textures and sampling
+- [loadTextureFromFile](materials-and-textures.md#loadtexturefromfile) — Textures and sampling
+- [setResourceTexture](materials-and-textures.md#setresourcetexture) — Textures and sampling
+- [setTextureOption](materials-and-textures.md#settextureoption) — Textures and sampling
+- [setTextureUV](materials-and-textures.md#settextureuv) — Textures and sampling
+- [setTextureFilter](materials-and-textures.md#settexturefilter) — Textures and sampling
+- [setTextureWrap](materials-and-textures.md#settexturewrap) — Textures and sampling
+- [setTextureBooleanOption](materials-and-textures.md#settexturebooleanoption) — Textures and sampling
+- [setTextureAnisotropy](materials-and-textures.md#settextureanisotropy) — Textures and sampling
+- [setTextureColorSpace](materials-and-textures.md#settexturecolorspace) — Textures and sampling
+- [textureExists](materials-and-textures.md#textureexists) — Textures and sampling
+- [textureState](materials-and-textures.md#texturestate) — Textures and sampling
+- [textureError](materials-and-textures.md#textureerror) — Textures and sampling
+- [textureDimension](materials-and-textures.md#texturedimension) — Textures and sampling
+- [textureUsers](materials-and-textures.md#textureusers) — Textures and sampling
+- [textureNumber](materials-and-textures.md#texturenumber) — Textures and sampling
+- [textureText](materials-and-textures.md#texturetext) — Textures and sampling
+- [textureBoolean](materials-and-textures.md#textureboolean) — Textures and sampling
+- [deleteTexture](materials-and-textures.md#deletetexture) — Textures and sampling
+- [createDirectionalLight](lighting-and-environment.md#createdirectionallight) — Directional and ambient lights
+- [setDirectionalLight](lighting-and-environment.md#setdirectionallight) — Directional and ambient lights
+- [setAmbientLight](lighting-and-environment.md#setambientlight) — Directional and ambient lights
+- [directionalLightNumber](lighting-and-environment.md#directionallightnumber) — Directional and ambient lights
+- [directionalLightText](lighting-and-environment.md#directionallighttext) — Directional and ambient lights
+- [directionalLightBoolean](lighting-and-environment.md#directionallightboolean) — Directional and ambient lights
+- [createPointLight](lighting-and-environment.md#createpointlight) — Point and spot lights
+- [createSpotLight](lighting-and-environment.md#createspotlight) — Point and spot lights
+- [setLocalLightPosition](lighting-and-environment.md#setlocallightposition) — Point and spot lights
+- [setLocalLightColor](lighting-and-environment.md#setlocallightcolor) — Point and spot lights
+- [setLocalLightIntensity](lighting-and-environment.md#setlocallightintensity) — Point and spot lights
+- [setLocalLightRange](lighting-and-environment.md#setlocallightrange) — Point and spot lights
+- [setLocalLightEnabled](lighting-and-environment.md#setlocallightenabled) — Point and spot lights
+- [setSpotLightDirection](lighting-and-environment.md#setspotlightdirection) — Point and spot lights
+- [pointSpotLightToward](lighting-and-environment.md#pointspotlighttoward) — Point and spot lights
+- [setSpotLightInnerAngle](lighting-and-environment.md#setspotlightinnerangle) — Point and spot lights
+- [setSpotLightOuterAngle](lighting-and-environment.md#setspotlightouterangle) — Point and spot lights
+- [localLightExists](lighting-and-environment.md#locallightexists) — Point and spot lights
+- [localLightType](lighting-and-environment.md#locallighttype) — Point and spot lights
+- [localLightPosition](lighting-and-environment.md#locallightposition) — Point and spot lights
+- [localLightIntensity](lighting-and-environment.md#locallightintensity) — Point and spot lights
+- [localLightRange](lighting-and-environment.md#locallightrange) — Point and spot lights
+- [localLightEnabled](lighting-and-environment.md#locallightenabled) — Point and spot lights
+- [localLightText](lighting-and-environment.md#locallighttext) — Point and spot lights
+- [spotLightNumber](lighting-and-environment.md#spotlightnumber) — Point and spot lights
+- [deleteLocalLight](lighting-and-environment.md#deletelocallight) — Point and spot lights
+- [setShadowsEnabled](lighting-and-environment.md#setshadowsenabled) — Directional shadows
+- [setShadowQuality](lighting-and-environment.md#setshadowquality) — Directional shadows
+- [setLightCastsShadows](lighting-and-environment.md#setlightcastsshadows) — Directional shadows
+- [setResourceCastsShadows](lighting-and-environment.md#setresourcecastsshadows) — Directional shadows
+- [setResourceReceivesShadows](lighting-and-environment.md#setresourcereceivesshadows) — Directional shadows
+- [setShadowMapSize](lighting-and-environment.md#setshadowmapsize) — Directional shadows
+- [setShadowBias](lighting-and-environment.md#setshadowbias) — Directional shadows
+- [setShadowNormalBias](lighting-and-environment.md#setshadownormalbias) — Directional shadows
+- [setShadowFilter](lighting-and-environment.md#setshadowfilter) — Directional shadows
+- [setShadowDistance](lighting-and-environment.md#setshadowdistance) — Directional shadows
+- [setShadowCameraNear](lighting-and-environment.md#setshadowcameranear) — Directional shadows
+- [setShadowCameraFar](lighting-and-environment.md#setshadowcamerafar) — Directional shadows
+- [setShadowBounds](lighting-and-environment.md#setshadowbounds) — Directional shadows
+- [shadowsEnabled](lighting-and-environment.md#shadowsenabled) — Directional shadows
+- [shadowQuality](lighting-and-environment.md#shadowquality) — Directional shadows
+- [shadowMapSize](lighting-and-environment.md#shadowmapsize) — Directional shadows
+- [createSolidEnvironment](lighting-and-environment.md#createsolidenvironment) — Environment resources
+- [createEnvironmentFromTexture](lighting-and-environment.md#createenvironmentfromtexture) — Environment resources
+- [setEnvironmentTexture](lighting-and-environment.md#setenvironmenttexture) — Environment resources
+- [setSceneEnvironment](lighting-and-environment.md#setsceneenvironment) — Environment resources
+- [clearSceneEnvironment](lighting-and-environment.md#clearsceneenvironment) — Environment resources
+- [setEnvironmentIntensity](lighting-and-environment.md#setenvironmentintensity) — Environment resources
+- [setEnvironmentRotation](lighting-and-environment.md#setenvironmentrotation) — Environment resources
+- [setEnvironmentBackground](lighting-and-environment.md#setenvironmentbackground) — Environment resources
+- [environmentExists](lighting-and-environment.md#environmentexists) — Environment resources
+- [environmentState](lighting-and-environment.md#environmentstate) — Environment resources
+- [activeEnvironment](lighting-and-environment.md#activeenvironment) — Environment resources
+- [environmentUsers](lighting-and-environment.md#environmentusers) — Environment resources
+- [environmentIntensity](lighting-and-environment.md#environmentintensity) — Environment resources
+- [environmentRotation](lighting-and-environment.md#environmentrotation) — Environment resources
+- [environmentBackgroundEnabled](lighting-and-environment.md#environmentbackgroundenabled) — Environment resources
+- [environmentText](lighting-and-environment.md#environmenttext) — Environment resources
+- [deleteEnvironment](lighting-and-environment.md#deleteenvironment) — Environment resources
+- [animationCount](animation.md#animationcount) — Clips, playback, blending and pose
+- [animationName](animation.md#animationname) — Clips, playback, blending and pose
+- [animationDuration](animation.md#animationduration) — Clips, playback, blending and pose
+- [modelAnimationText](animation.md#modelanimationtext) — Clips, playback, blending and pose
+- [modelAnimationNumber](animation.md#modelanimationnumber) — Clips, playback, blending and pose
+- [playAnimation](animation.md#playanimation) — Clips, playback, blending and pose
+- [setAnimationTime](animation.md#setanimationtime) — Clips, playback, blending and pose
+- [setAnimationSpeed](animation.md#setanimationspeed) — Clips, playback, blending and pose
+- [setAnimationLooping](animation.md#setanimationlooping) — Clips, playback, blending and pose
+- [crossfadeAnimation](animation.md#crossfadeanimation) — Clips, playback, blending and pose
+- [pauseAnimation](animation.md#pauseanimation) — Clips, playback, blending and pose
+- [resumeAnimation](animation.md#resumeanimation) — Clips, playback, blending and pose
+- [stopAnimation](animation.md#stopanimation) — Clips, playback, blending and pose
+- [resetModelPose](animation.md#resetmodelpose) — Clips, playback, blending and pose
+- [currentAnimation](animation.md#currentanimation) — Clips, playback, blending and pose
+- [animationTime](animation.md#animationtime) — Clips, playback, blending and pose
+- [animationProgress](animation.md#animationprogress) — Clips, playback, blending and pose
+- [animationPlaying](animation.md#animationplaying) — Clips, playback, blending and pose
+- [animationPaused](animation.md#animationpaused) — Clips, playback, blending and pose
+- [animationFinished](animation.md#animationfinished) — Clips, playback, blending and pose
+- [animationSpeed](animation.md#animationspeed) — Clips, playback, blending and pose
+- [createSprite](sprites-particles-decals-and-text.md#createsprite) — Sprites and shared effect controls
+- [setEffectVisible](sprites-particles-decals-and-text.md#seteffectvisible) — Sprites and shared effect controls
+- [setEffectSize](sprites-particles-decals-and-text.md#seteffectsize) — Sprites and shared effect controls
+- [setEffectTint](sprites-particles-decals-and-text.md#seteffecttint) — Sprites and shared effect controls
+- [setEffectAlphaMode](sprites-particles-decals-and-text.md#seteffectalphamode) — Sprites and shared effect controls
+- [setEffectLighting](sprites-particles-decals-and-text.md#seteffectlighting) — Sprites and shared effect controls
+- [setEffectDepth](sprites-particles-decals-and-text.md#seteffectdepth) — Sprites and shared effect controls
+- [setEffectNumber](sprites-particles-decals-and-text.md#seteffectnumber) — Sprites and shared effect controls
+- [effectKind](sprites-particles-decals-and-text.md#effectkind) — Sprites and shared effect controls
+- [effectExists](sprites-particles-decals-and-text.md#effectexists) — Sprites and shared effect controls
+- [effectVisible](sprites-particles-decals-and-text.md#effectvisible) — Sprites and shared effect controls
+- [effectNumber](sprites-particles-decals-and-text.md#effectnumber) — Sprites and shared effect controls
+- [effectText](sprites-particles-decals-and-text.md#effecttext) — Sprites and shared effect controls
+- [effectBoolean](sprites-particles-decals-and-text.md#effectboolean) — Sprites and shared effect controls
+- [setSpriteBillboardMode](sprites-particles-decals-and-text.md#setspritebillboardmode) — Sprites and shared effect controls
+- [spriteBillboardMode](sprites-particles-decals-and-text.md#spritebillboardmode) — Sprites and shared effect controls
+- [setSpritePivot](sprites-particles-decals-and-text.md#setspritepivot) — Sprites and shared effect controls
+- [setSpriteCustomPivot](sprites-particles-decals-and-text.md#setspritecustompivot) — Sprites and shared effect controls
+- [setSpriteSheet](sprites-particles-decals-and-text.md#setspritesheet) — Sprites and shared effect controls
+- [setSpriteFrame](sprites-particles-decals-and-text.md#setspriteframe) — Sprites and shared effect controls
+- [playSpriteFrames](sprites-particles-decals-and-text.md#playspriteframes) — Sprites and shared effect controls
+- [pauseSpriteFrames](sprites-particles-decals-and-text.md#pausespriteframes) — Sprites and shared effect controls
+- [resumeSpriteFrames](sprites-particles-decals-and-text.md#resumespriteframes) — Sprites and shared effect controls
+- [stopSpriteFrames](sprites-particles-decals-and-text.md#stopspriteframes) — Sprites and shared effect controls
+- [setSpriteDirectionalViews](sprites-particles-decals-and-text.md#setspritedirectionalviews) — Sprites and shared effect controls
+- [setSpriteDirectionalFrame](sprites-particles-decals-and-text.md#setspritedirectionalframe) — Sprites and shared effect controls
+- [spriteCurrentFrame](sprites-particles-decals-and-text.md#spritecurrentframe) — Sprites and shared effect controls
+- [spriteDirectionalFrame](sprites-particles-decals-and-text.md#spritedirectionalframe) — Sprites and shared effect controls
+- [createParticleEmitter](sprites-particles-decals-and-text.md#createparticleemitter) — Particles
+- [setParticleEmissionRate](sprites-particles-decals-and-text.md#setparticleemissionrate) — Particles
+- [setParticleMaximum](sprites-particles-decals-and-text.md#setparticlemaximum) — Particles
+- [setParticleSpawnShape](sprites-particles-decals-and-text.md#setparticlespawnshape) — Particles
+- [setParticleVelocity](sprites-particles-decals-and-text.md#setparticlevelocity) — Particles
+- [setParticleAcceleration](sprites-particles-decals-and-text.md#setparticleacceleration) — Particles
+- [setParticleLifetime](sprites-particles-decals-and-text.md#setparticlelifetime) — Particles
+- [setParticleSizeOverLife](sprites-particles-decals-and-text.md#setparticlesizeoverlife) — Particles
+- [setParticleAlphaOverLife](sprites-particles-decals-and-text.md#setparticlealphaoverlife) — Particles
+- [setParticleColorOverLife](sprites-particles-decals-and-text.md#setparticlecoloroverlife) — Particles
+- [setParticleRotation](sprites-particles-decals-and-text.md#setparticlerotation) — Particles
+- [setParticleFrameRate](sprites-particles-decals-and-text.md#setparticleframerate) — Particles
+- [setParticleSeed](sprites-particles-decals-and-text.md#setparticleseed) — Particles
+- [setParticleSpread](sprites-particles-decals-and-text.md#setparticlespread) — Particles
+- [startParticleEmitter](sprites-particles-decals-and-text.md#startparticleemitter) — Particles
+- [stopParticleEmitter](sprites-particles-decals-and-text.md#stopparticleemitter) — Particles
+- [pauseParticleEmitter](sprites-particles-decals-and-text.md#pauseparticleemitter) — Particles
+- [resumeParticleEmitter](sprites-particles-decals-and-text.md#resumeparticleemitter) — Particles
+- [clearParticleEmitter](sprites-particles-decals-and-text.md#clearparticleemitter) — Particles
+- [burstParticles](sprites-particles-decals-and-text.md#burstparticles) — Particles
+- [activeParticleCount](sprites-particles-decals-and-text.md#activeparticlecount) — Particles
+- [particleEmitterEmitting](sprites-particles-decals-and-text.md#particleemitteremitting) — Particles
+- [particleEmitterPaused](sprites-particles-decals-and-text.md#particleemitterpaused) — Particles
+- [particleNumber](sprites-particles-decals-and-text.md#particlenumber) — Particles
+- [particleText](sprites-particles-decals-and-text.md#particletext) — Particles
+- [particleBoolean](sprites-particles-decals-and-text.md#particleboolean) — Particles
+- [createDecal](sprites-particles-decals-and-text.md#createdecal) — Decals
+- [setDecalNormal](sprites-particles-decals-and-text.md#setdecalnormal) — Decals
+- [setDecalOffset](sprites-particles-decals-and-text.md#setdecaloffset) — Decals
+- [setDecalLifetime](sprites-particles-decals-and-text.md#setdecallifetime) — Decals
+- [decalNumber](sprites-particles-decals-and-text.md#decalnumber) — Decals
+- [decalBoolean](sprites-particles-decals-and-text.md#decalboolean) — Decals
+- [create3DText](sprites-particles-decals-and-text.md#create3dtext) — Text
+- [set3DText](sprites-particles-decals-and-text.md#set3dtext) — Text
+- [set3DTextPosition](sprites-particles-decals-and-text.md#set3dtextposition) — Text
+- [set3DTextSize](sprites-particles-decals-and-text.md#set3dtextsize) — Text
+- [set3DTextBillboard](sprites-particles-decals-and-text.md#set3dtextbillboard) — Text
+- [set3DTextPivot](sprites-particles-decals-and-text.md#set3dtextpivot) — Text
+- [set3DTextColor](sprites-particles-decals-and-text.md#set3dtextcolor) — Text
+- [set3DTextFont](sprites-particles-decals-and-text.md#set3dtextfont) — Text
+- [set3DTextAlignment](sprites-particles-decals-and-text.md#set3dtextalignment) — Text
+- [set3DTextBackground](sprites-particles-decals-and-text.md#set3dtextbackground) — Text
+- [set3DTextResolution](sprites-particles-decals-and-text.md#set3dtextresolution) — Text
+- [textContent](sprites-particles-decals-and-text.md#textcontent) — Text
+- [textNumber](sprites-particles-decals-and-text.md#textnumber) — Text
+- [textBoolean](sprites-particles-decals-and-text.md#textboolean) — Text
+- [delete3DText](sprites-particles-decals-and-text.md#delete3dtext) — Text
+- [createPhysicsBox](physics.md#createphysicsbox) — Bodies, attachments and world settings
+- [createPhysicsSphere](physics.md#createphysicssphere) — Bodies, attachments and world settings
+- [setPhysicsGravity](physics.md#setphysicsgravity) — Bodies, attachments and world settings
+- [setPhysicsVector](physics.md#setphysicsvector) — Bodies, attachments and world settings
+- [setPhysicsNumber](physics.md#setphysicsnumber) — Bodies, attachments and world settings
+- [setPhysicsTrigger](physics.md#setphysicstrigger) — Bodies, attachments and world settings
+- [setPhysicsFilter](physics.md#setphysicsfilter) — Bodies, attachments and world settings
+- [attachPhysicsBody](physics.md#attachphysicsbody) — Bodies, attachments and world settings
+- [physicsBodyExists](physics.md#physicsbodyexists) — Bodies, attachments and world settings
+- [physicsBodyNumber](physics.md#physicsbodynumber) — Bodies, attachments and world settings
+- [physicsBodySleeping](physics.md#physicsbodysleeping) — Bodies, attachments and world settings
+- [physicsBodyText](physics.md#physicsbodytext) — Bodies, attachments and world settings
+- [physicsBodyBoolean](physics.md#physicsbodyboolean) — Bodies, attachments and world settings
+- [physicsBodyMeasure](physics.md#physicsbodymeasure) — Bodies, attachments and world settings
+- [physicsWorldNumber](physics.md#physicsworldnumber) — Bodies, attachments and world settings
+- [deletePhysicsBody](physics.md#deletephysicsbody) — Bodies, attachments and world settings
+- [physicsTouching](physics.md#physicstouching) — Contacts
+- [physicsContactCount](physics.md#physicscontactcount) — Contacts
+- [physicsContactName](physics.md#physicscontactname) — Contacts
+- [physicsContactNumber](physics.md#physicscontactnumber) — Contacts
+- [loadAudioURL](audio.md#loadaudiourl) — Assets and source playback
+- [loadAudioSound](audio.md#loadaudiosound) — Assets and source playback
+- [unlockAudio](audio.md#unlockaudio) — Assets and source playback
+- [createAudioSource](audio.md#createaudiosource) — Assets and source playback
+- [setAudioNumber](audio.md#setaudionumber) — Assets and source playback
+- [setAudioLoop](audio.md#setaudioloop) — Assets and source playback
+- [setAudioVector](audio.md#setaudiovector) — Assets and source playback
+- [attachAudioSource](audio.md#attachaudiosource) — Assets and source playback
+- [controlAudioSource](audio.md#controlaudiosource) — Assets and source playback
+- [audioAssetExists](audio.md#audioassetexists) — Assets and source playback
+- [audioAssetState](audio.md#audioassetstate) — Assets and source playback
+- [audioAssetNumber](audio.md#audioassetnumber) — Assets and source playback
+- [audioAssetText](audio.md#audioassettext) — Assets and source playback
+- [audioSourceExists](audio.md#audiosourceexists) — Assets and source playback
+- [audioSourceState](audio.md#audiosourcestate) — Assets and source playback
+- [audioSourceNumber](audio.md#audiosourcenumber) — Assets and source playback
+- [audioSourceText](audio.md#audiosourcetext) — Assets and source playback
+- [audioSourceBoolean](audio.md#audiosourceboolean) — Assets and source playback
+- [audioSpatialNumber](audio.md#audiospatialnumber) — Assets and source playback
+- [audioListenerNumber](audio.md#audiolistenernumber) — Assets and source playback
+- [deleteAudioSource](audio.md#deleteaudiosource) — Assets and source playback
+- [deleteAudioAsset](audio.md#deleteaudioasset) — Assets and source playback
+- [setRenderQuality](render-quality-targets-and-post-processing.md#setrenderquality) — Quality and visibility policy
+- [renderQuality](render-quality-targets-and-post-processing.md#renderquality) — Quality and visibility policy
+- [setRenderResolutionScale](render-quality-targets-and-post-processing.md#setrenderresolutionscale) — Quality and visibility policy
+- [renderResolutionScale](render-quality-targets-and-post-processing.md#renderresolutionscale) — Quality and visibility policy
+- [setMaxPixelRatio](render-quality-targets-and-post-processing.md#setmaxpixelratio) — Quality and visibility policy
+- [maxPixelRatio](render-quality-targets-and-post-processing.md#maxpixelratio) — Quality and visibility policy
+- [setAntialiasing](render-quality-targets-and-post-processing.md#setantialiasing) — Quality and visibility policy
+- [antialiasing](render-quality-targets-and-post-processing.md#antialiasing) — Quality and visibility policy
+- [setRenderDistance](render-quality-targets-and-post-processing.md#setrenderdistance) — Quality and visibility policy
+- [renderDistance](render-quality-targets-and-post-processing.md#renderdistance) — Quality and visibility policy
+- [setFrustumCulling](render-quality-targets-and-post-processing.md#setfrustumculling) — Quality and visibility policy
+- [frustumCullingEnabled](render-quality-targets-and-post-processing.md#frustumcullingenabled) — Quality and visibility policy
+- [setGlobalTextureQuality](render-quality-targets-and-post-processing.md#setglobaltexturequality) — Quality and visibility policy
+- [globalTextureQuality](render-quality-targets-and-post-processing.md#globaltexturequality) — Quality and visibility policy
+- [setGlobalEnvironmentQuality](render-quality-targets-and-post-processing.md#setglobalenvironmentquality) — Quality and visibility policy
+- [globalEnvironmentQuality](render-quality-targets-and-post-processing.md#globalenvironmentquality) — Quality and visibility policy
+- [setMaximumLocalLights](render-quality-targets-and-post-processing.md#setmaximumlocallights) — Quality and visibility policy
+- [maximumLocalLights](render-quality-targets-and-post-processing.md#maximumlocallights) — Quality and visibility policy
+- [setAdaptiveResolution](render-quality-targets-and-post-processing.md#setadaptiveresolution) — Quality and visibility policy
+- [adaptiveResolutionEnabled](render-quality-targets-and-post-processing.md#adaptiveresolutionenabled) — Quality and visibility policy
+- [setAdaptiveTargetFps](render-quality-targets-and-post-processing.md#setadaptivetargetfps) — Quality and visibility policy
+- [adaptiveTargetFps](render-quality-targets-and-post-processing.md#adaptivetargetfps) — Quality and visibility policy
+- [setAdaptiveScaleRange](render-quality-targets-and-post-processing.md#setadaptivescalerange) — Quality and visibility policy
+- [qualityNumber](render-quality-targets-and-post-processing.md#qualitynumber) — Quality and visibility policy
+- [createRenderTarget](render-quality-targets-and-post-processing.md#createrendertarget) — Render targets
+- [resizeRenderTarget](render-quality-targets-and-post-processing.md#resizerendertarget) — Render targets
+- [renderSceneToRenderTarget](render-quality-targets-and-post-processing.md#renderscenetorendertarget) — Render targets
+- [renderCameraToRenderTarget](render-quality-targets-and-post-processing.md#rendercameratorendertarget) — Render targets
+- [clearRenderTarget](render-quality-targets-and-post-processing.md#clearrendertarget) — Render targets
+- [renderTargetExists](render-quality-targets-and-post-processing.md#rendertargetexists) — Render targets
+- [renderTargetDimension](render-quality-targets-and-post-processing.md#rendertargetdimension) — Render targets
+- [deleteRenderTarget](render-quality-targets-and-post-processing.md#deleterendertarget) — Render targets
+- [setPostProcessing](render-quality-targets-and-post-processing.md#setpostprocessing) — Post processing
+- [setBloom](render-quality-targets-and-post-processing.md#setbloom) — Post processing
+- [setBloomFactor](render-quality-targets-and-post-processing.md#setbloomfactor) — Post processing
+- [setBloomQuality](render-quality-targets-and-post-processing.md#setbloomquality) — Post processing
+- [setPostColorFactor](render-quality-targets-and-post-processing.md#setpostcolorfactor) — Post processing
+- [setVignetteFactor](render-quality-targets-and-post-processing.md#setvignettefactor) — Post processing
+- [setFxaa](render-quality-targets-and-post-processing.md#setfxaa) — Post processing
+- [postProcessingEnabled](render-quality-targets-and-post-processing.md#postprocessingenabled) — Post processing
+- [bloomEnabled](render-quality-targets-and-post-processing.md#bloomenabled) — Post processing
+- [bloomIntensity](render-quality-targets-and-post-processing.md#bloomintensity) — Post processing
+- [postNumber](render-quality-targets-and-post-processing.md#postnumber) — Post processing
+- [postBoolean](render-quality-targets-and-post-processing.md#postboolean) — Post processing
+- [resetPostProcessing](render-quality-targets-and-post-processing.md#resetpostprocessing) — Post processing
+- [createCustomShader](custom-rendering.md#createcustomshader) — GLSL programs, materials and uniforms
+- [createCustomMaterial](custom-rendering.md#createcustommaterial) — GLSL programs, materials and uniforms
+- [setCustomUniform](custom-rendering.md#setcustomuniform) — GLSL programs, materials and uniforms
+- [setCustomUniformVector](custom-rendering.md#setcustomuniformvector) — GLSL programs, materials and uniforms
+- [setCustomSampler](custom-rendering.md#setcustomsampler) — GLSL programs, materials and uniforms
+- [customShaderExists](custom-rendering.md#customshaderexists) — GLSL programs, materials and uniforms
+- [customUniformText](custom-rendering.md#customuniformtext) — GLSL programs, materials and uniforms
+- [customUniformNumber](custom-rendering.md#customuniformnumber) — GLSL programs, materials and uniforms
+- [customShaderNumber](custom-rendering.md#customshadernumber) — GLSL programs, materials and uniforms
+- [deleteCustomShader](custom-rendering.md#deletecustomshader) — GLSL programs, materials and uniforms
+- [setRaycastBackface](raycasting-and-picking.md#setraycastbackface) — Ray queries and typed results
+- [castWorldRay](raycasting-and-picking.md#castworldray) — Ray queries and typed results
+- [castStageRay](raycasting-and-picking.md#caststageray) — Ray queries and typed results
+- [castCameraForwardRay](raycasting-and-picking.md#castcameraforwardray) — Ray queries and typed results
+- [rayHit](raycasting-and-picking.md#rayhit) — Ray queries and typed results
+- [rayHitNumber](raycasting-and-picking.md#rayhitnumber) — Ray queries and typed results
+- [rayHitText](raycasting-and-picking.md#rayhittext) — Ray queries and typed results
+- [worldToStageValue](raycasting-and-picking.md#worldtostagevalue) — Stage/world projection
+- [worldPointInFront](raycasting-and-picking.md#worldpointinfront) — Stage/world projection
+- [worldPointVisible](raycasting-and-picking.md#worldpointvisible) — Stage/world projection
+- [stageRayDirection](raycasting-and-picking.md#stageraydirection) — Stage/world projection
+- [createTerrain](terrain-and-world-utilities.md#createterrain) — Terrain construction, edits and queries
+- [setTerrainHeight](terrain-and-world-utilities.md#setterrainheight) — Terrain construction, edits and queries
+- [setTerrainFlat](terrain-and-world-utilities.md#setterrainflat) — Terrain construction, edits and queries
+- [generateTerrainHills](terrain-and-world-utilities.md#generateterrainhills) — Terrain construction, edits and queries
+- [setTerrainMaterial](terrain-and-world-utilities.md#setterrainmaterial) — Terrain construction, edits and queries
+- [terrainHeightAt](terrain-and-world-utilities.md#terrainheightat) — Terrain construction, edits and queries
+- [terrainNormalAt](terrain-and-world-utilities.md#terrainnormalat) — Terrain construction, edits and queries
+- [terrainExists](terrain-and-world-utilities.md#terrainexists) — Terrain construction, edits and queries
+- [terrainGridHeight](terrain-and-world-utilities.md#terraingridheight) — Terrain construction, edits and queries
+- [terrainNumber](terrain-and-world-utilities.md#terrainnumber) — Terrain construction, edits and queries
+- [terrainBoolean](terrain-and-world-utilities.md#terrainboolean) — Terrain construction, edits and queries
+- [deleteTerrain](terrain-and-world-utilities.md#deleteterrain) — Terrain construction, edits and queries
+- [distance3D](terrain-and-world-utilities.md#distance3d) — Vectors and coordinates
+- [vectorLength3D](terrain-and-world-utilities.md#vectorlength3d) — Vectors and coordinates
+- [dotProduct3D](terrain-and-world-utilities.md#dotproduct3d) — Vectors and coordinates
+- [crossProduct3D](terrain-and-world-utilities.md#crossproduct3d) — Vectors and coordinates
+- [vectorNormalizedComponent](terrain-and-world-utilities.md#vectornormalizedcomponent) — Vectors and coordinates
+- [directionComponent3D](terrain-and-world-utilities.md#directioncomponent3d) — Vectors and coordinates
+- [angleBetweenVectors](terrain-and-world-utilities.md#anglebetweenvectors) — Vectors and coordinates
+- [lerpNumber](terrain-and-world-utilities.md#lerpnumber) — Vectors and coordinates
+- [clampNumber](terrain-and-world-utilities.md#clampnumber) — Vectors and coordinates
+- [distanceBetweenResources](terrain-and-world-utilities.md#distancebetweenresources) — Vectors and coordinates
+- [transformResourceCoordinate](terrain-and-world-utilities.md#transformresourcecoordinate) — Vectors and coordinates
+- [moveObjectLocal](tweens-and-motion.md#moveobjectlocal) — Local and camera-relative motion
+- [objectBasisComponent](tweens-and-motion.md#objectbasiscomponent) — Local and camera-relative motion
+- [moveResourceByCamera](tweens-and-motion.md#moveresourcebycamera) — Local and camera-relative motion
+- [tweenResourcePosition](tweens-and-motion.md#tweenresourceposition) — Tweens
+- [tweenResourceRotation](tweens-and-motion.md#tweenresourcerotation) — Tweens
+- [tweenResourceScale](tweens-and-motion.md#tweenresourcescale) — Tweens
+- [tweenCameraFov](tweens-and-motion.md#tweencamerafov) — Tweens
+- [pauseTween](tweens-and-motion.md#pausetween) — Tweens
+- [resumeTween](tweens-and-motion.md#resumetween) — Tweens
+- [stopTween](tweens-and-motion.md#stoptween) — Tweens
+- [tweenActive](tweens-and-motion.md#tweenactive) — Tweens
+- [tweenNumber](tweens-and-motion.md#tweennumber) — Tweens
+- [tweenBoolean](tweens-and-motion.md#tweenboolean) — Tweens
+- [rendererBackend](metrics-profiling-and-debug.md#rendererbackend) — Engine, output and errors
+- [currentFps](metrics-profiling-and-debug.md#currentfps) — Engine, output and errors
+- [averageFps](metrics-profiling-and-debug.md#averagefps) — Engine, output and errors
+- [drawCalls](metrics-profiling-and-debug.md#drawcalls) — Engine, output and errors
+- [internalRenderDimension](metrics-profiling-and-debug.md#internalrenderdimension) — Engine, output and errors
+- [effectivePixelRatio](metrics-profiling-and-debug.md#effectivepixelratio) — Engine, output and errors
+- [internalRenderPixels](metrics-profiling-and-debug.md#internalrenderpixels) — Engine, output and errors
+- [lastError](metrics-profiling-and-debug.md#lasterror) — Engine, output and errors
+- [clearError](metrics-profiling-and-debug.md#clearerror) — Engine, output and errors
+- [modelAssetCount](metrics-profiling-and-debug.md#modelassetcount) — Model and geometry resources
+- [loadedGeometryCount](metrics-profiling-and-debug.md#loadedgeometrycount) — Model and geometry resources
+- [geometryGpuBytes](metrics-profiling-and-debug.md#geometrygpubytes) — Model and geometry resources
+- [geometryUploads](metrics-profiling-and-debug.md#geometryuploads) — Model and geometry resources
+- [materialCount](metrics-profiling-and-debug.md#materialcount) — Materials and PBR
+- [materialPrograms](metrics-profiling-and-debug.md#materialprograms) — Materials and PBR
+- [materialShaderCompiles](metrics-profiling-and-debug.md#materialshadercompiles) — Materials and PBR
+- [materialProgramSwitches](metrics-profiling-and-debug.md#materialprogramswitches) — Materials and PBR
+- [materialSwitches](metrics-profiling-and-debug.md#materialswitches) — Materials and PBR
+- [textureSwitches](metrics-profiling-and-debug.md#textureswitches) — Materials and PBR
+- [pbrPrograms](metrics-profiling-and-debug.md#pbrprograms) — Materials and PBR
+- [pbrDrawCalls](metrics-profiling-and-debug.md#pbrdrawcalls) — Materials and PBR
+- [activeLocalLightCount](metrics-profiling-and-debug.md#activelocallightcount) — Lighting, shadows and environments
+- [selectedLocalLightCount](metrics-profiling-and-debug.md#selectedlocallightcount) — Lighting, shadows and environments
+- [localLightListRebuilds](metrics-profiling-and-debug.md#locallightlistrebuilds) — Lighting, shadows and environments
+- [localLightGpuUploads](metrics-profiling-and-debug.md#locallightgpuuploads) — Lighting, shadows and environments
+- [localLightDrawCalls](metrics-profiling-and-debug.md#locallightdrawcalls) — Lighting, shadows and environments
+- [localLightSelectionTime](metrics-profiling-and-debug.md#locallightselectiontime) — Lighting, shadows and environments
+- [shadowRenderTime](metrics-profiling-and-debug.md#shadowrendertime) — Lighting, shadows and environments
+- [shadowDrawCalls](metrics-profiling-and-debug.md#shadowdrawcalls) — Lighting, shadows and environments
+- [shadowTriangles](metrics-profiling-and-debug.md#shadowtriangles) — Lighting, shadows and environments
+- [shadowCasters](metrics-profiling-and-debug.md#shadowcasters) — Lighting, shadows and environments
+- [shadowMapsUpdated](metrics-profiling-and-debug.md#shadowmapsupdated) — Lighting, shadows and environments
+- [environmentPreprocessTime](metrics-profiling-and-debug.md#environmentpreprocesstime) — Lighting, shadows and environments
+- [environmentPreprocesses](metrics-profiling-and-debug.md#environmentpreprocesses) — Lighting, shadows and environments
+- [environmentResources](metrics-profiling-and-debug.md#environmentresources) — Lighting, shadows and environments
+- [environmentIblDrawCalls](metrics-profiling-and-debug.md#environmentibldrawcalls) — Lighting, shadows and environments
+- [environmentBackgroundDrawCalls](metrics-profiling-and-debug.md#environmentbackgrounddrawcalls) — Lighting, shadows and environments
+- [activeAnimationPlayers](metrics-profiling-and-debug.md#activeanimationplayers) — Animation and skinning
+- [sampledAnimationChannels](metrics-profiling-and-debug.md#sampledanimationchannels) — Animation and skinning
+- [animationSamplingTime](metrics-profiling-and-debug.md#animationsamplingtime) — Animation and skinning
+- [jointPaletteUploads](metrics-profiling-and-debug.md#jointpaletteuploads) — Animation and skinning
+- [jointPaletteUploadBytes](metrics-profiling-and-debug.md#jointpaletteuploadbytes) — Animation and skinning
+- [skinnedDrawCalls](metrics-profiling-and-debug.md#skinneddrawcalls) — Animation and skinning
+- [skinnedShadowDrawCalls](metrics-profiling-and-debug.md#skinnedshadowdrawcalls) — Animation and skinning
+- [spriteCount](metrics-profiling-and-debug.md#spritecount) — Sprites, particles, decals and text
+- [visibleSpriteCount](metrics-profiling-and-debug.md#visiblespritecount) — Sprites, particles, decals and text
+- [spriteDrawCalls](metrics-profiling-and-debug.md#spritedrawcalls) — Sprites, particles, decals and text
+- [spriteInstanceUploadBytes](metrics-profiling-and-debug.md#spriteinstanceuploadbytes) — Sprites, particles, decals and text
+- [directionalFrameChanges](metrics-profiling-and-debug.md#directionalframechanges) — Sprites, particles, decals and text
+- [activeParticleEmitters](metrics-profiling-and-debug.md#activeparticleemitters) — Sprites, particles, decals and text
+- [totalActiveParticles](metrics-profiling-and-debug.md#totalactiveparticles) — Sprites, particles, decals and text
+- [particlesSpawned](metrics-profiling-and-debug.md#particlesspawned) — Sprites, particles, decals and text
+- [particlesExpired](metrics-profiling-and-debug.md#particlesexpired) — Sprites, particles, decals and text
+- [particleSimulationTime](metrics-profiling-and-debug.md#particlesimulationtime) — Sprites, particles, decals and text
+- [visibleParticleEmitters](metrics-profiling-and-debug.md#visibleparticleemitters) — Sprites, particles, decals and text
+- [culledParticleEmitters](metrics-profiling-and-debug.md#culledparticleemitters) — Sprites, particles, decals and text
+- [particleInstanceUploadBytes](metrics-profiling-and-debug.md#particleinstanceuploadbytes) — Sprites, particles, decals and text
+- [particleDrawCalls](metrics-profiling-and-debug.md#particledrawcalls) — Sprites, particles, decals and text
+- [decalCount](metrics-profiling-and-debug.md#decalcount) — Sprites, particles, decals and text
+- [visibleDecalCount](metrics-profiling-and-debug.md#visibledecalcount) — Sprites, particles, decals and text
+- [decalDrawCalls](metrics-profiling-and-debug.md#decaldrawcalls) — Sprites, particles, decals and text
+- [textLabelCount](metrics-profiling-and-debug.md#textlabelcount) — Sprites, particles, decals and text
+- [textRasterizations](metrics-profiling-and-debug.md#textrasterizations) — Sprites, particles, decals and text
+- [textTextureUploads](metrics-profiling-and-debug.md#texttextureuploads) — Sprites, particles, decals and text
+- [sharedTextTextures](metrics-profiling-and-debug.md#sharedtexttextures) — Sprites, particles, decals and text
+- [renderedTextInstances](metrics-profiling-and-debug.md#renderedtextinstances) — Sprites, particles, decals and text
+- [textDrawCalls](metrics-profiling-and-debug.md#textdrawcalls) — Sprites, particles, decals and text
+- [totalRenderables](metrics-profiling-and-debug.md#totalrenderables) — Visibility, spatial index and LOD
+- [visibilityCandidates](metrics-profiling-and-debug.md#visibilitycandidates) — Visibility, spatial index and LOD
+- [spatialCandidates](metrics-profiling-and-debug.md#spatialcandidates) — Visibility, spatial index and LOD
+- [frustumTests](metrics-profiling-and-debug.md#frustumtests) — Visibility, spatial index and LOD
+- [frustumRejected](metrics-profiling-and-debug.md#frustumrejected) — Visibility, spatial index and LOD
+- [renderDistanceRejected](metrics-profiling-and-debug.md#renderdistancerejected) — Visibility, spatial index and LOD
+- [visibleRenderables](metrics-profiling-and-debug.md#visiblerenderables) — Visibility, spatial index and LOD
+- [visibleInstances](metrics-profiling-and-debug.md#visibleinstances) — Visibility, spatial index and LOD
+- [culledInstances](metrics-profiling-and-debug.md#culledinstances) — Visibility, spatial index and LOD
+- [visibilityCpuTime](metrics-profiling-and-debug.md#visibilitycputime) — Visibility, spatial index and LOD
+- [spatialQueryCpuTime](metrics-profiling-and-debug.md#spatialquerycputime) — Visibility, spatial index and LOD
+- [spatialIndexEntries](metrics-profiling-and-debug.md#spatialindexentries) — Visibility, spatial index and LOD
+- [spatialIndexUpdates](metrics-profiling-and-debug.md#spatialindexupdates) — Visibility, spatial index and LOD
+- [spatialIndexRebuilds](metrics-profiling-and-debug.md#spatialindexrebuilds) — Visibility, spatial index and LOD
+- [dirtyBounds](metrics-profiling-and-debug.md#dirtybounds) — Visibility, spatial index and LOD
+- [animatedBounds](metrics-profiling-and-debug.md#animatedbounds) — Visibility, spatial index and LOD
+- [visibleInstanceUploadBytes](metrics-profiling-and-debug.md#visibleinstanceuploadbytes) — Visibility, spatial index and LOD
+- [lodEvaluations](metrics-profiling-and-debug.md#lodevaluations) — Visibility, spatial index and LOD
+- [lodSwitches](metrics-profiling-and-debug.md#lodswitches) — Visibility, spatial index and LOD
+- [lodLevelInstanceCount](metrics-profiling-and-debug.md#lodlevelinstancecount) — Visibility, spatial index and LOD
+- [shadowVisibilityCandidates](metrics-profiling-and-debug.md#shadowvisibilitycandidates) — Visibility, spatial index and LOD
+- [shadowFrustumRejected](metrics-profiling-and-debug.md#shadowfrustumrejected) — Visibility, spatial index and LOD
+- [shadowVisibleCasters](metrics-profiling-and-debug.md#shadowvisiblecasters) — Visibility, spatial index and LOD
+- [physicsMetric](metrics-profiling-and-debug.md#physicsmetric) — Physics and audio
+- [audioMetric](metrics-profiling-and-debug.md#audiometric) — Physics and audio
+- [postProcessingPassCount](metrics-profiling-and-debug.md#postprocessingpasscount) — Post processing and targets
+- [postFullscreenDraws](metrics-profiling-and-debug.md#postfullscreendraws) — Post processing and targets
+- [renderTargetAllocations](metrics-profiling-and-debug.md#rendertargetallocations) — Post processing and targets
+- [renderTargetResizes](metrics-profiling-and-debug.md#rendertargetresizes) — Post processing and targets
+- [renderTargetBytes](metrics-profiling-and-debug.md#rendertargetbytes) — Post processing and targets
+- [bloomPasses](metrics-profiling-and-debug.md#bloompasses) — Post processing and targets
+- [postShaderCompiles](metrics-profiling-and-debug.md#postshadercompiles) — Post processing and targets
+- [offscreenCameraRenders](metrics-profiling-and-debug.md#offscreencamerarenders) — Post processing and targets
+- [customRenderingMetric](metrics-profiling-and-debug.md#customrenderingmetric) — Custom rendering
+- [raycastCount](metrics-profiling-and-debug.md#raycastcount) — Raycasting, terrain and tweens
+- [raycastBroadPhaseCandidates](metrics-profiling-and-debug.md#raycastbroadphasecandidates) — Raycasting, terrain and tweens
+- [raycastBoundsTests](metrics-profiling-and-debug.md#raycastboundstests) — Raycasting, terrain and tweens
+- [raycastTriangleTests](metrics-profiling-and-debug.md#raycasttriangletests) — Raycasting, terrain and tweens
+- [raycastHits](metrics-profiling-and-debug.md#raycasthits) — Raycasting, terrain and tweens
+- [raycastTime](metrics-profiling-and-debug.md#raycasttime) — Raycasting, terrain and tweens
+- [terrainCount](metrics-profiling-and-debug.md#terraincount) — Raycasting, terrain and tweens
+- [terrainTriangles](metrics-profiling-and-debug.md#terraintriangles) — Raycasting, terrain and tweens
+- [terrainGeometryBuilds](metrics-profiling-and-debug.md#terraingeometrybuilds) — Raycasting, terrain and tweens
+- [terrainGpuUploads](metrics-profiling-and-debug.md#terraingpuuploads) — Raycasting, terrain and tweens
+- [terrainGpuUploadBytes](metrics-profiling-and-debug.md#terraingpuuploadbytes) — Raycasting, terrain and tweens
+- [visibleTerrainChunks](metrics-profiling-and-debug.md#visibleterrainchunks) — Raycasting, terrain and tweens
+- [culledTerrainChunks](metrics-profiling-and-debug.md#culledterrainchunks) — Raycasting, terrain and tweens
+- [activeTweens](metrics-profiling-and-debug.md#activetweens) — Raycasting, terrain and tweens
+- [tweenUpdates](metrics-profiling-and-debug.md#tweenupdates) — Raycasting, terrain and tweens
+- [completedTweens](metrics-profiling-and-debug.md#completedtweens) — Raycasting, terrain and tweens
+- [tweenUpdateTime](metrics-profiling-and-debug.md#tweenupdatetime) — Raycasting, terrain and tweens

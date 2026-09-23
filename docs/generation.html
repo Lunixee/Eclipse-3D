@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reproducing the documentation and examples · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="reproducing-the-documentation-and-examples">Reproducing the documentation and examples</h1>
+<p>The visual reference is generated offline from <code>Turbo3DExtension.getInfo()</code>, using the static navigation map. Curated prose lives in <code>scripts/docs/group-guides.mjs</code>; generated signatures, menus and counts are not manually transcribed. Every visible opcode has one reference entry, one SVG and one manifest record. Hidden compatibility aliases are excluded from public coverage.</p>
+<h2 id="commands">Commands</h2>
+<pre><code class="language-sh">npm ci
+npm run assets:brand
+npm run assets:release
+npm run build
+npm run docs
+npm run examples
+npm run docs:check
+npm run examples:check
+</code></pre>
+<p><code>npm run examples:package</code> additionally exports standalone HTML under <code>artifacts/examples/</code>. It uses the installed Packager and may need its normal scaffolding resources on first use; the documentation renderer itself has no network requests. Generated SB3 files contain the exact current extension bundle and their own data assets. Rebuild examples after production edits so the embedded source matches.</p>
+<h2 id="how-block-visuals-work">How block visuals work</h2>
+<p><code>@turbowarp/scratchblocks</code> 3.6.7 supplies Scratch 3 shapes, inputs, dropdown arrows and script layout. A small adapter builds its syntax tree directly from the registered metadata. This avoids interpreting JSON/GLSL defaults as scratchblocks source syntax. The adapter inserts the actual Eclipse icon, palette and menu display labels, keeping serialized menu values in the argument table.</p>
+<p>Roboto Latin 500 from pinned <code>@fontsource/roboto</code> 5.3.0 is shaped with fontkit 2.0.4 and converted to SVG glyph paths. SVGs therefore render without an installed font, external stylesheet, runtime JavaScript or internet access. Accessible titles/labels and a text syntax representation remain in the manifest. Shared glyph definitions within each SVG reduce repetition. Runtime scene screenshots are separate browser captures.</p>
+<p><code>docs/reference/manifest.json</code> records signature, shape, arguments, result type, section/group, asset path, syntax and SHA-256 for each of 560 visuals. Regeneration checks compare exact output bytes. Curated descriptions explain behavior by compact family; tests require every approved group to have prose and every visible opcode to occur exactly once.</p>
+<p>Static Markdown embeds SVGs for GitHub readers. Generated HTML adds responsive light/dark presentation and horizontal scrolling for long block signatures. The text syntax in the manifest can be used in TurboWarp-compatible scratchblocks/extended-Markdown contexts, while SVGs remain the authoritative portable rendering. Runtime host theme fonts/metrics can differ slightly from the documented pinned font.</p>
+<h2 id="source-layout-and-licensing">Source layout and licensing</h2>
+<ul>
+<li><code>assets/branding/</code>: maintained SVG icon sources; <code>scripts/build-brand-assets.mjs</code> embeds them statically.</li>
+<li><code>scripts/docs/</code>: metadata adapter, renderer and curated family descriptions.</li>
+<li><code>docs/*.md</code>: authored chapters; reference Markdown/HTML and SVGs are generated.</li>
+<li><code>scripts/examples/</code>: original teaching project definitions and small GLB/WAV/SVG asset generators.</li>
+<li><code>scripts/build-examples.mjs</code>: standard Scratch project graphs, reproducible ZIPs, workflow stacks and optional Packager exports.</li>
+</ul>
+<p>See <a href="../THIRD_PARTY_LICENSES.md">third-party licenses</a> for scratchblocks, fontkit, Roboto and the supporting documentation tools. No documentation dependency is imported by production <code>src/entry.js</code>.</p>
+<h2 id="knife-example">Knife example</h2>
+<p><code>npm run examples</code> also rebuilds First-Person Knife from <code>examples/first-person-knife/source/</code>. Its generator never reads the purchased rig. The project can optionally select it at runtime. <code>npm run knife:check</code> checks that the SB3 matches the maintained generator and current extension bundle.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

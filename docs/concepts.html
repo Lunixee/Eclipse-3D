@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scene concepts and conventions · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="scene-concepts-and-conventions">Scene concepts and conventions</h1>
+<h2 id="coordinates-and-indices">Coordinates and indices</h2>
+<p>World coordinates are right-handed: +X right, +Y up, and an unrotated camera/resource looks along -Z. Positions and dimensions use world units; choose a consistent scale for your project. Public Euler angles and FOV are degrees. Scale components multiply geometry dimensions. Local movement uses the current normalized right/up/forward basis.</p>
+<p>Stage conversion uses logical Scratch stage coordinates, centered on the stage with +Y up. It is independent of physical render pixels, DPR and render scale. Use projection/picking blocks to move between stage and world; do not equate one world unit to one screen pixel.</p>
+<p>Public instance, frame, model metadata, skin, joint, clip and terrain-grid indices are one-based. The older <code>setModelNodePosition</code> command deliberately retains its <strong>zero-based NODE</strong> argument; subtract 1 from a metadata node index when using that command. Geometry JSON indices are also zero-based. An absent indexed reference commonly returns 0 or empty text. The registered menu labels describe property-specific units. <code>animationProgress</code> is a 0–1 fraction; the property labeled animation progress % is percent.</p>
+<p>Color pickers take sRGB hex colors. PBR lighting uses linear values internally; custom <code>color</code> uniforms are linear RGB after hex conversion. Raw vector uniforms do not perform sRGB conversion. Texture color-space controls distinguish color images from linear data maps. Opacity usually uses percent where the block says <code>%</code>; effect alpha-mode cutoff is a 0–1 threshold. Effect-tint brightness is percent, while the numeric brightness family uses a factor.</p>
+<h2 id="names-and-ownership">Names and ownership</h2>
+<p>Names select retained resources. Use nonempty, deliberate names and do not repeatedly create the same name in a frame loop. Shared asset names differ from scene instance names. Choose the correct namespace in a block: a material setter does not address an object unless its signature explicitly says so.</p>
+<table>
+<thead>
+<tr>
+<th>Owner</th>
+<th>Resources</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Engine</td>
+<td>Scenes, shared geometry/model assets, textures, materials, environments, LOD definitions, targets, decoded audio/cache</td>
+</tr>
+<tr>
+<td>Scene</td>
+<td>Cameras, cube/groups, model instances, local-light instances, effects, terrain, text, tweens, optional physics world and audio sources</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td>Root transform, visibility/tint, model pose/playback, LOD selection</td>
+</tr>
+</tbody></table>
+<p>Shared consumers hold references. Delete scene instances before model assets, then release geometry/materials/textures once their borrowers are gone. Deleting a scene releases its own consumers; it does not arbitrarily delete shared assets still used by another scene. Existence probes are useful when a project intentionally allows optional resources.</p>
+<h2 id="lifecycle">Lifecycle</h2>
+<table>
+<thead>
+<tr>
+<th>Action/state</th>
+<th>Rendering</th>
+<th>Simulation</th>
+<th>Audio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Extension loaded, no Green Flag</td>
+<td>Explicit static edits may redraw</td>
+<td>Stopped</td>
+<td>No automatic playback</td>
+</tr>
+<tr>
+<td>Green Flag</td>
+<td>Normal presentation</td>
+<td>Active scene advances once per update</td>
+<td>Explicit play/resume remains required</td>
+</tr>
+<tr>
+<td>Runtime Pause</td>
+<td>Static redraw may occur if something changes</td>
+<td>Frozen, no catch-up on resume</td>
+<td>Interrupted voices held; eligible voices resume on unpause</td>
+</tr>
+<tr>
+<td>Stop All</td>
+<td>Last image remains</td>
+<td>Frozen, timing debt cleared</td>
+<td>Voices held; a later explicit play/resume is required</td>
+</tr>
+<tr>
+<td>Clicked palette/manual stack</td>
+<td>Static commands still work</td>
+<td>Does not authorize simulation</td>
+<td>Cannot wake stopped playback</td>
+</tr>
+<tr>
+<td>Extra camera/target render</td>
+<td>Another view of retained state</td>
+<td>Does not advance time again</td>
+<td>No extra audio update loop</td>
+</tr>
+</tbody></table>
+<p>Green Flag’s <code>PROJECT_START</code> event authorizes simulation. <code>PROJECT_RUN_START</code> can mean a manually clicked stack and does not. Only the active scene simulates. Switching scenes pauses old-scene sources. After a pause/stop, elapsed wall time is not replayed as a large simulation step.</p>
+<p><code>resetEngine</code> releases logical project resources and clears the output while retaining a usable backend. It is suitable at the beginning of repeatable setup. <code>disposeEngine</code> also tears down the backend and owned audio context; initialize again before rendering. Renderer replacement preserves CPU scene definitions and optional subsystem ownership. Command-generated target contents must be replayed after GPU recreation.</p>
+<h2 id="state-queries-and-errors">State queries and errors</h2>
+<p>Typed property families read a fixed allowlist of retained state. They do not expose arbitrary object paths, create missing resources or start optional systems. Numbers remain finite; text stays text; Boolean blocks return true/false. Missing/invalid resources typically return <code>0</code>, <code>&quot;&quot;</code> or <code>false</code> and record a diagnostic. Load-state reporters explicitly distinguish <code>missing</code> from <code>loading</code>, <code>ready</code> and <code>error</code>. Existence probes are quiet and return false for absent names.</p>
+<p>Commands validate before publishing changes. Clear the last error, execute one suspect operation, then read the last error to isolate failures. For asynchronous loads also read the resource state/error, because a failure does not create a ready resource.</p>
+<h2 id="retained-work">Retained work</h2>
+<p>Static resources stay allocated and cached. Transform/material/source edits mark their relevant state dirty; the next update/render performs the required work. Shader source/schema changes differ from uniform edits. Texture changes differ from camera movement. Creating, deleting or resizing a resource may allocate; ordinary state reporters should not.</p>
+<p><a href="reference/index.html">Visual reference</a> · <a href="performance.html">Performance</a></p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

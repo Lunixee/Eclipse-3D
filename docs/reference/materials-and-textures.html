@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Materials &amp; Textures · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="materials-andamp-textures">Materials &amp; Textures</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#materials-assignment-and-surface-state">Materials, assignment and surface state</a></li>
+<li><a href="#pbr-and-shader-preparation">PBR and shader preparation</a></li>
+<li><a href="#textures-and-sampling">Textures and sampling</a></li>
+</ul>
+<h2 id="materials-assignment-and-surface-state">Materials, assignment and surface state</h2>
+<p>Create a named <code>unlit</code>, <code>basic-lit</code> or <code>pbr</code> material and assign it to resources. Cloning makes independent material settings while retaining referenced textures. <code>setMaterialColor</code> is the older resource-targeted convenience operation; <code>setMaterialBaseColor</code> addresses a named shared material. Editing a shared material affects all of its users.</p>
+<p>Base color multiplies texture and tint. Emissive color/intensity adds surface emission; it does not create a light. Opacity and alpha cutoff use percent in the material blocks. Alpha mode selects opaque, cutout or blended behavior. Side selects front/back/double rendering. Blend selection establishes sensible depth-write defaults; an explicit depth-write block can override them. Transparent instances are not globally depth-sorted.</p>
+<p>Depth test determines visibility against depth already drawn; depth write determines whether later draws see this surface. Render order sorts within the mesh opaque/cutout or blended queue. Polygon offsets help coplanar surfaces; they are not a substitute for appropriate geometry or clipping planes. Effects remain a separate render phase. Custom materials use their shader-defined discard instead of the ordinary cutout path.</p>
+<p>PBR environment intensity/yaw modify material IBL binding without rebuilding the environment; background is unaffected. Material number/text/Boolean families expose the selected retained factor, texture name, render-state flag or color. PBR-only fields require a PBR material. Users count references; detach or delete consumers before deleting a material. See <a href="../../examples/materials-lighting/README.html">Materials &amp; Lighting example</a>.</p>
+<h3 id="creatematerial">createMaterial</h3>
+<p><img src="../assets/blocks/createMaterial.svg" alt="create material [MATERIAL] type [TYPE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TYPE</code></td>
+<td>string; <code>basic-lit</code></td>
+<td><code>unlit</code>, <code>basic-lit</code>, <code>pbr</code></td>
+</tr>
+</tbody></table>
+<h3 id="clonematerial">cloneMaterial</h3>
+<p><img src="../assets/blocks/cloneMaterial.svg" alt="clone material [SOURCE] as [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface copy</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setresourcematerial">setResourceMaterial</h3>
+<p><img src="../assets/blocks/setResourceMaterial.svg" alt="set [RESOURCE] material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialcolor">setMaterialColor</h3>
+<p><img src="../assets/blocks/setMaterialColor.svg" alt="set [NAME] material color [COLOR]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#3388ee</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialbasecolor">setMaterialBaseColor</h3>
+<p><img src="../assets/blocks/setMaterialBaseColor.svg" alt="set material [MATERIAL] base color [COLOR]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialopacity">setMaterialOpacity</h3>
+<p><img src="../assets/blocks/setMaterialOpacity.svg" alt="set material [MATERIAL] opacity [OPACITY] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPACITY</code></td>
+<td>number; <code>100</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialtexture">setMaterialTexture</h3>
+<p><img src="../assets/blocks/setMaterialTexture.svg" alt="set material [MATERIAL] texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialemissive">setMaterialEmissive</h3>
+<p><img src="../assets/blocks/setMaterialEmissive.svg" alt="set material [MATERIAL] emissive color [COLOR] intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COLOR</code></td>
+<td>color; <code>#000000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialemissiveintensity">setMaterialEmissiveIntensity</h3>
+<p><img src="../assets/blocks/setMaterialEmissiveIntensity.svg" alt="set material [MATERIAL] emissive intensity [INTENSITY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>INTENSITY</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialdoublesided">setMaterialDoubleSided</h3>
+<p><img src="../assets/blocks/setMaterialDoubleSided.svg" alt="set material [MATERIAL] double sided [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>off</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialdepthtest">setMaterialDepthTest</h3>
+<p><img src="../assets/blocks/setMaterialDepthTest.svg" alt="set material [MATERIAL] depth test [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialdepthwrite">setMaterialDepthWrite</h3>
+<p><img src="../assets/blocks/setMaterialDepthWrite.svg" alt="set material [MATERIAL] depth write [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialalphamode">setMaterialAlphaMode</h3>
+<p><img src="../assets/blocks/setMaterialAlphaMode.svg" alt="set material [MATERIAL] alpha mode [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>opaque</code></td>
+<td><code>opaque</code>, <code>cutout</code>, <code>blend</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialalphacutoff">setMaterialAlphaCutoff</h3>
+<p><img src="../assets/blocks/setMaterialAlphaCutoff.svg" alt="set material [MATERIAL] alpha cutoff [CUTOFF] %"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CUTOFF</code></td>
+<td>number; <code>50</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialside">setMaterialSide</h3>
+<p><img src="../assets/blocks/setMaterialSide.svg" alt="set material [MATERIAL] side [SIDE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SIDE</code></td>
+<td>string; <code>front</code></td>
+<td><code>front</code>, <code>back</code>, <code>double</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialblendmode">setMaterialBlendMode</h3>
+<p><img src="../assets/blocks/setMaterialBlendMode.svg" alt="set material [MATERIAL] blend [MODE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td>string; <code>opaque</code></td>
+<td><code>opaque</code>, <code>normal</code>, <code>additive</code></td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialrendernumber">setMaterialRenderNumber</h3>
+<p><img src="../assets/blocks/setMaterialRenderNumber.svg" alt="set material [MATERIAL] render [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>renderOrder</code></td>
+<td><code>renderOrder</code>, <code>polygonOffsetFactor</code>, <code>polygonOffsetUnits</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setmaterialenvironmentfactor">setMaterialEnvironmentFactor</h3>
+<p><img src="../assets/blocks/setMaterialEnvironmentFactor.svg" alt="set PBR material [MATERIAL] environment [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>intensity</code></td>
+<td><code>intensity</code>, <code>rotation</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="materialexists">materialExists</h3>
+<p><img src="../assets/blocks/materialExists.svg" alt="material [MATERIAL] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="materialofresource">materialOfResource</h3>
+<p><img src="../assets/blocks/materialOfResource.svg" alt="material of [RESOURCE]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="materialtype">materialType</h3>
+<p><img src="../assets/blocks/materialType.svg" alt="type of material [MATERIAL]"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="materialusers">materialUsers</h3>
+<p><img src="../assets/blocks/materialUsers.svg" alt="material [MATERIAL] users"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="materialnumber">materialNumber</h3>
+<p><img src="../assets/blocks/materialNumber.svg" alt="material [MATERIAL] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>opacity %</code></td>
+<td><code>opacity %</code>, <code>alpha cutoff %</code>, <code>emissive intensity</code>, <code>normal strength</code>, <code>ao strength</code>, <code>render order</code>, <code>polygon offset factor</code>, <code>polygon offset units</code>, <code>environment intensity</code>, <code>environment rotation degrees</code></td>
+</tr>
+</tbody></table>
+<h3 id="materialtext">materialText</h3>
+<p><img src="../assets/blocks/materialText.svg" alt="material [MATERIAL] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>side</code></td>
+<td><code>side</code>, <code>alpha mode</code>, <code>blend</code>, <code>shader</code>, <code>base color</code>, <code>emissive color</code>, <code>base texture</code>, <code>normal texture</code>, <code>metallic texture</code>, <code>roughness texture</code>, <code>metallic roughness texture</code>, <code>emissive texture</code>, <code>ambient occlusion texture</code></td>
+</tr>
+</tbody></table>
+<h3 id="materialboolean">materialBoolean</h3>
+<p><img src="../assets/blocks/materialBoolean.svg" alt="material [MATERIAL] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>depth test</code></td>
+<td><code>depth test</code>, <code>depth write</code>, <code>double sided</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletematerial">deleteMaterial</h3>
+<p><img src="../assets/blocks/deleteMaterial.svg" alt="delete material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>surface</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="pbr-and-shader-preparation">PBR and shader preparation</h2>
+<p>Metallic and roughness are metallic/roughness PBR factors; normal and AO strengths scale their maps. Metallic/roughness data and normal/AO maps are linear data, while base/emissive color textures normally use sRGB. The combined metallic-roughness map follows glTF channel conventions. Removing a map releases its reference; it does not delete the shared texture.</p>
+<p>PBR metallic and roughness reporters return factors. <code>warmMaterialShader</code> prepares the shader variant on demand so its first compile can occur during loading. Warmup cannot guarantee every later material/state variant is already compiled. Factor/uniform changes should not be treated as new shader sources. Use shader compile and program-switch counters to confirm the behavior in a representative scene.</p>
+<h3 id="setpbrfactor">setPbrFactor</h3>
+<p><img src="../assets/blocks/setPbrFactor.svg" alt="set PBR material [MATERIAL] [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>metallic</code></td>
+<td><code>metallic</code>, <code>roughness</code>, <code>normal strength</code>, <code>AO strength</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setpbrmaptexture">setPbrMapTexture</h3>
+<p><img src="../assets/blocks/setPbrMapTexture.svg" alt="set PBR material [MATERIAL] [MAP] texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>metal</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MAP</code></td>
+<td>string; <code>normal</code></td>
+<td><code>normal</code>, <code>metallic</code>, <code>roughness</code>, <code>metallic-roughness</code>, <code>emissive</code>, <code>ambient-occlusion</code></td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>surface map</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="removepbrmaptexture">removePbrMapTexture</h3>
+<p><img src="../assets/blocks/removePbrMapTexture.svg" alt="remove [MAP] texture from PBR material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MAP</code></td>
+<td>string; <code>normal</code></td>
+<td><code>normal</code>, <code>metallic</code>, <code>roughness</code>, <code>metallic-roughness</code>, <code>emissive</code>, <code>ambient-occlusion</code></td>
+</tr>
+<tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>metal</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="pbrmetallic">pbrMetallic</h3>
+<p><img src="../assets/blocks/pbrMetallic.svg" alt="metallic of PBR material [MATERIAL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>metal</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="pbrroughness">pbrRoughness</h3>
+<p><img src="../assets/blocks/pbrRoughness.svg" alt="roughness of PBR material [MATERIAL]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>metal</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="warmmaterialshader">warmMaterialShader</h3>
+<p><img src="../assets/blocks/warmMaterialShader.svg" alt="prepare shader for material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>metal</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="textures-and-sampling">Textures and sampling</h2>
+<p>Generated textures need no external files. URL/data-URI textures load asynchronously, costumes use the current Scratch target asset, and file loading requires an accepted user interaction. Check state/error and dimensions before relying on an external texture. The named texture can be shared by materials, effects, environments and custom samplers.</p>
+<p>UV offset/repeat/rotation are retained sampling transforms. Minification filters may use mipmaps; magnification supports nearest/linear only. Wrap U/V independently with clamp/repeat/mirror. Mipmap, flip-Y, anisotropy and color-space controls affect texture interpretation/sampling. Mark color images sRGB and data maps linear; changing color space is not an image-conversion tool. Device limits may cap effective anisotropy.</p>
+<p>The typed filter/wrap/Boolean blocks expose validated options; <code>setTextureOption</code> remains available for its existing option contract. Texture reporters return dimensions in pixels, user count, settings, load state or failure text. Deletion rejects textures retained by consumers, including render-target use. Unchanged frames reuse GPU storage rather than decoding or uploading again.</p>
+<h3 id="creategeneratedtexture">createGeneratedTexture</h3>
+<p><img src="../assets/blocks/createGeneratedTexture.svg" alt="create texture [TEXTURE] preset [PRESET] color [PRIMARY] second [SECONDARY] size [SIZE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PRESET</code></td>
+<td>string; <code>checker</code></td>
+<td><code>solid</code>, <code>checker</code></td>
+</tr>
+<tr>
+<td><code>PRIMARY</code></td>
+<td>color; <code>#ffffff</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SECONDARY</code></td>
+<td>color; <code>#202020</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SIZE</code></td>
+<td>number; <code>64</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="loadtexturefromsource">loadTextureFromSource</h3>
+<p><img src="../assets/blocks/loadTextureFromSource.svg" alt="load texture [TEXTURE] from URL or data URI [SOURCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SOURCE</code></td>
+<td>string; <code>data:image/png;base64,...</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="loadtexturefromcostume">loadTextureFromCostume</h3>
+<p><img src="../assets/blocks/loadTextureFromCostume.svg" alt="load texture [TEXTURE] from costume [COSTUME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>costumeTexture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>COSTUME</code></td>
+<td>string; <code>costume1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="loadtexturefromfile">loadTextureFromFile</h3>
+<p><img src="../assets/blocks/loadTextureFromFile.svg" alt="load texture [TEXTURE] from selected image file"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>localTexture</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setresourcetexture">setResourceTexture</h3>
+<p><img src="../assets/blocks/setResourceTexture.svg" alt="set [RESOURCE] texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RESOURCE</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="settextureoption">setTextureOption</h3>
+<p><img src="../assets/blocks/setTextureOption.svg" alt="set texture [TEXTURE] option [OPTION] to [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPTION</code></td>
+<td>string; <code>min-filter</code></td>
+<td><code>min-filter</code>, <code>mag-filter</code>, <code>wrap-u</code>, <code>wrap-v</code>, <code>mipmaps</code>, <code>anisotropy</code>, <code>color-space</code>, <code>flip-y</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>string; <code>linear-mipmap-linear</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="settextureuv">setTextureUV</h3>
+<p><img src="../assets/blocks/setTextureUV.svg" alt="set texture [TEXTURE] UV offset [OFFSET_X] [OFFSET_Y] repeat [REPEAT_X] [REPEAT_Y] rotation [ROTATION]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OFFSET_X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OFFSET_Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>REPEAT_X</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>REPEAT_Y</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ROTATION</code></td>
+<td>angle; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="settexturefilter">setTextureFilter</h3>
+<p><img src="../assets/blocks/setTextureFilter.svg" alt="set texture [TEXTURE] [FILTER] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FILTER</code></td>
+<td>string; <code>min-filter</code></td>
+<td><code>min-filter</code>, <code>mag-filter</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>string; <code>linear</code></td>
+<td><code>nearest</code>, <code>linear</code>, <code>nearest-mipmap-nearest</code>, <code>linear-mipmap-nearest</code>, <code>nearest-mipmap-linear</code>, <code>linear-mipmap-linear</code></td>
+</tr>
+</tbody></table>
+<h3 id="settexturewrap">setTextureWrap</h3>
+<p><img src="../assets/blocks/setTextureWrap.svg" alt="set texture [TEXTURE] wrap [AXIS] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>u</code></td>
+<td><code>u</code>, <code>v</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>string; <code>repeat</code></td>
+<td><code>clamp</code>, <code>repeat</code>, <code>mirror</code></td>
+</tr>
+</tbody></table>
+<h3 id="settexturebooleanoption">setTextureBooleanOption</h3>
+<p><img src="../assets/blocks/setTextureBooleanOption.svg" alt="set texture [TEXTURE] [OPTION] [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OPTION</code></td>
+<td>string; <code>mipmaps</code></td>
+<td><code>mipmaps</code>, <code>flip-y</code></td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="settextureanisotropy">setTextureAnisotropy</h3>
+<p><img src="../assets/blocks/setTextureAnisotropy.svg" alt="set texture [TEXTURE] anisotropy [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="settexturecolorspace">setTextureColorSpace</h3>
+<p><img src="../assets/blocks/setTextureColorSpace.svg" alt="set texture [TEXTURE] color space [SPACE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>SPACE</code></td>
+<td>string; <code>srgb</code></td>
+<td><code>srgb</code>, <code>linear</code></td>
+</tr>
+</tbody></table>
+<h3 id="textureexists">textureExists</h3>
+<p><img src="../assets/blocks/textureExists.svg" alt="texture [TEXTURE] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="texturestate">textureState</h3>
+<p><img src="../assets/blocks/textureState.svg" alt="texture [TEXTURE] state"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="textureerror">textureError</h3>
+<p><img src="../assets/blocks/textureError.svg" alt="texture [TEXTURE] error"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="texturedimension">textureDimension</h3>
+<p><img src="../assets/blocks/textureDimension.svg" alt="texture [TEXTURE] [DIMENSION]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DIMENSION</code></td>
+<td>string; <code>width</code></td>
+<td><code>width</code>, <code>height</code></td>
+</tr>
+</tbody></table>
+<h3 id="textureusers">textureUsers</h3>
+<p><img src="../assets/blocks/textureUsers.svg" alt="texture [TEXTURE] users"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>checker</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="texturenumber">textureNumber</h3>
+<p><img src="../assets/blocks/textureNumber.svg" alt="texture [TEXTURE] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>anisotropy</code></td>
+<td><code>anisotropy</code>, <code>offset u</code>, <code>offset v</code>, <code>repeat u</code>, <code>repeat v</code>, <code>rotation degrees</code></td>
+</tr>
+</tbody></table>
+<h3 id="texturetext">textureText</h3>
+<p><img src="../assets/blocks/textureText.svg" alt="texture [TEXTURE] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>min filter</code></td>
+<td><code>min filter</code>, <code>mag filter</code>, <code>wrap u</code>, <code>wrap v</code>, <code>color space</code></td>
+</tr>
+</tbody></table>
+<h3 id="textureboolean">textureBoolean</h3>
+<p><img src="../assets/blocks/textureBoolean.svg" alt="texture [TEXTURE] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>texture</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>mipmaps</code></td>
+<td><code>mipmaps</code>, <code>flip y</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletetexture">deleteTexture</h3>
+<p><img src="../assets/blocks/deleteTexture.svg" alt="delete texture [TEXTURE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEXTURE</code></td>
+<td>string; <code>image</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

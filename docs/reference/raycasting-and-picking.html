@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Raycasting &amp; Picking · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="raycasting-andamp-picking">Raycasting &amp; Picking</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#ray-queries-and-typed-results">Ray queries and typed results</a></li>
+<li><a href="#stage-world-projection">Stage/world projection</a></li>
+</ul>
+<h2 id="ray-queries-and-typed-results">Ray queries and typed results</h2>
+<p>Cast a world ray from an origin/direction, a ray through a logical stage point, or the camera’s forward ray. Choose maximum distance/filter and backface policy. Only the cast command performs a query; reporters read the stable last-hit record and do not recast.</p>
+<p>Read <code>rayHit</code> before numeric/text fields. Number fields include distance/position/normal and indices; text fields include object/kind/material/precision. No hit yields typed false/zero/empty values. Static mesh/cube/terrain tests can be exact; skinned meshes deliberately report conservative current-pose bounds precision. Shader-deformed geometry is tested at its undeformed CPU positions.</p>
+<p>Queries use bounds/spatial candidates and shared lazy acceleration for immutable geometry. They do not upload, render, compile shaders or rebuild the entire index merely because the camera moved. Invisible physics-only bodies are outside this visual ray API. Cast only when input/gameplay requires it.</p>
+<h3 id="setraycastbackface">setRaycastBackface</h3>
+<p><img src="../assets/blocks/setRaycastBackface.svg" alt="set raycast backfaces [POLICY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POLICY</code></td>
+<td>string; <code>both</code></td>
+<td><code>both</code>, <code>front</code>, <code>back</code></td>
+</tr>
+</tbody></table>
+<h3 id="castworldray">castWorldRay</h3>
+<p><img src="../assets/blocks/castWorldRay.svg" alt="cast ray from [X] [Y] [Z] direction [DX] [DY] [DZ] distance [DISTANCE] filter [FILTER]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DX</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DY</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DZ</code></td>
+<td>number; <code>-1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FILTER</code></td>
+<td>string; <code>all</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="caststageray">castStageRay</h3>
+<p><img src="../assets/blocks/castStageRay.svg" alt="pick from camera [CAMERA] at stage x [X] y [Y] distance [DISTANCE] filter [FILTER]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FILTER</code></td>
+<td>string; <code>all</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="castcameraforwardray">castCameraForwardRay</h3>
+<p><img src="../assets/blocks/castCameraForwardRay.svg" alt="cast camera [CAMERA] forward ray distance [DISTANCE] filter [FILTER]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1000</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FILTER</code></td>
+<td>string; <code>all</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rayhit">rayHit</h3>
+<p><img src="../assets/blocks/rayHit.svg" alt="ray hit?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<h3 id="rayhitnumber">rayHitNumber</h3>
+<p><img src="../assets/blocks/rayHitNumber.svg" alt="ray hit [FIELD] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FIELD</code></td>
+<td>string; <code>distance</code></td>
+<td><code>distance</code>, <code>x</code>, <code>y</code>, <code>z</code>, <code>normal x</code>, <code>normal y</code>, <code>normal z</code>, <code>triangle</code>, <code>primitive</code>, <code>geometry ID</code></td>
+</tr>
+</tbody></table>
+<h3 id="rayhittext">rayHitText</h3>
+<p><img src="../assets/blocks/rayHitText.svg" alt="ray hit [FIELD] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FIELD</code></td>
+<td>string; <code>object</code></td>
+<td><code>object</code>, <code>kind</code>, <code>node</code>, <code>precision</code>, <code>material</code></td>
+</tr>
+</tbody></table>
+<h2 id="stage-world-projection">Stage/world projection</h2>
+<p>Project a world point into logical Scratch stage coordinates using the named camera, or query whether it is in front/visible. Logical stage coordinates remain independent of DPR, internal render scale, post processing and render-target dimensions.</p>
+<p>Use stage-ray direction components with a camera origin for interaction. World-to-stage numeric components are meaningful only when the point is in front and within the intended projection; check the Boolean reporters before positioning UI markers. These helpers inspect cached camera matrices and do not perform geometry picking. Resource coordinate conversion, for points versus directions, is in World Utilities.</p>
+<h3 id="worldtostagevalue">worldToStageValue</h3>
+<p><img src="../assets/blocks/worldToStageValue.svg" alt="world [X] [Y] [Z] from camera [CAMERA] as [VALUE]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>-5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>string; <code>stage x</code></td>
+<td><code>stage x</code>, <code>stage y</code>, <code>depth</code>, <code>NDC x</code>, <code>NDC y</code>, <code>NDC z</code></td>
+</tr>
+</tbody></table>
+<h3 id="worldpointinfront">worldPointInFront</h3>
+<p><img src="../assets/blocks/worldPointInFront.svg" alt="world [X] [Y] [Z] in front of camera [CAMERA]?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>-5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="worldpointvisible">worldPointVisible</h3>
+<p><img src="../assets/blocks/worldPointVisible.svg" alt="world [X] [Y] [Z] visible by camera [CAMERA]?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>-5</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="stageraydirection">stageRayDirection</h3>
+<p><img src="../assets/blocks/stageRayDirection.svg" alt="camera [CAMERA] stage x [X] y [Y] ray direction [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>z</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

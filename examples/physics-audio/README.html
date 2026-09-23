@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Physics &amp; Audio · Eclipse 3D</title><link rel="icon" href="../../docs/../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../../docs/site.css"></head><body><header><img src="../../docs/../assets/branding/eclipse-icon.svg" alt=""><a href="../../docs/index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../../docs/index.html">Overview</a><a href="../../docs/getting-started.html">Quick start</a><a href="../../docs/reference/index.html">Block reference</a><a href="../../docs/workflows.html">Workflows</a><a href="../../docs/../examples/index.html">Examples</a><a href="../../docs/compatibility.html">Compatibility</a></nav><h1 id="physics-andamp-audio">Physics &amp; Audio</h1>
+<p>An attached dynamic box falls onto a static floor while carrying a quiet positional pulse.</p>
+<p><img src="screenshot.png" alt="A cyan box dropping and bouncing above the plinth, with a soft repeating tone. Stop All holds physics and audio. Collision dimensions are explicit and independent of mesh scale."></p>
+<h2 id="run">Run</h2>
+<ol>
+<li>Open <a href="physics-audio.sb3">physics-audio.sb3</a> in TurboWarp Desktop or the TurboWarp web editor.</li>
+<li>Approve the embedded custom extension when prompted. It is the self-contained Eclipse 3D build; the compatibility ID is <code>turbo3d</code>.</li>
+<li>Click Green Flag. Stop All preserves the image and freezes simulation. Click Green Flag again to reset the example.</li>
+</ol>
+<p>The project embeds its extension and assets. No development server or benchmark harness is required. A host may require explicit approval for unsandboxed data-URL extensions. See <a href="../../docs/getting-started.html">loading instructions</a>.</p>
+<h2 id="observe-and-change">Observe and change</h2>
+<p>A cyan box dropping and bouncing above the plinth, with a soft repeating tone. Stop All holds physics and audio. Collision dimensions are explicit and independent of mesh scale.</p>
+<p>Click Green Flag to authorize simulation/audio. The box resets every three seconds; gravity moves it between resets. Volume 0.25 is a factor. Move the camera to hear listener-relative attenuation. If blocked by autoplay, click the Stage to unlock and resume the pulse.</p>
+<h2 id="script">Script</h2>
+<p><img src="../../docs/assets/workflows/physics-audio.svg" alt="Complete Physics &amp; Audio script"></p>
+<p>The script visual and SB3 are generated from the same maintained example definition. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.</p>
+<p><a href="../index.html">All examples</a> · <a href="../../docs/reference/index.html">Block reference</a> · <a href="../../scripts/examples/projects.mjs">Source definitions</a></p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../../docs/generation.html">Sources and reproduction</a>.</footer></main></body></html>

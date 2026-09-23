@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Compatibility and API stability · Eclipse 3D</title><link rel="icon" href="../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="site.css"></head><body><header><img src="../assets/branding/eclipse-icon.svg" alt=""><a href="index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="index.html">Overview</a><a href="getting-started.html">Quick start</a><a href="reference/index.html">Block reference</a><a href="workflows.html">Workflows</a><a href="../examples/index.html">Examples</a><a href="compatibility.html">Compatibility</a></nav><h1 id="compatibility-and-api-stability">Compatibility and API stability</h1>
+<p><strong>Eclipse 3D was formerly Turbo3D. Existing Turbo3D projects remain compatible.</strong></p>
+<p>The extension ID is <code>turbo3d</code>. Serialized opcodes, existing argument names/defaults, menu IDs/values, block shapes and hidden aliases are preserved. No project migration is needed.</p>
+<table>
+<thead>
+<tr>
+<th>API v19 inventory</th>
+<th align="right">Before local import</th>
+<th align="right">Current</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Registered executable blocks</td>
+<td align="right">581</td>
+<td align="right">582</td>
+</tr>
+<tr>
+<td>Visible blocks</td>
+<td align="right">559</td>
+<td align="right">560</td>
+</tr>
+<tr>
+<td>Independent visible blocks</td>
+<td align="right">475</td>
+<td align="right">476</td>
+</tr>
+<tr>
+<td>Canonical family blocks</td>
+<td align="right">84</td>
+<td align="right">84</td>
+</tr>
+<tr>
+<td>Hidden compatibility aliases</td>
+<td align="right">22</td>
+<td align="right">22</td>
+</tr>
+<tr>
+<td>Removed / unresolved</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+<p>The addition is <code>importModelFile</code>, <strong>import 3D model file as [MODEL]</strong>. The frozen v16, v18 and v19 fixtures remain unchanged. Labels and separators are not executable blocks. See <a href="../BLOCKS.md">full inventory</a>.</p>
+<h2 id="host-requirements">Host requirements</h2>
+<p>Use unsandboxed TurboWarp with WebGL 2. The Scratch website, sandboxed extensions and WebGL 1 are unsupported. The default separate-canvas backend uses its own WebGL 2 context and a Scratch bitmap skin. Shared WebGL 2 is an advanced option coupled to private scratch-render hooks; see <a href="../RENDERER_BACKENDS.md">backend contracts</a>.</p>
+<p>Compiler targets are Chrome 100, Firefox 100 and Safari 15 syntax. Actual compatibility also depends on the GPU, browser and host wrapper. A wrapper can disable file selection or audio, even when rendering works.</p>
+<p>Packager can bake the extension and embedded assets into HTML. Network assets still need network access. Locally selected model files remain runtime inputs; they are not baked into the project. See <a href="model-import.html">model importing</a> and <a href="getting-started.html">loading</a>.</p>
+<p>The separate backend rebuilds its GPU resources after context restoration. The shared backend cannot reconstruct host-owned resources and requires host reinitialization after context loss. Green Flag starts simulation; Pause and Stop freeze it while explicit static edits may redraw. See <a href="concepts.html#lifecycle">lifecycle</a>.</p>
+<p>Bundle paths, <code>Turbo3DExtension</code>, <code>extensionURLs.turbo3d</code>, shader names beginning <code>t3d_</code> and internal resource namespaces intentionally retain their compatibility names.</p>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="generation.html">Sources and reproduction</a>.</footer></main></body></html>

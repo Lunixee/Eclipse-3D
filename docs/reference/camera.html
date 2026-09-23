@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Camera · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="camera">Camera</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#camera-selection-and-projection">Camera selection and projection</a></li>
+<li><a href="#camera-movement-and-basis">Camera movement and basis</a></li>
+</ul>
+<h2 id="camera-selection-and-projection">Camera selection and projection</h2>
+<p>A perspective camera is a scene resource with a name, vertical field of view, near plane and far plane. Create it before selecting it or changing projection. Move it with the shared position/rotation blocks in Models &amp; Objects. <code>lookCameraAt</code> aims its forward axis at a world point; coincident targets preserve a valid orientation.</p>
+<p>FOV uses degrees (clamped to 1–179). Near/far clipping uses positive world-space distance; keep far greater than near. An unnecessarily large far/near ratio wastes depth precision and can worsen z-fighting. <code>cameraNumber</code> reports the selected FOV or clipping distance, rather than a matrix. Selecting a camera also selects the positional-audio listener. Projection changes invalidate the view without rebuilding geometry.</p>
+<h3 id="createcamera">createCamera</h3>
+<p><img src="../assets/blocks/createCamera.svg" alt="create camera [NAME] field of view [FOV]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FOV</code></td>
+<td>number; <code>60</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setactivecamera">setActiveCamera</h3>
+<p><img src="../assets/blocks/setActiveCamera.svg" alt="set active camera [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="lookcameraat">lookCameraAt</h3>
+<p><img src="../assets/blocks/lookCameraAt.svg" alt="point camera [CAMERA] at world [X] [Y] [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setcamerafov">setCameraFov</h3>
+<p><img src="../assets/blocks/setCameraFov.svg" alt="set camera [CAMERA] FOV [FOV]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FOV</code></td>
+<td>number; <code>60</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="changecamerafov">changeCameraFov</h3>
+<p><img src="../assets/blocks/changeCameraFov.svg" alt="change camera [CAMERA] FOV by [AMOUNT]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AMOUNT</code></td>
+<td>number; <code>5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setcameraclip">setCameraClip</h3>
+<p><img src="../assets/blocks/setCameraClip.svg" alt="set camera [CAMERA] [PLANE] clip [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PLANE</code></td>
+<td>string; <code>near</code></td>
+<td><code>near</code>, <code>far</code></td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>0.1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="cameranumber">cameraNumber</h3>
+<p><img src="../assets/blocks/cameraNumber.svg" alt="camera [CAMERA] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>fov degrees</code></td>
+<td><code>fov degrees</code>, <code>near clip</code>, <code>far clip</code></td>
+</tr>
+</tbody></table>
+<h2 id="camera-movement-and-basis">Camera movement and basis</h2>
+<p>Local camera movement uses its current right, up and forward basis; positive forward moves along the viewing direction. Rotation inputs are degrees. Use the axis menus on basis and point-ahead reporters to assemble a vector without JSON parsing. <code>pointAheadOfCamera</code> returns one world coordinate at the supplied distance, including the camera position.</p>
+<p>Basis vectors are normalized. Keep world translation separate from local motion when implementing orbit or fly controls. These are command-driven edits and cached CPU queries: they do not cast rays or render a frame on their own. Stage/world projection helpers are in Raycasting &amp; Picking.</p>
+<h3 id="movecameralocal">moveCameraLocal</h3>
+<p><img src="../assets/blocks/moveCameraLocal.svg" alt="move camera [CAMERA] [BASIS] by [DISTANCE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BASIS</code></td>
+<td>string; <code>forward</code></td>
+<td><code>forward</code>, <code>right</code>, <code>up</code></td>
+</tr>
+<tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="rotatecamera">rotateCamera</h3>
+<p><img src="../assets/blocks/rotateCamera.svg" alt="rotate camera [CAMERA] [AXIS] by [DEGREES] degrees"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>yaw</code></td>
+<td><code>yaw</code>, <code>pitch</code></td>
+</tr>
+<tr>
+<td><code>DEGREES</code></td>
+<td>number; <code>5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="camerabasiscomponent">cameraBasisComponent</h3>
+<p><img src="../assets/blocks/cameraBasisComponent.svg" alt="camera [CAMERA] [BASIS] [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>BASIS</code></td>
+<td>string; <code>forward</code></td>
+<td><code>forward</code>, <code>right</code>, <code>up</code></td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>z</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<h3 id="pointaheadofcamera">pointAheadOfCamera</h3>
+<p><img src="../assets/blocks/pointAheadOfCamera.svg" alt="point [DISTANCE] ahead of camera [CAMERA] [AXIS]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DISTANCE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>string; <code>main</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AXIS</code></td>
+<td>string; <code>x</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

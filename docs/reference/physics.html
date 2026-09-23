@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Physics · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="physics">Physics</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#bodies-attachments-and-world-settings">Bodies, attachments and world settings</a></li>
+<li><a href="#contacts">Contacts</a></li>
+</ul>
+<h2 id="bodies-attachments-and-world-settings">Bodies, attachments and world settings</h2>
+<p>Each named body is one world-axis box or sphere. Choose static, kinematic or dynamic; boxes take full width/height/depth and spheres a radius. Collision dimensions are world units and do not inherit visual rotation/scale. Physics exists only when first needed in a scene.</p>
+<p>Vector properties set position/velocity; gravity is a world acceleration. Dynamic bodies use mass, restitution, friction, gravity scale and sleep state. Kinematic bodies integrate explicit velocity without gravity; static bodies reject velocity. Triggers record contacts without physical response. Collision filters require both bodies’ layer/mask tests to pass.</p>
+<p>Attach a body to a cube or model-instance root with a world offset. Simulation writes back the object position once per update; manual object movement teleports the body while retaining velocity. Mesh scale, bones, instance-group members, effects and terrain are not collider attachments. Deleting an object deletes its body; deleting the body leaves the object visible.</p>
+<p>The solver uses fixed 1/60-second steps, at most six per update and a 0.1-second input clamp. Only the active scene simulates. There is no angular dynamics, CCD, mesh collision, joints or advanced stacking guarantee. Fast/small bodies may tunnel. Reports expose dimensions, mass/motion, sleeping, flags, filters, attachment and gravity. See the <a href="../../PHYSICS_AUDIO.md">physics/audio contract</a>.</p>
+<h3 id="createphysicsbox">createPhysicsBox</h3>
+<p><img src="../assets/blocks/createPhysicsBox.svg" alt="create [TYPE] physics box [NAME] width [WIDTH] height [HEIGHT] depth [DEPTH]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TYPE</code></td>
+<td>string; <code>static</code></td>
+<td><code>static</code>, <code>kinematic</code>, <code>dynamic</code></td>
+</tr>
+<tr>
+<td><code>WIDTH</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HEIGHT</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DEPTH</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="createphysicssphere">createPhysicsSphere</h3>
+<p><img src="../assets/blocks/createPhysicsSphere.svg" alt="create [TYPE] physics sphere [NAME] radius [RADIUS]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TYPE</code></td>
+<td>string; <code>dynamic</code></td>
+<td><code>static</code>, <code>kinematic</code>, <code>dynamic</code></td>
+</tr>
+<tr>
+<td><code>RADIUS</code></td>
+<td>number; <code>0.5</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setphysicsgravity">setPhysicsGravity</h3>
+<p><img src="../assets/blocks/setPhysicsGravity.svg" alt="set physics gravity x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>-9.81</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setphysicsvector">setPhysicsVector</h3>
+<p><img src="../assets/blocks/setPhysicsVector.svg" alt="set physics body [NAME] [PROPERTY] x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>velocity</code></td>
+<td><code>position</code>, <code>velocity</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setphysicsnumber">setPhysicsNumber</h3>
+<p><img src="../assets/blocks/setPhysicsNumber.svg" alt="set physics body [NAME] [PROPERTY] [VALUE]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>mass</code></td>
+<td><code>mass</code>, <code>restitution</code>, <code>friction</code>, <code>gravityScale</code></td>
+</tr>
+<tr>
+<td><code>VALUE</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="setphysicstrigger">setPhysicsTrigger</h3>
+<p><img src="../assets/blocks/setPhysicsTrigger.svg" alt="set physics body [NAME] trigger [ENABLED]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td>string; <code>on</code></td>
+<td><code>on</code>, <code>off</code></td>
+</tr>
+</tbody></table>
+<h3 id="setphysicsfilter">setPhysicsFilter</h3>
+<p><img src="../assets/blocks/setPhysicsFilter.svg" alt="set physics body [NAME] layer bits [LAYER] mask bits [MASK]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>LAYER</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MASK</code></td>
+<td>number; <code>4294967295</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="attachphysicsbody">attachPhysicsBody</h3>
+<p><img src="../assets/blocks/attachPhysicsBody.svg" alt="attach physics body [NAME] to object [OBJECT] offset x [X] y [Y] z [Z]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>OBJECT</code></td>
+<td>string; <code>cube</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>number; <code>0</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodyexists">physicsBodyExists</h3>
+<p><img src="../assets/blocks/physicsBodyExists.svg" alt="physics body [BODY] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BODY</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodynumber">physicsBodyNumber</h3>
+<p><img src="../assets/blocks/physicsBodyNumber.svg" alt="physics body [NAME] [FIELD]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FIELD</code></td>
+<td>string; <code>velocity y</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code>, <code>velocity x</code>, <code>velocity y</code>, <code>velocity z</code>, <code>mass</code>, <code>restitution</code>, <code>friction</code>, <code>gravityScale</code></td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodysleeping">physicsBodySleeping</h3>
+<p><img src="../assets/blocks/physicsBodySleeping.svg" alt="physics body [NAME] sleeping?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodytext">physicsBodyText</h3>
+<p><img src="../assets/blocks/physicsBodyText.svg" alt="physics body [BODY] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BODY</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>type</code></td>
+<td><code>type</code>, <code>shape</code>, <code>object</code></td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodyboolean">physicsBodyBoolean</h3>
+<p><img src="../assets/blocks/physicsBodyBoolean.svg" alt="physics body [BODY] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BODY</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>trigger</code></td>
+<td><code>trigger</code>, <code>attached</code></td>
+</tr>
+</tbody></table>
+<h3 id="physicsbodymeasure">physicsBodyMeasure</h3>
+<p><img src="../assets/blocks/physicsBodyMeasure.svg" alt="physics body [BODY] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>BODY</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>width</code></td>
+<td><code>width</code>, <code>height</code>, <code>depth</code>, <code>radius</code>, <code>offset x</code>, <code>offset y</code>, <code>offset z</code>, <code>layer bits</code>, <code>mask bits</code></td>
+</tr>
+</tbody></table>
+<h3 id="physicsworldnumber">physicsWorldNumber</h3>
+<p><img src="../assets/blocks/physicsWorldNumber.svg" alt="physics world [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>gravity x</code></td>
+<td><code>gravity x</code>, <code>gravity y</code>, <code>gravity z</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletephysicsbody">deletePhysicsBody</h3>
+<p><img src="../assets/blocks/deletePhysicsBody.svg" alt="delete physics body [NAME]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="contacts">Contacts</h2>
+<p>Contact queries operate on physics bodies, including invisible colliders. <code>current</code> describes retained overlaps; <code>entered</code> and <code>exited</code> describe transitions aggregated over the latest positive-delta engine update. Consume transitions in gameplay updates rather than expecting them to persist forever.</p>
+<p>Count contacts first, then use one-based indices to read the other body name or a numeric contact component. The normal for the queried body is its escape direction; points are representative contact points, not full manifolds. Trigger contacts are queryable without impulses. No result is a typed false/zero/empty fallback. The bounded contact pool can overflow in dense scenes; monitor the physics metric before relying on every pair being recorded.</p>
+<h3 id="physicstouching">physicsTouching</h3>
+<p><img src="../assets/blocks/physicsTouching.svg" alt="physics body [NAME] [STATE] touching [OTHER] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>STATE</code></td>
+<td>string; <code>current</code></td>
+<td><code>current</code>, <code>entered</code>, <code>exited</code></td>
+</tr>
+<tr>
+<td><code>OTHER</code></td>
+<td>string; <code></code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="physicscontactcount">physicsContactCount</h3>
+<p><img src="../assets/blocks/physicsContactCount.svg" alt="physics body [NAME] [STATE] contact count"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>STATE</code></td>
+<td>string; <code>current</code></td>
+<td><code>current</code>, <code>entered</code>, <code>exited</code></td>
+</tr>
+</tbody></table>
+<h3 id="physicscontactname">physicsContactName</h3>
+<p><img src="../assets/blocks/physicsContactName.svg" alt="physics body [NAME] [STATE] contact [INDEX] name"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>STATE</code></td>
+<td>string; <code>current</code></td>
+<td><code>current</code>, <code>entered</code>, <code>exited</code></td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="physicscontactnumber">physicsContactNumber</h3>
+<p><img src="../assets/blocks/physicsContactNumber.svg" alt="physics body [NAME] [STATE] contact [INDEX] [FIELD]"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NAME</code></td>
+<td>string; <code>body</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>STATE</code></td>
+<td>string; <code>current</code></td>
+<td><code>current</code>, <code>entered</code>, <code>exited</code></td>
+</tr>
+<tr>
+<td><code>INDEX</code></td>
+<td>number; <code>1</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>FIELD</code></td>
+<td>string; <code>normal y</code></td>
+<td><code>normal x</code>, <code>normal y</code>, <code>normal z</code>, <code>point x</code>, <code>point y</code>, <code>point z</code>, <code>penetration</code></td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>

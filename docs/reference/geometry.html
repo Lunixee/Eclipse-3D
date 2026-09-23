@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Geometry · Eclipse 3D</title><link rel="icon" href="../../assets/branding/eclipse-icon.svg"><link rel="stylesheet" href="../site.css"></head><body><header><img src="../../assets/branding/eclipse-icon.svg" alt=""><a href="../index.html">Eclipse 3D<small>WebGL 2 for TurboWarp. API v19.</small></a></header><main><nav aria-label="Documentation"><a href="../index.html">Overview</a><a href="../getting-started.html">Quick start</a><a href="../reference/index.html">Block reference</a><a href="../workflows.html">Workflows</a><a href="../../examples/index.html">Examples</a><a href="../compatibility.html">Compatibility</a></nav><h1 id="geometry">Geometry</h1>
+<p><a href="index.html">Reference index</a> · <a href="../concepts.html">Conventions and lifecycle</a></p>
+<ul>
+<li><a href="#custom-geometry-and-model-binding">Custom geometry and model binding</a></li>
+</ul>
+<h2 id="custom-geometry-and-model-binding">Custom geometry and model binding</h2>
+<p>Geometry JSON contains flat <code>positions</code> xyz and optionally zero-based <code>indices</code>, <code>normals</code> xyz, <code>uvs</code> xy, <code>colors</code> rgba and <code>tangents</code> xyzw. Each attribute must describe the same vertex count and every triangle must be complete. Missing normals are generated, UVs default to zero and colors to white. Optional minimum/maximum bounds must conservatively enclose the positions.</p>
+<p>Choose <code>static</code> for immutable geometry; choose <code>dynamic</code> only when whole-definition replacement is needed. Updates validate transactionally. Equal-sized buffers are reused; changed vertex and index streams upload independently. There is no partial-range or arbitrary-layout API. Conservative padded bounds are required for shader displacement because CPU picking tests the undeformed positions.</p>
+<p>Create a model asset from the geometry and an existing material, then use normal model instances. Reports expose counts, bytes, bounds, usage and borrowers. Delete instances, then model assets, then geometry. A named geometry owns a reference in addition to its consumers; the public users property excludes that ownership reference. See <a href="../../CUSTOM_RENDERING.md">custom rendering contract</a>.</p>
+<h3 id="createcustomgeometry">createCustomGeometry</h3>
+<p><img src="../assets/blocks/createCustomGeometry.svg" alt="create [USAGE] geometry [GEOMETRY] data JSON [DATA]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>USAGE</code></td>
+<td>string; <code>static</code></td>
+<td><code>static</code>, <code>dynamic</code></td>
+</tr>
+<tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DATA</code></td>
+<td>string; <code>{&quot;positions&quot;:[-1,-1,0,1,-1,0,0,1,0]}</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="updatecustomgeometry">updateCustomGeometry</h3>
+<p><img src="../assets/blocks/updateCustomGeometry.svg" alt="replace dynamic geometry [GEOMETRY] data JSON [DATA]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DATA</code></td>
+<td>string; <code>{&quot;positions&quot;:[-1,-1,0,1,-1,0,0,1,0]}</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="creategeometrymodel">createGeometryModel</h3>
+<p><img src="../assets/blocks/createGeometryModel.svg" alt="create model [MODEL] from geometry [GEOMETRY] material [MATERIAL]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MODEL</code></td>
+<td>string; <code>mesh</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>MATERIAL</code></td>
+<td>string; <code>default</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="customgeometryexists">customGeometryExists</h3>
+<p><img src="../assets/blocks/customGeometryExists.svg" alt="custom geometry [GEOMETRY] exists?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="customgeometrynumber">customGeometryNumber</h3>
+<p><img src="../assets/blocks/customGeometryNumber.svg" alt="custom geometry [GEOMETRY] [PROPERTY] number"></p>
+<p><strong>Returns number.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>vertices</code></td>
+<td><code>vertices</code>, <code>indices</code>, <code>triangles</code>, <code>vertex bytes</code>, <code>index bytes</code>, <code>users</code>, <code>minimum x</code>, <code>minimum y</code>, <code>minimum z</code>, <code>maximum x</code>, <code>maximum y</code>, <code>maximum z</code></td>
+</tr>
+</tbody></table>
+<h3 id="customgeometryboolean">customGeometryBoolean</h3>
+<p><img src="../assets/blocks/customGeometryBoolean.svg" alt="custom geometry [GEOMETRY] [PROPERTY] ?"></p>
+<p><strong>Returns boolean.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>dynamic</code></td>
+<td><code>dynamic</code></td>
+</tr>
+</tbody></table>
+<h3 id="customgeometrytext">customGeometryText</h3>
+<p><img src="../assets/blocks/customGeometryText.svg" alt="custom geometry [GEOMETRY] [PROPERTY] text"></p>
+<p><strong>Returns text.</strong> Selectors and units are listed below; the family guide explains which retained state is read.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PROPERTY</code></td>
+<td>string; <code>usage</code></td>
+<td><code>usage</code></td>
+</tr>
+</tbody></table>
+<h3 id="deletecustomgeometry">deleteCustomGeometry</h3>
+<p><img src="../assets/blocks/deleteCustomGeometry.svg" alt="delete custom geometry [GEOMETRY]"></p>
+<p><strong>Command.</strong> See the group guide above.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Input / default</th>
+<th>Accepted menu choices</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GEOMETRY</code></td>
+<td>string; <code>triangle</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<footer>Eclipse 3D was formerly Turbo3D. Compatibility ID: <code>turbo3d</code>. Generated reference: API v19. <a href="../generation.html">Sources and reproduction</a>.</footer></main></body></html>
