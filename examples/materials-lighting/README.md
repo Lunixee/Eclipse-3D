@@ -22,6 +22,6 @@ Change metal roughness from 0.2 toward 1, then adjust the warm rim light. Materi
 
 ![Complete Materials & Lighting script](../../docs/assets/workflows/materials-lighting.svg)
 
-The script visual and SB3 are generated from the same maintained example definition. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.
+The script visual shows the project's blocks. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.
 
-[All examples](../index.md) · [Block reference](../../docs/reference/index.md) · [Source definitions](../../scripts/examples/projects.mjs)
+[All examples](../index.md) · [Block reference](../../docs/reference/index.md)

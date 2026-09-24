@@ -1,30 +1,22 @@
 # Third-party software
 
 The source build at `dist/eclipse3d.js`, distributed as `eclipse3d.js`, contains only Eclipse 3D source compiled by esbuild. The
-runtime does not bundle Three.js or load any library from a CDN. Three.js is used
-by the development benchmark and example asset tooling. It is not included in
-the engine or required by projects that use Eclipse 3D.
+runtime does not bundle Three.js or load any library from a CDN.
 
 The direct development dependencies installed by `package-lock.json` are:
 
 | Package | Version | License | Use |
 | --- | ---: | --- | --- |
 | `@eslint/js` | 9.39.5 | MIT | ESLint's standard JavaScript rules |
-| `@turbowarp/jszip` | 3.12.0 | MIT or GPL-3.0-or-later | Builds the Packager SB3 fixture; Eclipse 3D uses it under MIT |
-| `@turbowarp/packager` | 3.13.0 | MPL-2.0 | Reproducible standalone-package test |
 | `@types/node` | 24.13.3 | MIT | Type information for development scripts |
-| `esbuild` | 0.28.2 | MIT | Production and benchmark bundling |
+| `esbuild` | 0.28.2 | MIT | Extension bundling |
 | `eslint` | 9.39.5 | MIT | Static analysis |
 | `globals` | 16.5.0 | MIT | ESLint browser and Node global definitions |
-| `three` | 0.185.1 | MIT | Development benchmark and example asset tooling |
 | `typescript` | 5.9.3 | Apache-2.0 | JavaScript type checking |
-| `scratch-parser` | 6.0.1 | BSD-3-Clause | SB3 structural validation |
 | `@turbowarp/scratchblocks` | 3.6.7 | MIT | Offline Scratch-style block SVG layout |
 | `@fontsource/roboto` | 5.3.0 | SIL OFL-1.1 (font) / MIT (package tooling) | Pinned outlined documentation/hero lettering |
 | `fontkit` | 2.0.4 | MIT | Deterministic font shaping and glyph paths |
 | `jsdom` | 26.1.0 | MIT | Offline SVG document construction and link checks |
-| `@napi-rs/canvas` | 0.1.80 | MIT | Small source-icon contact-sheet preview |
-| `@resvg/resvg-js` | 2.6.2 | MPL-2.0 | Faithful static SVG raster previews |
 | `marked` | 18.0.13 | MIT | Static documentation HTML generation |
 
 Transitive dependency versions and their license metadata are recorded in
@@ -37,7 +29,7 @@ The generated block artwork uses scratchblocks' MIT-licensed shapes. Its notice 
 retained in [scratchblocks-MIT.txt](assets/licenses/scratchblocks-MIT.txt). Roboto
 glyph outlines retain the [SIL Open Font License](assets/licenses/Roboto-OFL.txt).
 The Eclipse icon/hero geometry and teaching GLB/WAV/SVG assets are original project
-work. Documentation and example-build dependencies are development tools; they
+work. Build and documentation dependencies are development tools; they
 are not included in the self-contained production extension JavaScript.
 
 The First-Person Knife Demo includes scenery under CC0 and CC BY 4.0. Its

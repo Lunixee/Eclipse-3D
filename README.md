@@ -4,9 +4,11 @@ Eclipse 3D is a WebGL 2 scene engine for TurboWarp. It provides cameras, shared 
 
 ## Load the extension
 
-Download `eclipse3d.js` from a GitHub Release, or choose `eclipse3d.min.js` for the smaller, minified version. Both provide the same blocks; load only one. In TurboWarp Desktop or the TurboWarp web editor, choose **Add Extension → Custom Extension → File**, select the downloaded JS file, and enable unsandboxed execution. You do not need the source repository or a `dist/` folder. Eclipse 3D requires WebGL 2 and does not run on the Scratch website.
+Download `eclipse3d.js` from the GitHub Release **Assets** list, or choose `eclipse3d.min.js` for the smaller, minified version. Both provide the same blocks; load only one. In TurboWarp Desktop or the TurboWarp web editor, choose **Add Extension → Custom Extension → File**, select the downloaded JS file, and enable **Run extension without sandbox**. You do not need the source repository or a `dist/` folder. Eclipse 3D requires WebGL 2 and does not run on the Scratch website.
 
-To try an example, open a project from [examples](examples/index.md), approve its embedded extension, and click Green Flag. You do not need to load the extension separately for these projects. [First-Person Knife](examples/first-person-knife/README.md) is playable without a rig; owners can press I to load their separately purchased KnifeFPS.glb. The paid asset is not included.
+If the release only lists `dist.zip`, extract it first and select the JS file inside.
+
+To try an example, extract `examples.zip` from the release assets or download a project from [examples](examples/index.md), open its `.sb3` file, approve its embedded extension, and click Green Flag. You do not need to load the extension separately for these projects. [First-Person Knife](examples/first-person-knife/README.md) is playable without a rig; owners can press I to load their separately purchased KnifeFPS.glb. The paid asset is not included.
 
 ## Build from source
 
@@ -17,7 +19,6 @@ npm ci
 npm run build
 npm run build:min
 npm run docs
-npm run examples
 ~~~
 
 The builds write `dist/eclipse3d.js`, its debugging source map `dist/eclipse3d.js.map`, and `dist/eclipse3d.min.js` inside the source checkout. For File loading, select either JS bundle from that checkout's `dist/` folder; the source map is not required.
@@ -38,13 +39,10 @@ For development, `npm run dev` serves this directory at http://localhost:8000. L
 ~~~sh
 npm run lint
 npm run typecheck
-node scripts/block-inventory.mjs
 npm run docs:check
-npm run examples:check
-npm run knife:check
 ~~~
 
-Rebuild the extension and regenerate examples after a source edit. See [generation instructions](docs/generation.md) for reproducible docs and optional Packager HTML exports. `npm run website` assembles the publishing files under `artifacts/website/`; it does not deploy them.
+Rebuild the extension after a source edit. See [documentation maintenance](docs/generation.md) for updating the docs. Edit the included SB3 projects directly in TurboWarp. `npm run website` assembles the publishing files under `artifacts/website/`; it does not deploy them.
 
 The [source layout](ARCHITECTURE.md) keeps the engine, tools, docs and examples under one root. No Git checkout is required to build.
 

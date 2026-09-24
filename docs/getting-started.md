@@ -6,7 +6,7 @@ Use TurboWarp Desktop or the TurboWarp web editor with unsandboxed custom-extens
 
 ### From a release download
 
-Download `eclipse3d.js` from a GitHub Release. The smaller `eclipse3d.min.js` is an alternative with the same API; choose one bundle.
+Download `eclipse3d.js` from the GitHub Release **Assets** list. The smaller `eclipse3d.min.js` is an alternative with the same API; choose one bundle. If the release only lists `dist.zip`, extract it first and use the JS file inside.
 
 In **Add Extension → Custom Extension → File**, select the downloaded JS file. You do not need Node.js, the source repository, a `dist/` folder, or a source map to load it.
 

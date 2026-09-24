@@ -33,8 +33,4 @@ Attacks use the rig's animation clock when loaded, or project time without it, w
 
 For a first edit, open the **MOVE PLAYER** custom block definition and change the walking value assigned to `target speed`. Click Green Flag and compare walking with sprinting.
 
-## Source
-
-Run `npm run build`, then `npm run knife` from the source root. Run `npm run knife:check` to validate the project. The generator does not read or convert KnifeFPS.glb. `source/knife-game.mjs` maintains the connected scripts; `source/knife-viewmodel.mjs` defines placement, clip names and hit timing.
-
 See [asset credits](ASSET_CREDITS.md) for the included scenery and sounds, and [local model importing](../../docs/model-import.md) for importer behavior.
