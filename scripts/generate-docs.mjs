@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {marked} from 'marked';
 import {Turbo3DExtension} from '../src/extension/Turbo3DExtension.js';
-import {scratchBlockTypes} from './block-inventory.mjs';
+import {scratchBlockTypes} from './docs/scratch-types.mjs';
 import {info, blocks, byOpcode, sections, slug, menuItems, defaults, familyTypes} from './docs/metadata.mjs';
 import {blockAST, renderSVG, syntaxFor} from './docs/render-blocks.mjs';
 import {GROUP_GUIDES} from './docs/group-guides.mjs';
@@ -80,6 +80,17 @@ export async function documentationOutputs() {
     // Hand-authored chapters and generated reference share one static HTML presentation.
     for (const entry of await readdir('docs', {withFileTypes: true})) if (entry.isFile() && entry.name.endsWith('.md')) {
         const filename = `docs/${entry.name}`; outputs.set(filename, await readFile(filename, 'utf8'));
+    }
+    // Example projects are committed SB3s; their authored Markdown uses this renderer too.
+    outputs.set('examples/index.md', await readFile('examples/index.md', 'utf8'));
+    const examples = JSON.parse(await readFile('examples/manifest.json', 'utf8')).examples;
+    for (const {id} of examples) {
+        assert.match(id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+        for (const entry of await readdir(`examples/${id}`, {withFileTypes: true})) {
+            if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+            const filename = `examples/${id}/${entry.name}`;
+            outputs.set(filename, await readFile(filename, 'utf8'));
+        }
     }
     for (const [filename, contents] of [...outputs]) if (filename.endsWith('.md')) outputs.set(filename.replace(/\.md$/, '.html'), htmlPage(contents, filename));
     return outputs;

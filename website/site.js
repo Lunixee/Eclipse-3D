@@ -14,14 +14,3 @@ for (const link of document.querySelectorAll('[data-public-link]')) {
         link.textContent = link.dataset.publicLink === 'source' ? 'Browse the repository ↗' : 'View releases ↗';
     }
 }
-
-// A classic deferred script also works under file://. Local files cannot be
-// fetched by TurboWarp, so that mode retains the manual loading instructions.
-if (location.protocol === 'https:' || location.protocol === 'http:') {
-    const extension = document.getElementById('extension-file');
-    const editor = new URL('https://turbowarp.org/editor');
-    editor.searchParams.set('extension', extension.href);
-    for (const link of document.querySelectorAll('[data-open-editor]')) {
-        link.href = editor.href;
-    }
-}

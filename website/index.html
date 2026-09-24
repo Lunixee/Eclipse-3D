@@ -35,8 +35,7 @@
         <p class="project-description">A 3D scene engine for TurboWarp.</p>
         <p class="intro-note">Scenes, cameras, models, materials, animation, physics and audio,<br class="wide-break"> managed through Scratch blocks.</p>
         <div class="utilities">
-          <a class="control" href="#get-started" data-open-editor>Open in TurboWarp <span aria-hidden="true">↗</span></a>
-          <a class="control" href="../dist/eclipse3d.js" download="eclipse3d.js" id="extension-file">Extension file <span aria-hidden="true">↓</span></a>
+          <a class="control" href="#releases" data-public-link="releases">Download extension <span aria-hidden="true">↗</span></a>
           <a class="guide-link" href="../docs/getting-started.html">First scene guide →</a>
         </div>
       </div>
@@ -90,7 +89,6 @@
           <div class="example-links">
             <a class="control" href="../examples/first-person-knife/first-person-knife.sb3" download>Download project <span aria-hidden="true">↓</span></a>
             <a href="../examples/first-person-knife/README.html">Readme &amp; setup →</a>
-            <a href="../examples/first-person-knife/source/knife-game.mjs">Project source ↗</a>
           </div>
         </div>
       </div>
@@ -105,19 +103,20 @@
         <a href="../docs/workflows.html"><strong>Workflows</strong><span>Animation, lighting, picking and scene setup.</span><span aria-hidden="true">↗</span></a>
         <a href="../docs/model-import.html"><strong>Model importing</strong><span>Local GLB / glTF files, supported features and limits.</span><span aria-hidden="true">↗</span></a>
         <a href="../CHANGELOG.md"><strong>Changelog</strong><span>Public release notes.</span><span aria-hidden="true">↗</span></a>
-        <a href="#source" data-public-link="source"><strong>Source code</strong><span>Engine, project builders and documentation.</span><span aria-hidden="true">↗</span></a>
+        <a href="#source" data-public-link="source"><strong>Source code</strong><span>Engine source and documentation.</span><span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
     <section class="section" id="get-started" aria-labelledby="start-title">
       <div class="section-heading"><span class="label">Setup</span><h2 id="start-title">Loading the extension</h2></div>
       <ol class="setup-steps">
-        <li>Download <a href="../dist/eclipse3d.js" download>eclipse3d.js</a> and open the <a href="https://turbowarp.org/editor">TurboWarp web editor</a> or TurboWarp Desktop.</li>
-        <li>Choose <strong>Add Extension → Custom Extension → File</strong> and select the downloaded JS file. The same steps apply to <code>eclipse3d.js</code> or <code>eclipse3d.min.js</code> from a GitHub Release.</li>
+        <li>Download <code>eclipse3d.js</code> from the <a href="#releases" data-public-link="releases">GitHub Release assets</a>. <code>eclipse3d.min.js</code> is a smaller alternative with the same blocks.</li>
+        <li>In the <a href="https://turbowarp.org/editor">TurboWarp web editor</a> or TurboWarp Desktop, choose <strong>Add Extension → Custom Extension → File</strong>.</li>
+        <li>Select the downloaded JS file.</li>
         <li>Enable <strong>Run extension without sandbox</strong>.</li>
       </ol>
       <p>Or open an <a href="../examples/index.html">example project</a>, approve its embedded extension, and click the green flag.</p>
-      <p class="small-note">The “Open in TurboWarp” link loads by URL. If it does not work in your browser, use the file method above.</p>
+      <p class="small-note">If the release only lists <code>dist.zip</code>, extract it first and select the JS file inside.</p>
     </section>
 
     <section class="section" id="faq" aria-labelledby="faq-title">
@@ -134,13 +133,13 @@
     <section class="section project-information" aria-label="Project information">
       <div id="source">
         <h2>Source &amp; license</h2>
-        <p>Engine code, project builders and docs live together. Eclipse 3D is <a href="../LICENSE">MIT licensed</a>; third-party assets have their own credits.</p>
+        <p>Engine code, editable SB3 examples and docs live together. Eclipse 3D is <a href="../LICENSE">MIT licensed</a>; third-party assets have their own credits.</p>
         <p><a href="../ARCHITECTURE.md">Source layout ↗</a> <span class="link-separator" aria-hidden="true">/</span> <a href="../THIRD_PARTY_LICENSES.md">Third-party notices ↗</a></p>
         <p class="small-note"><a href="#source" data-public-link="source" data-pending-label="Public repository URL coming soon.">Public repository URL coming soon.</a></p>
       </div>
       <div id="releases">
         <h2>Development &amp; releases</h2>
-        <p>In active development. The changelog records repository milestones; these are not published releases.</p>
+        <p>Download extension files from the GitHub Release assets. The changelog records project changes.</p>
         <p><a href="../CHANGELOG.md">Read the changelog ↗</a></p>
         <p class="small-note"><a href="#releases" data-public-link="releases" data-pending-label="Release page URL coming soon.">Release page URL coming soon.</a></p>
       </div>

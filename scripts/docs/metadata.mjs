@@ -1,5 +1,5 @@
 import {Turbo3DExtension} from '../../src/extension/Turbo3DExtension.js';
-import {scratchBlockTypes} from '../block-inventory.mjs';
+import {scratchBlockTypes} from './scratch-types.mjs';
 import {isExecutableBlock, BLOCK_SECTIONS} from '../../src/extension/blocks/blockNavigation.js';
 import {API_FAMILIES} from '../../src/extension/blocks/apiExpansionBlocks.js';
 

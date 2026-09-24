@@ -5,7 +5,7 @@ The visual [block reference](docs/reference/index.md) covers current usage and d
 <!-- block-inventory:start -->
 ## Complete registered block inventory
 
-Generated from production registration with `node scripts/block-inventory.mjs --write`; API version 19 preserves existing serialized blocks and menus.
+This inventory reflects production registration. API version 19 preserves existing serialized blocks and menus.
 
 Original discovery: 426. Current registration: 582. Visible palette: 560 (476 independent entries plus 84 canonical family blocks). Retained hidden legacy aliases: 22; other hidden/internal: 0; removed: 0; unresolved: 0.
 

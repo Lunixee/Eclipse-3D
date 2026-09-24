@@ -6,10 +6,6 @@ import {createServer} from 'node:http';
 const root = resolve('.');
 const buildResult = spawnSync(process.execPath, ['scripts/build.mjs'], {stdio: 'inherit'});
 if (buildResult.status !== 0) process.exit(buildResult.status ?? 1);
-if (process.argv.includes('--benchmarks')) {
-    const benchmarkBuild = spawnSync(process.execPath, ['scripts/build-browser-benchmark.mjs'], {stdio: 'inherit'});
-    if (benchmarkBuild.status !== 0) process.exit(benchmarkBuild.status ?? 1);
-}
 
 const contentTypes = {
     '.css': 'text/css; charset=utf-8',

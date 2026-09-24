@@ -22,6 +22,6 @@ Click Green Flag to authorize simulation/audio. The box resets every three secon
 
 ![Complete Physics & Audio script](../../docs/assets/workflows/physics-audio.svg)
 
-The script visual and SB3 are generated from the same maintained example definition. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.
+The script visual shows the project's blocks. Orange data reporters refer to embedded project variables; they are not placeholders for network downloads.
 
-[All examples](../index.md) · [Block reference](../../docs/reference/index.md) · [Source definitions](../../scripts/examples/projects.mjs)
+[All examples](../index.md) · [Block reference](../../docs/reference/index.md)

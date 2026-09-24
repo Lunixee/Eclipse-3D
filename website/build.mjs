@@ -20,7 +20,7 @@ const exampleDirectories = manifest.examples.map(({id}) => {
 });
 const siteFiles = ['index.html', 'styles.css', 'site.js', 'assets'];
 const repositoryFiles = [
-    ...publicDocuments, 'docs', 'assets/branding', 'assets/licenses', 'scripts/examples',
+    ...publicDocuments, 'docs', 'assets/branding', 'assets/licenses', 'website/README.md',
     'examples/index.html', 'examples/index.md', 'examples/manifest.json',
     ...exampleDirectories, 'dist/eclipse3d.js', 'dist/eclipse3d.js.map', 'dist/eclipse3d.min.js'
 ];
@@ -36,12 +36,18 @@ await mkdir(output, {recursive: true});
 for (const file of siteFiles) await cp(path.join(website, file), path.join(output, file), {recursive: true});
 for (const file of repositoryFiles) await cp(path.join(root, file), path.join(output, file), {
     recursive: true,
-    filter: source => !['visual-qa.md', 'visual-qa.html', 'validate-project.mjs'].includes(path.basename(source))
+    filter: source => {
+        const relative = path.relative(root, source).split(path.sep);
+        return !(relative[0] === 'examples' && relative.includes('source')) &&
+            !['visual-qa.md', 'visual-qa.html', 'validate-project.mjs'].includes(path.basename(source));
+    }
 });
-// The development changelog includes internal QA history. Ship the public notes.
-const publicChangelog = path.join(root, 'scripts/public/CHANGELOG.md');
-if (await stat(publicChangelog).then(() => true, () => false)) {
-    await cp(publicChangelog, path.join(output, 'CHANGELOG.md'));
+// Ship public notes and notices without internal QA history or tool dependencies.
+for (const file of ['CHANGELOG.md', 'THIRD_PARTY_LICENSES.md']) {
+    const publicDocument = path.join(root, 'scripts/public', file);
+    if (await stat(publicDocument).then(() => true, () => false)) {
+        await cp(publicDocument, path.join(output, file));
+    }
 }
 
 // The source page sits one level below the repository; the published page is

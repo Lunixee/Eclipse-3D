@@ -13,8 +13,8 @@ Seven small teaching projects and a complete first-person knife demo. Each embed
 | [Post Processing & Render Targets](post-processing/README.md) | A second camera updates an in-world monitor while the main view uses vignette, color and FXAA. |
 | [Custom Rendering](custom-rendering/README.md) | Original octahedron geometry with a project-defined unlit GLSL material and typed tint uniform. |
 
-## Rebuild
+## Open and edit
 
-Run `npm run build`, then `npm run examples`. Use `npm run examples:package` for standalone HTML exports under `artifacts/examples/`. Screenshots are real runtime captures and are refreshed only after visual changes.
+Open an SB3 in TurboWarp Desktop or the TurboWarp web editor, approve the embedded Eclipse 3D extension, then click Green Flag. Each example README explains its controls and what to change first.
 
-Generated SB3 files embed the exact development bundle. Regenerate them after any production edit. The project definitions and original model/audio assets are maintained under `scripts/examples/`; no benchmark fixture scripts are imported.
+Edit the project blocks directly in TurboWarp and save a copy of the SB3. The teaching projects include their assets; the knife demo can optionally load a separately purchased viewmodel.

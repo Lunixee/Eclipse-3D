@@ -3,7 +3,7 @@
 <h2 id="load-eclipse-3d">Load Eclipse 3D</h2>
 <p>Use TurboWarp Desktop or the TurboWarp web editor with unsandboxed custom-extension support and WebGL 2.</p>
 <h3 id="from-a-release-download">From a release download</h3>
-<p>Download <code>eclipse3d.js</code> from a GitHub Release. The smaller <code>eclipse3d.min.js</code> is an alternative with the same API; choose one bundle.</p>
+<p>Download <code>eclipse3d.js</code> from the GitHub Release <strong>Assets</strong> list. The smaller <code>eclipse3d.min.js</code> is an alternative with the same API; choose one bundle. If the release only lists <code>dist.zip</code>, extract it first and use the JS file inside.</p>
 <p>In <strong>Add Extension → Custom Extension → File</strong>, select the downloaded JS file. You do not need Node.js, the source repository, a <code>dist/</code> folder, or a source map to load it.</p>
 <p>Eclipse 3D must run unsandboxed; enable <strong>Run extension without sandbox</strong> where the host shows that option. If loaded sandboxed, the extension refuses to start and reports that it must run without the extension sandbox. The loaded category is <strong>Eclipse 3D</strong>. The internal extension ID remains <code>turbo3d</code> for compatibility with existing projects.</p>
 <h3 id="from-a-source-checkout">From a source checkout</h3>

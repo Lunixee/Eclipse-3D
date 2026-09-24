@@ -1,6 +1,6 @@
 # Rendered workflows
 
-These are real Scratch-style scripts generated from the same definitions as the runnable SB3 examples. They include initialization, reset and dependencies. Orange reporters hold embedded data in project variables. Inspect those variables to see the model/texture/GLSL source. The downloaded projects don't require network placeholders.
+These Scratch-style scripts show the setup and update loops in the runnable SB3 examples. They include initialization, reset and dependencies. Orange reporters hold embedded data in project variables. Inspect those variables to see the model/texture/GLSL source. The downloaded projects don't require network placeholders.
 
 ## Hello 3D
 
